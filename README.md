@@ -2,7 +2,7 @@
 Everything DevOps, automation, SRE, Cloud
 
 
-![LearnWithSagar](./resources/learnwithsagar.png)
+![LearnWithSagar](./repo_resources/learnwithsagar.png)
 
 ## Upcoming Free Bootcamps
 1. [CKAD (Certified Kubernetes Application Developer)](./CKAD/)
