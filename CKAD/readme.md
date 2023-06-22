@@ -16,7 +16,7 @@ Exam Simulator
 
 # Register for free [CKAD course](https://getfitwithsagar.graphy.com/courses/Free-CKAD-Series-64803ac6e4b00d372ab6a817)
 
-
+# [WELCOME TO CKAD CHALLENGE](../repo_resources/POD.gif)
 
 # Links to session videos
 1. [Day 1 : Ask me Anything](https://getfitwithsagar.graphy.com/s/courses/64803ac6e4b00d372ab6a817/take)
@@ -30,7 +30,12 @@ Exam Simulator
 2. Check out the [Assignments directory](./Assignments/) for day wise questions
 3. Solve the assignment question.
 4. Write a blog about your learning and submit Github code link wherver required.
-5. Add your name and link to blog in submission_tracker.md file in day wise directory.
+5. Use proper hashtags in blog and social media posts and don't forget to tag us in your posts : 
+    #getfitwithsagar
+    #learnwithsagar
+    #ckadwithsagar
+    #ckadchallenge
+6. Add your name and link to blog in submission_tracker.md file in day wise directory.
 
 
 
