@@ -14,7 +14,7 @@ Exam Simulator
 ```
 
 
-# [Register for CKAD Free course](https://getfitwithsagar.graphy.com/courses/Free-CKAD-Series-64803ac6e4b00d372ab6a817)
+# Register for free [CKAD course](https://getfitwithsagar.graphy.com/courses/Free-CKAD-Series-64803ac6e4b00d372ab6a817)
 
 
 
@@ -28,8 +28,9 @@ Exam Simulator
 # How to submit solutions for CKAD assignments
 1. Clone this repository
 2. Check out the [Assignments directory](./Assignments/) for day wise questions
-3. Solve the assignment question and keep code in your Github repository
-4. Write a blog about your learning and submit link in submission_tracker.md file in day wise directory.
+3. Solve the assignment question.
+4. Write a blog about your learning and submit Github code link wherver required.
+5. Add your name and link to blog in submission_tracker.md file in day wise directory.
 
 
 
