@@ -1,3 +1,6 @@
+![ckadfree](./repo_resources/learnwithsagar.png)
+
+
 # what is CKAD ?
 ```
 Certified Kubernetes Application Developer exam is 
@@ -16,7 +19,6 @@ Exam Simulator
 
 # Register for free [CKAD course](https://getfitwithsagar.graphy.com/courses/Free-CKAD-Series-64803ac6e4b00d372ab6a817)
 
-# [WELCOME TO CKAD CHALLENGE](../repo_resources/POD.gif)
 
 # Links to session videos
 1. [Day 1 : Ask me Anything](https://getfitwithsagar.graphy.com/s/courses/64803ac6e4b00d372ab6a817/take)
