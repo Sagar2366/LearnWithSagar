@@ -11,4 +11,4 @@ Everything DevOps, automation, SRE, Cloud
 4. KCNA (Kubernetes and Cloud Native Associate)
 
 
-## Head over to (our site)[] to know more about the CKAD Scholarship track
+## Head over to [our site](https://getfitwithsagar.prosperaweb.com/) to know more about the CKAD Scholarship track
