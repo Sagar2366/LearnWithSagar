@@ -1,4 +1,4 @@
-![ckadfree](./repo_resources/learnwithsagar.png)
+![ckadfree](../repo_resources/POD.gif)
 
 
 # what is CKAD ?
