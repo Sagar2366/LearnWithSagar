@@ -14,5 +14,8 @@ Everything DevOps, automation, SRE, Cloud
 
 ## Want to know more about our Kubernetes Schlarship tracks ?
 
-Head over to [our site](https://getfitwithsagar.prosperaweb.com/) to know more about the CKAD Scholarship track
+Head over to [our site](https://getfitwithsagar.prosperaweb.com/) to know more about the Scholarship track
+
+
+## To participate in CKAD challgenge head over to [CKAD directory](./CKAD/)
 

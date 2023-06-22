@@ -1,6 +1,7 @@
 
 Let's start the Day0 of CKAD challenge.
-Write a blog on below topics in your own words-
+Write a blog on below topics in your own words -
+
 ```
 1. What are the containers and what problems we are trying to solve with the containers ?
 2. How Virtual machines are different from Containers ?
@@ -8,6 +9,7 @@ Write a blog on below topics in your own words-
 4. How Docker helps us for containerising application
 
 ```
+
 
 Note - 
 ```
