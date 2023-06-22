@@ -9,4 +9,17 @@
 2. [Day 2 : Container Fundamentls](https://getfitwithsagar.graphy.com/s/courses/64803ac6e4b00d372ab6a817/take)
 3. [Day 3 : Kubernetes Fundamentals](https://getfitwithsagar.graphy.com/s/courses/64803ac6e4b00d372ab6a817/take)
 
-# What next ?
+# How to submit solutions for CKAD assignments
+1. Clone this repository
+2. Check out the [Assignments directory](./Assignments/) for day wise questions
+3. Solve the assignment question and keep code in your Github repository
+4. Write a blog about your learning and submit link in submission_tracker.md file in day wise directory.
+
+# Bonus tips :
+- Write blogs in your own words, do not copy the content from internet or someone else content as we'll be doing plagarism checks.
+- Earlier you submit the blog and complete all activities is better.
+
+# Need help
+Join our active community on whatsapp and reach out to moderators to get help.
+
+T#hank you, can't wait to see all of you taking part in CKAD series and assignment activities
