@@ -1,1 +1,1 @@
-## Instructions to participate in CKAD Scholarship tracks
+## Instructions to contribute to CKAD repository
