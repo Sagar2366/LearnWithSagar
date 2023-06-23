@@ -4,9 +4,9 @@
 ```
 1. Create a new file Dockerfile to build a container image from. It should:
     use bash as base
-    run ping killercoda.com
-    Build the image and tag it as pinger .
-    Run the image (create a container) named my-ping .
+    run ping google.com
+    Build the image and tag it as pinger.
+    Run the image (create a container) named my-ping.
 
 2. Tag the image, which is currently tagged as pinger , also as local-registry:5000/pinger .
     Then push the image into the Docker hub.
