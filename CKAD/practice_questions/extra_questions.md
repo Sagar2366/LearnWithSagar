@@ -9,7 +9,7 @@
     Run the image (create a container) named my-ping.
 
 2. Tag the image, which is currently tagged as pinger , also as local-registry:5000/pinger .
-    Then push the image into the Docker hub.
+
 3. Create a namespace called 'mynamespace' and a pod with image nginx in mynamespace
 
 4. Create a busybox pod (using YAML) that runs the command "env".
