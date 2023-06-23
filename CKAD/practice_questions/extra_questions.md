@@ -45,6 +45,7 @@
     Name the container my-container. 
     Stop the container. 
     Delete the container.
+    Save image in tar file format.
 
 
 ```
