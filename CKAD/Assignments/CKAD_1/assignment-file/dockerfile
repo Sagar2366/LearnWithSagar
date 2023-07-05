@@ -1,0 +1,23 @@
+#this will be our base image to run our go program
+FROM golang:1.20
+
+#now i'm creating the working dir so that everything can happen in on dir. just after creating the folder it move to that folder
+WORKDIR /app
+
+#now i have coped the go.mod and go.sum file into the working dir which is app
+COPY go.mod go.sum ./
+
+#now I run the commnad to download all the packages the is requred to run the go api
+RUN go mod download && go mod verify
+
+#next thing we need to do is to copy our source code into the image. We’ll use the COPY command just like we did with our module files before.
+COPY *.go ./
+
+# Note here: CGO_ENABLED is disabled for cross system compilation
+# It is also a common best practise.
+
+# Build the application.
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go-api
+
+#now it time to run the program
+CMD [ "/go-api" ]
