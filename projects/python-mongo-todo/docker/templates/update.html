@@ -1,0 +1,62 @@
+<html>
+	<head>
+		<title>{{t}}</title>
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/style.css')}}" >
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/emoji.css')}}" >
+		<script src="{{ url_for('static',filename='assets/twemoji.min.js')}}"></script>  
+		<script src="{{ url_for('static',filename='assets/emoji.js')}}"></script>
+		<style>	
+			h1{
+				font-family:"Ari<h1>{{h}}</h1>l Black", Gadget, sans-serif;
+			}
+			body{
+				background-color:white;
+			}
+			.top {
+				vertical-align:top
+			}
+		</style>
+	</head>
+<body>
+	<h1>{{ h }}</h1>
+	<ul>
+		<li><a href="/list" class="{{ a1 }}">ALL</a></li>
+		<li><a href="/" class="{{ a2 }}">Uncompleted</a></li>
+		<li><a href="/completed" class="{{ a3 }}">Completed</a></li>
+		<li style="float:right"><a href="/about">About</a></li>
+	</ul>
+	<hr>
+	<h3>Update tasks with a reference</h3>
+	<form action="/action3" method="POST">
+	{% for task in tasks %}
+		<p>Unique ID: <b>{{ task['_id'] }}</b></p>
+	<input type="text" name="_id" value="{{ task['_id'] }}" hidden>
+
+	<p>
+		<span class="top">Task Name:</span>
+		<input type="text" name="name" value="{{ task['name'] }}" placeholder="{{ task['name'] }}">
+	</p>
+	<p>
+		<span class="top">Description:</span>
+		<textarea type="text" name="desc" rows=3 cols=30 placeholder="{{ task['desc'] }}">{{ task['desc'] }}</textarea>
+	</p>
+	<p>
+		<span class="top">Date:</span>
+		<input type="date" name="date" value="{{ task['date'] }}" placeholder="{{ task['date'] }}">
+	</p>
+	<p>
+		<span class="top">Priority:</span>
+		<select name="pr">
+			<option selected disabled>Priority</option>
+			<option>Low !</option>
+			<option>Medium !!</option>
+			<option>High !!!</option>
+		</select>
+	</p>
+	</table>
+	{% endfor %}
+		<button type="submit"> Update Task </button>
+		<br/>
+	</form>
+</body>
+</html>

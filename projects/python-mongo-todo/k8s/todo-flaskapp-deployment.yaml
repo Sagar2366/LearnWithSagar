@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: todo-flaskapp
+  name: todo-flaskapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-flaskapp
+  template:
+    metadata:
+      labels:
+        app: todo-flaskapp
+    spec:
+      initContainers:
+        - name: flaskapp-init
+          image: mvertes/alpine-mongo:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MONGO_HOST
+              value: mongo
+            - name: MONGO_PORT
+              value: "27017"
+          command:
+            - sh
+            - -c
+            - until mongo --eval 'db.runCommand("ping").ok' ${MONGO_HOST}:${MONGO_PORT}/test --quiet; do echo -e "waiting for MongoDB"; sleep 5; done; echo -e "MongoDB ready, starting ToDo-FlaskApp now";
+      containers:
+        - env:
+            - name: FLASK_ENV
+              value: development
+            - name: MONGO_HOST
+              value: mongo
+            - name: MONGO_PORT
+              value: "27017"
+            - name: PORT
+              value: "5000"
+          image: learnwithsagar/todo-flaskapp:v1
+          imagePullPolicy: Always
+          name: flask-app
+          ports:
+            - containerPort: 5000

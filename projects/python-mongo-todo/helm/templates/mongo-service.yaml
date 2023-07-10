@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: {{ .Values.mongo.name }}
+  name: {{ .Values.mongo.name }}
+spec:
+  ports:
+    - name: "http"
+      port: {{ .Values.mongo.service.port }}
+      targetPort: {{ .Values.mongo.service.port }}
+      protocol: TCP
+  selector:
+    app.kubernetes.io/component: {{ .Values.mongo.name }}
+  type: {{ .Values.mongo.service.type }}
+status:
+  loadBalancer: {}

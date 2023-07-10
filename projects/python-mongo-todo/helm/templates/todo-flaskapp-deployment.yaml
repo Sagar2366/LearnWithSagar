@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: {{ .Values.flaskapp.name }}
+  name: {{ .Values.flaskapp.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: {{ .Values.flaskapp.name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: {{ .Values.flaskapp.name }}
+    spec:
+      initContainers:
+        - name: {{ .Values.flaskapp.name }}-init
+          image: {{ template "mongo.image" . }}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MONGO_HOST
+              value: {{ .Values.mongo.name }}
+            - name: MONGO_PORT
+              value: {{ .Values.mongo.service.port | quote }}
+          command:
+            - sh
+            - -c
+            - until mongo --eval 'db.runCommand("ping").ok' ${MONGO_HOST}:${MONGO_PORT}/test --quiet; do echo -e "waiting for MongoDB"; sleep 5; done; echo -e "MongoDB ready, starting ToDo-FlaskApp now";
+      containers:
+        - name: {{ .Values.flaskapp.name }}
+          image: {{ template "flaskapp.image" . }}
+          env:
+            - name: FLASK_ENV
+              value: {{ .Values.flaskapp.env }}
+            - name: MONGO_HOST
+              value: {{ .Values.mongo.name }}
+            - name: MONGO_PORT
+              value: {{ .Values.mongo.service.port | quote }}
+            - name: PORT
+              value: {{ .Values.flaskapp.service.port | quote }}
+          ports:
+            - containerPort: {{ .Values.flaskapp.service.port }}
+          resources: {}
+      restartPolicy: Always
+status: {}

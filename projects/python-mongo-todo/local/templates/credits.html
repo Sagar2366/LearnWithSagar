@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<title>{{t}}</title>
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/style.css')}}" >
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/emoji.css')}}" >
+		<script src="{{ url_for('static',filename='assets/twemoji.min.js')}}"></script>  
+		<script src="{{ url_for('static',filename='assets/emoji.js')}}"></script>
+		<style>
+			body {
+				background-color:white;
+			}
+			.credits {
+				margin:10px;
+			}
+		</style>
+	</head>
+<body>
+	<h1>{{ h }}</h1>
+	<ul>
+		<li><a href="/list" class="{{ a1 }}">ALL</a></li>
+		<li><a href="/" class="{{ a2 }}">Uncompleted</a></li>
+		<li><a href="/completed" class="{{ a3 }}">Completed</a></li>
+		<li style="float:right"><a href="/about">About</a></li>
+	</ul>
+	<hr>
+	<h3>Credits :</h3>
+	<div class='credits'>
+		<b>Sagar Utekar</b>
+		<p>
+			<span>Email:</span>
+			<a href="mailto:sagarutekar2366@gmail.com">Sagar Utekar</a>
+		</p>
+	</div>
+	<hr>
+	<p>Made with ❤️ from Karnali, Nepal ☕</p>
+</body>
+</html>

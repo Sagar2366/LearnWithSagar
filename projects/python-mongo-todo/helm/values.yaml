@@ -1,0 +1,24 @@
+nameoverride: ""
+
+mongo:
+  name: mongo
+  image:
+    registry: docker.io
+    repository: mvertes/alpine-mongo
+    tag: latest
+  imagePullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 27017
+
+flaskapp:
+  name: todo-flaskapp
+  env: production
+  image:
+    registry: docker.io
+    repository: learnwithsagar/todo-flaskapp
+    tag: v1
+  imagePullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 5000
