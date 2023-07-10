@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<title>{{t}}</title>
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/style.css')}}" >
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/emoji.css')}}" >
+		<script src="{{ url_for('static',filename='assets/twemoji.min.js')}}"></script>  
+		<script src="{{ url_for('static',filename='assets/emoji.js')}}"></script>
+	</head>
+<body>
+	<h1>{{ h }}</h1>
+	<ul>
+		<li><a href="/list" class="{{ a1 }}">ALL</a></li>
+		<li><a href="/" class="{{ a2 }}">Uncompleted</a></li>
+		<li><a href="/completed" class="{{ a3 }}">Completed</a></li>
+		<li style="float:right"><a href="/about">About</a></li>
+	</ul>
+	<hr>
+	{% if todos[0] %}
+	<h3>Result of the Search : ToDO List</h3>
+	<table>
+	    <tr id="row">
+	    	<td class="status">Status</td>
+	    	<td class="name">Task Name</td>
+	    	<td class="desc">Task Description</td>
+	    	<td class="date">Date</td>
+	    	<td class="pr">Project</td>
+		<td class="func">Delete</td>
+		<td class="func">Modify</td>
+	    </tr>
+		{% for todo in todos %}
+		<tr class="datas">
+			<td><a href="./done?_id={{ todo['_id'] }}"><input type="image" src="static/images/{{todo['done']}}.png" alt="Submit ME"></a></td>
+			<td class="name">{{ todo["name"] }}</td>
+			<td class="desc">{{ todo["desc"] }}</td>
+			<td class="date">{{ todo["date"] }}</td>
+			<td class="pr">{{ todo["pr"] }}</td>
+			<td class="func1"><a href="./remove?_id={{ todo['_id'] }}"><button type="submit">DELETE</button></a></td>
+			<td class="func1"><a href="./update?_id={{ todo['_id'] }}"><button type="submit">EDIT</button></a></td>
+		</tr>
+		{% endfor %}
+	{% else %}
+		<h4>No Result Found !!</h4>
+	{% endif %}
+	</table>
+</body>
+</html>

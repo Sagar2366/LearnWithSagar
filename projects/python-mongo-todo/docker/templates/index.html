@@ -1,0 +1,177 @@
+<html>
+	<head>
+		<title>{{t}}</title>
+		<!-- href="/static/assets/style.css"-->
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/style.css')}}" >
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/emoji.css')}}" >
+		<script src="{{ url_for('static',filename='assets/twemoji.min.js')}}"></script>  
+		<script src="{{ url_for('static',filename='assets/emoji.js')}}"></script>
+	</head>
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container2{
+  max-width: 800px;
+  background: #0d0d0d;
+  width: 1000px;
+  margin: 20 auto; 
+  align-items: center;
+  justify-content: center;
+  padding: 25px 40px 10px 40px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  background: linear-gradient(115deg, #127360 100%, #e6a0ca 90%);
+  margin-bottom: 50px;
+}
+
+.container{
+  max-width: 1000px;
+  width: 1000px;
+  margin: 100 auto; 
+  align-items: center;
+  justify-content: center;
+  padding: 25px 100px 10px 150px;
+  background-color: #e9eff3;
+}
+#todo {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 5px;
+}
+
+#todo td, #todo th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  width: 30px;
+  margin-top: 50px;
+}
+
+#custtodoomers tr:nth-child(even){background-color: #f2f2f2;}
+
+#todo tr:hover {background-color: #ddd;}
+
+#todo th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+.button3:hover {
+  
+  color: white;
+}
+	</style>
+<body>
+	<h1 align="center" class="container2">{{ h }}</h1>
+	<ul>
+		<li><a href="/list" class="{{ a1 }}">ALL</a></li>
+		<li><a href="/" class="{{ a2 }}">Uncompleted</a></li>
+		<li><a href="/completed" class="{{ a3 }}">Completed</a></li>
+		<li style="float:right"><a href="/about">About</a></li>
+	</ul>
+	{% if error %}
+		<div class="alert alert-danger">
+	  		<strong>Error!</strong> {{ error }}
+		</div>
+	{% endif %}
+	<hr>
+	{% if todos[0] %}
+	<div span="right">
+	<form action="/search"	method="GET" >
+		<table class="none" id="close">
+		<tr>
+		<td></td><td></td>
+		<td><big><b>Search Reference:</b></big></td>
+		<td><select name="refer" required>
+			<option value="id">Unique ID</option>
+			<option value="name">Task Name</option>
+			<option value="desc">Description</option>
+			<option value="date">Date</option>
+			<option value="pr">Priority</option>
+		</select></td>
+		<td><input type="text" name="key" placeholder="Search Task" size="15" /></td>
+		<td><button type="submit">Search</button></td>
+		</tr>
+		</table>
+	</form>
+	</div>
+	<b><big>To-Do LIST :</big></b>
+	<table id="todo">
+	    <tr id="row" >
+	    	<th class="status">Status</th>
+	    	<th class="name">Task Name</th>
+	    	<th class="desc">Description Name</th>
+	    	<th class="date">Date</th>
+	    	<th class="pr">Priority</th>
+		<th class="func1">Remove</th>
+		<th class="func2">Modify</th>
+	    </tr>
+	{% for todo in todos %}
+		<tr>
+			<td><a href="./done?_id={{ todo['_id'] }}"><input type="image" src="static/images/{{todo['done']}}.png" alt="Submit ME"></a></td>
+			<td class="name">{{ todo["name"] }}</td>
+			<td class="desc">{{ todo["desc"] }}</td>
+			<td class="date">{{ todo["date"] }}</td>
+			<td class="pr">{{ todo["pr"] }}</td>
+			<td class="func1"><a href="./remove?_id={{ todo['_id'] }}">🗑️</a></td>
+			<td class="func2"><a href="./update?_id={{ todo['_id'] }}">📝</a></td>
+		</tr>
+	{% endfor %}
+	</table>
+	{% else %}
+		<div class="danger">
+			<h4>No Tasks in the List !!</h4>
+		</div>
+	{% endif %}
+	<hr/>
+	<div class="container" align="center">
+	<form action="/action" method="POST">
+		<h2 width="100px">Add a Task</h2>
+	<table class="none">
+		<tr class="row">
+			<td class="col-2">
+				<input type="text" name="name" placeholder="Taskname" />
+			</td>
+		</tr>
+		<tr class="row">
+			<td class="col-4">
+				<textarea name="desc" rows="2" cols="30" placeholder="Enter Description here..." required></textarea>
+			</td>
+		</tr>
+		<tr class="row">
+			<td class="col-2">
+				<input type="date" name="date" placeholder="Date" />
+			</td>
+		</tr>
+		<tr class="row">
+			<td class="col-2">
+				<select name="pr">
+					<option selected disabled>Priority</option>
+					<option>Low !</option>
+					<option>Medium !!</option>
+					<option>High !!!</option>
+				</select>
+			</td>
+		</tr>
+		<tr class="row">
+			<td class="col-2">
+				<button type="submit" class="button3"> Create </button>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+	<script>
+
+	</script>
+</body>
+</html>

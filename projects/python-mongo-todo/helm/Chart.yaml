@@ -1,0 +1,9 @@
+name: todo-flaskapp
+description: Helm Chart for ToDo FlaskApp with MongoDB
+version: 0.0.1
+apiVersion: v1
+keywords:
+  - flaskapp
+sources:
+  - https://github.com/Sagar2366/ToDo-List-using-Flask-and-MongoDB
+home: https://github.com/Sagar2366/ToDo-List-using-Flask-and-MongoDB

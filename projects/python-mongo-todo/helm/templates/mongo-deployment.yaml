@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: {{ .Values.mongo.name }}
+  name: {{ .Values.mongo.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: {{ .Values.mongo.name }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: {{ .Values.mongo.name }}
+    spec:
+      containers:
+        - image: {{ template "mongo.image" . }}
+          name: {{ .Values.mongo.name }}
+          ports:
+            - containerPort: {{ .Values.mongo.service.port }}
+          resources: {}
+          volumeMounts:
+            - mountPath: /data/db/
+              name: {{ .Values.flaskapp.name }}
+      restartPolicy: Always
+      volumes:
+        - name: {{ .Values.flaskapp.name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.flaskapp.name }}
+status: {}
