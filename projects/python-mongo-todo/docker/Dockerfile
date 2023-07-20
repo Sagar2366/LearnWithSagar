@@ -8,6 +8,7 @@ RUN adduser -D appuser
 USER appuser
 WORKDIR /home/appuser
 
+RUN ls -al
 ENV PATH="/home/appuser/.local/bin:${PATH}"
 
 COPY --chown=appuser:appuser requirements.txt requirements.txt
