@@ -4,7 +4,7 @@ pipeline {
         stage('Stage 1') {
             steps {
                 echo 'Hello world!' 
-                echo 'Triggering jenkins pipeline'
+                echo 'Triggering jenkins pipeline 2'
             }
         }
     }
