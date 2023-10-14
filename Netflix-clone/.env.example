@@ -1,0 +1,2 @@
+VITE_APP_API_ENDPOINT_URL=https://api.themoviedb.org/3
+VITE_APP_TMDB_V3_API_KEY=cxxxxxxxxxxxxxxxxxxxxx
