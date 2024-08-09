@@ -8,6 +8,8 @@ It will have 2 clusters with following cluster configurations
 1 Control plane node
 2 worker nodes
 
+[Step by step video guide]() 
+
 # Other practice environments
 1. Minikube
 2. Play with Kubernetes
