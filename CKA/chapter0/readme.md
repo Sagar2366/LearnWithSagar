@@ -19,6 +19,8 @@
 # Exam details and resources
 
 # Domains and competencies
+[CKA Syllabus](./CKA_curriculum.pdf)
+
 
 
 
