@@ -93,7 +93,9 @@
 - Kubernetes supports container runtimes that adhere to the Kubernetes Container Runtime Interface (CRI), enabling effective container management.
 
   
-# Kubernetes API workflow
+# Discussion: Kubernetes API workflow
+
+# TODO
 
 # How to access the remote Kubernetes cluster with Kubeconfig file
 
@@ -102,6 +104,14 @@
 # Kubernetes Dashboard
 
 # YAML basics
+
+# Minikube setup
+
+# Kubeadm setup
+
+# Kubectl guide
+
+# 
 
 
 
