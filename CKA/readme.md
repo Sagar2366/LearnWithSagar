@@ -1,8 +1,9 @@
 
 # Syallbus
-1. Chapter0: Everything to know about CKA Exam
-2. Chapter1: Kubernetes Cluster setup using Kubeadm on AWS EC2
-3. Chapter2: Kubernetes Overview
+0. Chapter0: Everything you need to know about the CKA Exam
+1. Chapter1: Kubernetes Cluster setup using Kubeadm on AWS EC2
+2. Chapter2: Cluster Setup:   Minikube, Kubeadm, EKS
+3. Chapter3: Kubernetes Overview
 
 
 # References:
