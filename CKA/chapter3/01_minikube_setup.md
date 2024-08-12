@@ -34,4 +34,4 @@ Read more:
 4. Minikube dashboard: https://minikube.sigs.k8s.io/docs/handbook/dashboard/
 5. Configurations: https://minikube.sigs.k8s.io/docs/handbook/config/
 6. Deploying apps: https://minikube.sigs.k8s.io/docs/handbook/deploying/
-7. 
+
