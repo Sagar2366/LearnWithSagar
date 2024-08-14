@@ -1,5 +1,5 @@
 <h1>Container Fundamentals</h1>
-(![Container Fundamentals](https://github.com/user-attachments/assets/1dd58b32-f531-47be-b108-211ca3c0ea85))](https://www.youtube.com/watch?v=A7oDFlEvR98)
+[![Container Fundamentals](https://github.com/Sagar2366/LearnWithSagar/blob/main/CKA/container_fundamentals.jpg)](https://www.youtube.com/watch?v=A7oDFlEvR98)
 
 
 ## Going back in time
