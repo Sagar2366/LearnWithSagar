@@ -1,5 +1,4 @@
 <h1>Container Fundamentals</h1>
-[![Container Fundamentals](https://github.com/Sagar2366/LearnWithSagar/blob/main/CKA/container_fundamentals.jpg)](https://www.youtube.com/watch?v=A7oDFlEvR98)
 
 
 ## Going back in time
@@ -112,4 +111,7 @@ After a few seconds, open your web browser to http://localhost:3001. You should 
 docker tag getting-started YOUR-USER-NAME/getting-started
 docker push YOUR-USER-NAME/getting-started
 ```
-   
+
+
+### Check this video for in depth tutorial on Docker:
+[![Container_fundamentals](https://github.com/user-attachments/assets/4a8e5030-16a7-4b9d-99c8-824cc81cde23)](https://www.youtube.com/watch?v=A7oDFlEvR98)
