@@ -92,8 +92,10 @@ When Kubernetes used Docker as a container runtime, the process involves multipl
 4. containerd Execution: containerd downloads the container image, prepares it, and instructs runc to starts the container.
 
 This multi-step process involves several layers of communication: kubelet to dockershim, dockershim to Docker, and Docker to containerd, and containerd to runc. <br>
-Kubernetes developers decided to remove Docker as a runtime because these intermediaries create unnecessary complexity and inefficiency. 
-By eliminating Docker, Kubernetes can simplify the container startup process, reducing the number of steps and improving performance.
+Kubernetes developers decided to remove Docker as a runtime because these intermediaries create unnecessary complexity and inefficiency.  <br>
+By eliminating Docker, Kubernetes can simplify the container startup process, reducing the number of steps and improving performance. <br>
+Kubernetes moved away from Docker because Docker's unnecessary plugins, like volume and network management, add overhead. 
+Kubernetes has its own systems for these tasks, making Docker's plugins redundant.
 
 ## Kubernetes Docker Deprecation Makes Everything Simpler
 
