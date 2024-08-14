@@ -1,4 +1,6 @@
 <h1>Container Fundamentals</h1>
+(![Container Fundamentals](https://github.com/user-attachments/assets/1dd58b32-f531-47be-b108-211ca3c0ea85))](https://www.youtube.com/watch?v=A7oDFlEvR98)
+
 
 ## Going back in time
 ![Container_Evolution](https://github.com/user-attachments/assets/0eb4d838-5647-4af3-8013-217efd023a4b)
