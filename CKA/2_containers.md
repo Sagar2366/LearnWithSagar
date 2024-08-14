@@ -1,5 +1,15 @@
 <h1>Container Fundamentals</h1>
 
+## Going back in time
+![Container_Evolution](https://github.com/user-attachments/assets/0eb4d838-5647-4af3-8013-217efd023a4b)
+
+- In the Traditional deployment era, applications ran on physical servers without resource boundaries, leading to inefficiencies and high costs. 
+- The Virtualized deployment era introduced virtualization, allowing multiple Virtual Machines (VMs) on a single server, improving resource utilization, scalability, and security. 
+- The Container deployment era further optimized resource use by sharing the OS among applications in lightweight containers.
+  Containers are portable across different clouds and OS distributions, enabling agile application development, continuous integration, and easy rollbacks.
+  Containers offer consistency across development, testing, and production environments, and support application-centric management.
+  They enhance resource efficiency, performance predictability, and are ideal for managing distributed, elastic microservices.
+  
 ## What is Docker?
 - Docker is a platform that enables you to package and run applications in isolated environments called containers.
 - These containers are lightweight, secure, and contain everything needed to run the application, which means they don't depend on the host system's configuration.
