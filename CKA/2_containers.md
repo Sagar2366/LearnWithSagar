@@ -61,3 +61,53 @@ Containers:
 
 # Practical
 https://docs.docker.com/guides/workshop/
+
+## Containerize an application
+1. Clone git repository
+```
+git clone https://github.com/docker/getting-started-app.git
+```
+
+2. Create Dockerfile
+```
+# syntax=docker/dockerfile:1
+
+FROM node:18-alpine
+WORKDIR /app
+COPY . .
+RUN yarn install --production
+CMD ["node", "src/index.js"]
+EXPOSE 3000
+```
+
+3. Build an image using Dockerfile
+```
+docker build -t getting-started .
+```
+
+4. List images
+```
+docker images
+```
+
+5. Start an app container
+```
+docker run -dp 127.0.0.1:3001:3000 getting-started
+```
+
+6. List containers
+```
+docker ps
+```
+
+7. Access container app on local machine
+```
+After a few seconds, open your web browser to http://localhost:3001. You should see your app.
+```
+
+8. Share image
+```
+docker tag getting-started YOUR-USER-NAME/getting-started
+docker push YOUR-USER-NAME/getting-started
+```
+   
