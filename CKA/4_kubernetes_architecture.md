@@ -7,8 +7,7 @@
 # What problems Kubernetes Solves
 - Containers are efficient for running applications, but managing them in production to prevent downtime can be challenging.
 - Kubernetes addresses this by providing a resilient framework for running distributed systems resiliently.
-- It handles tasks like scaling, failover, load balancing, storage orchestration, automated rollouts/rollbacks, resource optimization, self-healing, secret management, batch execution, 
-  horizontal scaling, and extensibility.
+- It handles tasks like <b>scaling</b>, failover, <b>load balancing</b>, storage orchestration, automated rollouts/rollbacks, <b>resource optimization</b>, <b>self-healing</b>, secret management, batch execution, horizontal scaling, and <b>extensibility</b>.
 - Kubernetes ensures applications run smoothly, automatically adapting to changes and failures without manual intervention.
 
 # Features of Kubernetes
