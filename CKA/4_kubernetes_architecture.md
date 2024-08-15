@@ -25,7 +25,8 @@
 
 
 # Kubernetes Architecture
-![k8s_arch](https://github.com/user-attachments/assets/7416fb41-edcb-4db5-89a9-403b7611b23e)
+![kubernetes-cluster-architecture](https://github.com/user-attachments/assets/d151bb01-febe-4289-93e1-25d3dca250ae)
+
 
 
 - In its simplest form, Kubernetes is made of control plane nodes (aka cp nodes) and worker nodes to run containerized applications, once called minions.
