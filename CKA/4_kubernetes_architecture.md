@@ -94,13 +94,23 @@
   
 2. <b>kube-proxy</b> :
 - kube-proxy is a network proxy that runs on each node in your cluster, implementing part of the Kubernetes Service concept.
-- kube-proxy maintains network rules on nodes. These network rules allow network communication to your Pods from network sessions inside or outside of your cluster.
-- 
+- kube-proxy maintains network rules on nodes. These network rules allow network communication to your Pods from network sessions inside or outside your cluster.
+- Check kube-scheduler server pod
+  ```
+  kubectl get daemonset kube-proxy -n kube-system
+  kubectl get pods -n kube-system | grep -i kube-proxy
+  kubectl exec -it <kube-proxy-pod-id> -- cat /etc/kubernetes/manifests/kube-proxy.yaml
+  ```
 
 3. <b>container engine</b> :
 - The Container Engine in Kubernetes interacts with the container runtime to provide the environment needed for containers.
 - It manages the creation and lifecycle of containers within the Kubernetes environment. Common container engines include CRI-O and containerd.
 - Kubernetes supports container runtimes that adhere to the Kubernetes Container Runtime Interface (CRI), enabling effective container management.
+- To manage containers running in your Kubernetes cluster
+  ```
+  crictl ps
+  critctl images
+  ```
 
 
 ## What Was Dockershim? Why Kubernetes Dropped the Docker Support?
