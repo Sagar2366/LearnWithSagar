@@ -40,6 +40,7 @@
 - It <b>handles all internal and external traffic, validating and processing API requests</b>, and is the sole connection to the etcd database.
 - When developers issue commands via kubectl, the API server receives these commands, authenticates, validates them, and coordinates the necessary actions to implement them.
 - It exposes the Kubernetes API, facilitating communication between all components of the cluster and ensuring that the cluster's state is accurately maintained.
+- Port: 6443
 - Check kube-api-server pod
   ```
   kubectl get pods -n kube-system | grep -i kube-api-server
@@ -51,6 +52,7 @@
 - It interacts with the kube-apiserver to monitor the cluster, and if discrepancies are found, it instructs the appropriate controller to take action.
 - Controllers like the Node controller, Job controller, and ServiceAccount controller handle specific tasks, such as managing node availability, running jobs, and creating service accounts.
 - Although each controller operates logically as a separate process, they are combined into a single binary to reduce complexity.
+- Port: 10257
 - Check kube-controller-manager server pod
   ```
   kubectl get pods -n kube-system | grep -i kube-controller-manager
@@ -63,10 +65,11 @@
 - The scheduler attempts to deploy the Pod, retrying if necessary.
 - It can be customized or replaced with a custom scheduler.
 - Once the API Server gathers information from the Controller Manager, it notifies the scheduler to assign the Pod to a suitable node.
-- Check kube-scheduler server pod
+- Port: 10259
+- Check kube-scheduler pod
   ```
-  kubectl get pods -n kube-system | grep -i kube-scheduler
-  kubectl exec -it <kube-scheduler-pod-id> -- cat /etc/kubernetes/manifests/kube-scheduler.yaml
+  kubectl get pods -n kube-system | grep -i etcd
+  kubectl exec -it <etcd-pod-id> -- cat /etc/kubernetes/manifests/etcd.yaml
   ```
 
 4. <b>etcd</b> :
@@ -74,6 +77,12 @@
 - It operates as a B+ tree, appending new values rather than modifying existing entries, with old data marked for removal through a compaction process.
 - All updates to etcd are routed through the kube-apiserver, which handles simultaneous requests sequentially, ensuring consistency.
 - It's crucial to have a backup plan for the data stored in etcd, given its importance in maintaining the cluster's state.
+- Port: 2379-2380
+- Check etcd pod
+  ```
+  kubectl get pods -n kube-system | grep -i kube-scheduler
+  kubectl exec -it <kube-scheduler-pod-id> -- cat /etc/kubernetes/manifests/kube-scheduler.yaml
+  ```
 
 5. <b>cloud-controller-manager</b> :
 - The cloud-controller-manager is a Kubernetes control plane component that integrates cloud-specific control logic with your cluster.
@@ -86,6 +95,7 @@
 - It <b>registers worker node as well as configures the local node to meet the Pod's requirements, including mounting volumes and accessing Secrets or ConfigMaps</b>.
 - The kubelet communicates with the local container engine, reports the Pod and node status to the kube-apiserver, and ensures that Pods are running correctly.
 - If a Pod fails, the kubelet will create a new one to replace it, since failed Pods cannot be restarted.
+- Port: 10250
 - Check kubelet configuration file and process
   ```
   cat /var/lib/kubelet/config.yaml
@@ -95,7 +105,8 @@
 2. <b>kube-proxy</b> :
 - kube-proxy is a network proxy that runs on each node in your cluster, implementing part of the Kubernetes Service concept.
 - kube-proxy maintains network rules on nodes. These network rules allow network communication to your Pods from network sessions inside or outside your cluster.
-- Check kube-scheduler server pod
+- Port: 10256
+- Check kube-scheduler pod
   ```
   kubectl get daemonset kube-proxy -n kube-system
   kubectl get pods -n kube-system | grep -i kube-proxy
