@@ -159,3 +159,15 @@ After Kubernetes removed dockershim and Docker, the process of starting containe
    - With fewer components and translation steps, the process of starting containers is faster.
    - Even small improvements, like reducing container start times by 0.1 seconds, can significantly enhance performance when scaling to hundreds of containers.
    - This change makes Kubernetes more efficient and responsive.
+   - 
+
+## [Performance Improvement](https://kubernetes.io/blog/2018/05/24/kubernetes-containerd-integration-goes-ga/#performance)
+Improving performance was one of the major focus items for the containerd 1.1 release. Performance was optimized in terms of pod startup latency and daemon resource usage.
+
+The following results are a comparison between containerd 1.1 and Docker 18.03 CE on 105 pods. The containerd 1.1 integration uses the CRI plugin built into containerd; and the Docker 18.03 CE integration uses the dockershim.
+
+The results were generated using the Kubernetes node performance benchmark
+![memory](https://github.com/user-attachments/assets/c59fedcc-5d4e-4a73-9048-35b619c50e4f)
+![cpu](https://github.com/user-attachments/assets/7ed89560-9f3a-4d87-a289-d797c97fbdd0)
+![latency](https://github.com/user-attachments/assets/ab6d74f2-95c7-4f40-9ffb-534e83cd2791)
+
