@@ -38,25 +38,40 @@
 ## Control plane components:
 1. <b>Kube-api server</b> :
 - The kube-apiserver is the central component of the Kubernetes control plane, acting as the front end for the entire cluster.
-- It handles all internal and external traffic, validating and processing API requests, and is the sole connection to the etcd database.
-- When developers issue commands via kubectl, the API server receives these commands, validates them, and coordinates the necessary actions to implement them.
+- It <b>handles all internal and external traffic, validating and processing API requests</b>, and is the sole connection to the etcd database.
+- When developers issue commands via kubectl, the API server receives these commands, authenticates, validates them, and coordinates the necessary actions to implement them.
 - It exposes the Kubernetes API, facilitating communication between all components of the cluster and ensuring that the cluster's state is accurately maintained.
+- Check kube-api-server pod
+  ```
+  kubectl get pods -n kube-system | grep -i kube-api-server
+  kubectl exec -it <kube-api-server-pod-id> -- cat /etc/kubernetes/manifests/kube-apiserver.yaml
+  ```
 
 2. <b>kube-controller-manager</b> :
-- The kube-controller-manager is a core component of the Kubernetes control plane that runs various controller processes to ensure the cluster's desired state matches its actual state.
+- The kube-controller-manager is a core component of the Kubernetes control plane that runs various controller processes to <b>ensure the cluster's desired state matches its actual state</b>.
 - It interacts with the kube-apiserver to monitor the cluster, and if discrepancies are found, it instructs the appropriate controller to take action.
 - Controllers like the Node controller, Job controller, and ServiceAccount controller handle specific tasks, such as managing node availability, running jobs, and creating service accounts.
 - Although each controller operates logically as a separate process, they are combined into a single binary to reduce complexity.
+- Check kube-controller-manager server pod
+  ```
+  kubectl get pods -n kube-system | grep -i kube-controller-manager
+  kubectl exec -it <kube-controller-manager-pod-id> -- cat /etc/kubernetes/manifests/kube-controller-manager.yaml
+  ```
 
 3. <b>kube-scheduler</b> :
-- The kube-scheduler is a control plane component responsible for determining which node will host a newly created Pod.
+- The kube-scheduler is a control plane component <b>responsible for determining which node will host a newly created Pod</b>.
 - It uses an algorithm that considers factors like resource availability, hardware/software constraints, affinity/anti-affinity rules, and data locality.
 - The scheduler attempts to deploy the Pod, retrying if necessary.
 - It can be customized or replaced with a custom scheduler.
 - Once the API Server gathers information from the Controller Manager, it notifies the scheduler to assign the Pod to a suitable node.
+- Check kube-scheduler server pod
+  ```
+  kubectl get pods -n kube-system | grep -i kube-scheduler
+  kubectl exec -it <kube-scheduler-pod-id> -- cat /etc/kubernetes/manifests/kube-scheduler.yaml
+  ```
 
 4. <b>etcd</b> :
-- Etcd is a consistent and highly-available key-value store used as the backing database for all Kubernetes cluster data, including information about Pods, nodes, and networking configurations.
+- Etcd is a <b>consistent and highly-available key-value store</b> used as the backing database for all Kubernetes cluster data, including information about Pods, nodes, and networking configurations.
 - It operates as a B+ tree, appending new values rather than modifying existing entries, with old data marked for removal through a compaction process.
 - All updates to etcd are routed through the kube-apiserver, which handles simultaneous requests sequentially, ensuring consistency.
 - It's crucial to have a backup plan for the data stored in etcd, given its importance in maintaining the cluster's state.
@@ -69,13 +84,19 @@
 ## Worker node components:
 1. <b>kubelet</b> :
 - The kubelet is a crucial component of the Kubernetes worker node that manages Pods based on their specifications (PodSpecs).
-- It configures the local node to meet the Pod's requirements, including mounting volumes and accessing Secrets or ConfigMaps.
+- It <b>registers worker node as well as configures the local node to meet the Pod's requirements, including mounting volumes and accessing Secrets or ConfigMaps</b>.
 - The kubelet communicates with the local container engine, reports the Pod and node status to the kube-apiserver, and ensures that Pods are running correctly.
 - If a Pod fails, the kubelet will create a new one to replace it, since failed Pods cannot be restarted.
+- Check kubelet configuration file and process
+  ```
+  cat /var/lib/kubelet/config.yaml
+  ps -aux | grep kubelet
+  ```
   
 2. <b>kube-proxy</b> :
 - kube-proxy is a network proxy that runs on each node in your cluster, implementing part of the Kubernetes Service concept.
 - kube-proxy maintains network rules on nodes. These network rules allow network communication to your Pods from network sessions inside or outside of your cluster.
+- 
 
 3. <b>container engine</b> :
 - The Container Engine in Kubernetes interacts with the container runtime to provide the environment needed for containers.
