@@ -55,6 +55,7 @@ Container or virtual machine manager, such as: Docker, QEMU, Hyperkit, Hyper-V, 
   
 6.  Interact with your cluster:
 ```
+  minikube profile minikube-k8s-v1-31-0
   kubectl get nodes -A
   minikube kubectl -- get pods -A
 ```
