@@ -64,10 +64,11 @@ Container or virtual machine manager, such as: Docker, QEMU, Hyperkit, Hyper-V, 
 7.  Start minikube dashboard: ``` minikube dashboard ```
 
 8.  Deploy sample application
-    ```kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0
-kubectl expose deployment hello-minikube --type=NodePort --port=8080
-kubectl get services hello-minikube
-minikube service hello-minikube or kubectl port-forward service/hello-minikube 7080:8080
+    ```
+    kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0
+    kubectl expose deployment hello-minikube --type=NodePort --port=8080
+    kubectl get services hello-minikube
+    minikube service hello-minikube or kubectl port-forward service/hello-minikube 7080:8080
     ```
 9.  Pushing local images inside minikube: https://minikube.sigs.k8s.io/docs/handbook/pushing/
 
