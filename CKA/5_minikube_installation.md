@@ -35,7 +35,6 @@ Container or virtual machine manager, such as: Docker, QEMU, Hyperkit, Hyper-V, 
    minikube start \
     --driver=docker \
     --nodes 3 \
-    --cni calico \
     --cpus=2 \
     --memory=2g \
     --kubernetes-version=v1.31.0 \
@@ -47,7 +46,6 @@ Container or virtual machine manager, such as: Docker, QEMU, Hyperkit, Hyper-V, 
 
 - --driver=docker: Specifies docker as the driver.
 - --nodes 3: Creates a 3-node cluster.
-- --cni calico: Uses Calico for the Container Network Interface.
 - --cpus=2: Allocates 2 CPUs to each node.
 - --memory=2g: Allocates 2GB of RAM to each node.
 - --kubernetes-version=v1.31.0: Specifies Kubernetes version 1.31.0.
@@ -65,10 +63,10 @@ Container or virtual machine manager, such as: Docker, QEMU, Hyperkit, Hyper-V, 
 
 8.  Deploy sample application
     ```
-    kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0
-    kubectl expose deployment hello-minikube --type=NodePort --port=8080
+    kubectl create deployment hello-minikube --image=getting-started --dry-run=client -o yaml > deployment.yaml
+    kubectl expose deployment hello-minikube --type=NodePort --port=3000
     kubectl get services hello-minikube
-    minikube service hello-minikube or kubectl port-forward service/hello-minikube 7080:8080
+    minikube service hello-minikube or kubectl port-forward service/hello-minikube 3001:3000
     ```
 9.  Pushing local images inside minikube: https://minikube.sigs.k8s.io/docs/handbook/pushing/
 
