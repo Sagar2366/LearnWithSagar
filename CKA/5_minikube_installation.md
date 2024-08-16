@@ -63,12 +63,43 @@ Container or virtual machine manager, such as: Docker, QEMU, Hyperkit, Hyper-V, 
 7.  Start minikube dashboard: ``` minikube dashboard ```
 
 8.  Deploy sample application
+   - Create a deployment YAML file
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hello-minikube
+  name: hello-minikube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-minikube
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hello-minikube
+    spec:
+      containers:
+      - image: getting-started:latest
+        name: getting-started
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+```
+     
+
+- Create a service for application deployment
     ```
-    kubectl create deployment hello-minikube --image=getting-started --dry-run=client -o yaml > deployment.yaml
     kubectl expose deployment hello-minikube --type=NodePort --port=3000
     kubectl get services hello-minikube
     minikube service hello-minikube or kubectl port-forward service/hello-minikube 3001:3000
     ```
+
+
 9.  Pushing local images inside minikube: https://minikube.sigs.k8s.io/docs/handbook/pushing/
 
 10. Manage your cluster
