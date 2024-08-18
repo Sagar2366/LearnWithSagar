@@ -158,9 +158,10 @@ sysctl net.ipv4.ip_forward
 
 
 # Execute only on worker nodes
-1. Run the join command obtained from kubeadm init output on all Workers nodes. Example
-
-2. 
+Run the join command obtained from kubeadm init output on all Workers nodes. Example
+```
+kubeadm join <controlplane>:6443 --token <<token>>         --discovery-token-ca-cert-hash sha256:<<token>>
+```
 
 
 
