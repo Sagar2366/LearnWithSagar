@@ -172,7 +172,8 @@ If you are joining a node to the cluster after the current token has expired, yo
 kubeadm token create --print-join-command
 ```
 
-
+# Reset kubeadm setup: 
+Execute ```kubeadm reset``` on all nodes to reset all kubeadm init configurations
 ## Verify the setup
 ```
 kubectl get nodes
