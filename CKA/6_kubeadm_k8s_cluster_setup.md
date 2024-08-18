@@ -69,14 +69,28 @@ sudo apt-get update
 sudo apt-get install containerd.io
 ```
 
-3. Install [CNI Plugin](https://github.com/containerd/containerd/blob/main/docs/getting-started.md#step-3-installing-cni-plugins)
+3. Configure containerd to use [systemd group](https://kubernetes.io/docs/setup/production-environment/container-runtimes/#containerd-systemd): 
+
+```
+containerd config default > /etc/containerd/config.toml
+#To use the systemd cgroup driver in /etc/containerd/config.toml with runc, set
+
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+  ...
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+    SystemdCgroup = true
+
+# Restrat containerd service
+  sudo systemctl restart containerd
+```
+
+4. Install [CNI Plugin](https://github.com/containerd/containerd/blob/main/docs/getting-started.md#step-3-installing-cni-plugins)
    ```
    wget https://github.com/containernetworking/plugins/releases/download/v1.5.0/cni-plugins-linux-amd64-v1.5.0.tgz
    mkdir -p /opt/cni/bin
    tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.5.0.tgz
    ```
-   
-4. Install [crictl](https://github.com/kubernetes-sigs/cri-tools/blob/master/docs/crictl.md)
+5. Install [crictl](https://github.com/kubernetes-sigs/cri-tools/blob/master/docs/crictl.md)
    ```
    VERSION="v1.30.0" # check latest version in /releases page
    wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz
@@ -93,7 +107,7 @@ sudo apt-get install containerd.io
    ```
    
 
-5. [Enable IPV4 Packet forwarding](https://kubernetes.io/docs/setup/production-environment/container-runtimes/#prerequisite-ipv4-forwarding-optional)
+6. [Enable IPV4 Packet forwarding](https://kubernetes.io/docs/setup/production-environment/container-runtimes/#prerequisite-ipv4-forwarding-optional)
 ```
    # sysctl params required by setup, params persist across reboots
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
@@ -103,10 +117,10 @@ EOF
 # Apply sysctl params without reboot
 sudo sysctl --system
 
-  #Verify that net.ipv4.ip_forward is set to 1 with:
-  sysctl net.ipv4.ip_forward
+#Verify that net.ipv4.ip_forward is set to 1 with:
+sysctl net.ipv4.ip_forward
 ```
-6. [Install kubelet, kubeadm and kubectl](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl)
+7. [Install kubelet, kubeadm and kubectl](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl)
    ```
    # Update the apt package index and install packages needed to use the Kubernetes apt repository:
      sudo apt-get update
@@ -130,7 +144,7 @@ sudo sysctl --system
      sudo systemctl enable --now kubelet
    ```
 
-# Execute on controlplane node
+# Execute only on controlplane node
 1. Initalise kubernetes cluster
 ```
   kubeadm config images pull
@@ -138,12 +152,12 @@ sudo sysctl --system
 ```
 2. Install Network addon [CNI complaint CNI Plugin](https://kubernetes.io/docs/concepts/cluster-administration/addons/#networking-and-network-policy)- [weavenet](https://github.com/weaveworks/weave/blob/master/site/kubernetes/kube-addon.md):
    ```
-      kubectl apply -f https://reweave.azurewebsites.net/k8s/v1.31/net.yaml
+   kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
    ``` 
 
 
 
-# Execute on worker nodes
+# Execute only on worker nodes
 1. Run the join command obtained from kubeadm init output on all Workers nodes. Example
 
 2. 
