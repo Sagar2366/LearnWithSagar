@@ -96,12 +96,12 @@ sudo apt-get install containerd.io
 5. [Enable IPV4 Packet forwarding](https://kubernetes.io/docs/setup/production-environment/container-runtimes/#prerequisite-ipv4-forwarding-optional)
 ```
    # sysctl params required by setup, params persist across reboots
-   cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
-   net.ipv4.ip_forward = 1
-   EOF
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.ipv4.ip_forward = 1
+EOF
 
-  # Apply sysctl params without reboot
-  sudo sysctl --system
+# Apply sysctl params without reboot
+sudo sysctl --system
 
   #Verify that net.ipv4.ip_forward is set to 1 with:
   sysctl net.ipv4.ip_forward
