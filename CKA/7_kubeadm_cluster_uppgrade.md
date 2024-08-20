@@ -93,6 +93,7 @@ sudo kubeadm upgrade plan
 4. Choose a version to upgrade to, and run the appropriate command. For example:
 ```
 # replace x with the patch version you picked for this upgrade
+kubeadm config images pull
 sudo kubeadm upgrade apply v1.31.x
 ```
 5. Manually upgrade your CNI provider plugin.
