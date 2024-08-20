@@ -17,6 +17,7 @@ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 
 # Update the apt package index, install kubelet, kubeadm and kubectl, and pin their version:
 sudo apt-get update
+sudo apt-cache madison kubeadm
 sudo apt-get install -y kubelet=1.30.3-1.1 kubeadm=1.30.3-1.1 kubectl=1.30.3-1.1
 sudo apt-mark hold kubelet kubeadm kubectl
 
