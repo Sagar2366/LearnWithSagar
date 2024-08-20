@@ -184,7 +184,7 @@ sudo apt-mark hold kubelet kubectl
 ```
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
-sudo status kubelet
+sudo systemctl status kubelet
 journalctl -xeu kubelet
 ```
 
