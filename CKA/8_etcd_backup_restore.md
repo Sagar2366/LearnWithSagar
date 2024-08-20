@@ -1,6 +1,20 @@
-Kubernetes Documenation link: https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/
-etcd v3.6.0 Documentation: https://etcd.io/docs/v3.6/op-guide/recovery/#restoring-a-cluster
-etcd v3.5 Documentation: https://etcd.io/docs/v3.5/op-guide/security/
+# ETCD Backup and restore
+- Kubernetes Documenation link: https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/
+- etcd v3.6.0 Documentation: https://etcd.io/docs/v3.6/op-guide/recovery/#restoring-a-cluster
+- etcd v3.5 Documentation: https://etcd.io/docs/v3.5/op-guide/security/
+
+# What is etcd?
+- Etcd is a consistent and highly-available key-value store used as the backing database for all Kubernetes cluster data, including information about Pods, nodes, and networking configurations.
+- All updates to etcd are routed through the kube-apiserver, which handles simultaneous requests sequentially, ensuring consistency.
+- It's crucial to have a backup plan for the data stored in etcd, given its importance in maintaining the cluster's state.
+Port: 2379-2380
+Check etcd pod
+```
+kubectl get pods -n kube-system | grep -i etcd
+kubectl exec -it <kube-scheduler-pod-id> -- cat /etc/kubernetes/manifests/etcd.yaml | grep file
+```
+
+```
 
 # Starting etcd cluster
 1. single node etcd cluster: Use a single-node etcd cluster only for testing purposes.
@@ -15,7 +29,7 @@ etcd v3.5 Documentation: https://etcd.io/docs/v3.5/op-guide/security/
 - To configure etcd with secure peer communication, specify flags --peer-key-file=peer.key and --peer-cert-file=peer.cert, and use HTTPS as the URL schema.
 - Similarly, to configure etcd with secure client communication, specify flags --key-file=k8sclient.key and --cert-file=k8sclient.cert, and use HTTPS as the URL schema. Here is an example on a client command that uses secure communication:
 ```
-ETCDCTL_API=3 etcdctl --endpoints 10.2.0.9:2379 \
+ETCDCTL_API=3 etcdctl --endpoints 127.0.0.1:2379 \
   --cert=/etc/kubernetes/pki/etcd/server.crt \
   --key=/etc/kubernetes/pki/etcd/server.key \
   --cacert=/etc/kubernetes/pki/etcd/ca.crt \
@@ -78,3 +92,10 @@ When restoring the cluster using etcdutl, use the --data-dir option to specify t
 etcdutl --data-dir <data-dir-location> snapshot restore snapshot.db
 ```
 where <data-dir-location> is a directory that will be created during the restore process.
+
+
+# Verify the cluster state
+```
+kubectl get pods -A
+kubectl get nodes
+```
