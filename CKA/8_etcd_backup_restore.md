@@ -14,7 +14,6 @@ kubectl get pods -n kube-system | grep -i etcd
 kubectl exec -it <kube-scheduler-pod-id> -- cat /etc/kubernetes/manifests/etcd.yaml | grep file
 ```
 
-```
 
 # Starting etcd cluster
 1. single node etcd cluster: Use a single-node etcd cluster only for testing purposes.
