@@ -15,7 +15,7 @@ Port: 2379-2380
 Check etcd pod
 ```
 kubectl get pods -n kube-system | grep -i etcd
-kubectl exec -it <kube-scheduler-pod-id> -- cat /etc/kubernetes/manifests/etcd.yaml | grep file
+kubectl exec -it <kube-scheduler-pod-id> -- cat /etc/kubernetes/manifests/etcd-controlplane.yaml | grep file
 ```
 
 
