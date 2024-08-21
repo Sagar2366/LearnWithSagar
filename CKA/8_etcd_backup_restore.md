@@ -3,6 +3,10 @@
 - etcd v3.6.0 Documentation: https://etcd.io/docs/v3.6/op-guide/recovery/#restoring-a-cluster
 - etcd v3.5 Documentation: https://etcd.io/docs/v3.5/op-guide/security/
 
+## Which application version is running in [CKA Exam environment](https://docs.linuxfoundation.org/tc-docs/certification/faq-cka-ckad-cks#what-application-version-is-running-in-the-exam-environment)?
+![Screenshot 2024-08-21 at 8 14 06 AM](https://github.com/user-attachments/assets/312f5275-270a-4e72-a112-1fd72da3b0f9)
+
+
 # What is etcd?
 - Etcd is a consistent and highly-available key-value store used as the backing database for all Kubernetes cluster data, including information about Pods, nodes, and networking configurations.
 - All updates to etcd are routed through the kube-apiserver, which handles simultaneous requests sequentially, ensuring consistency.
@@ -21,6 +25,17 @@ kubectl exec -it <kube-scheduler-pod-id> -- cat /etc/kubernetes/manifests/etcd.y
    A five-member cluster is recommended in production.
 3. Multinode etcd cluster with loadbalancer
 
+# How to install etcd v3.5 or latest on your Kubernetes cluster?
+```
+export RELEASE=$(curl -s https://api.github.com/repos/etcd-io/etcd/releases/latest|grep tag_name | cut -d '"' -f 4)
+wget https://github.com/etcd-io/etcd/releases/download/${RELEASE}/etcd-${RELEASE}-linux-amd64.tar.gz
+tar xvf etcd-${RELEASE}-linux-amd64.tar.gz
+cd etcd-${RELEASE}-linux-amd64
+sudo mv etcd etcdctl etcdutl /usr/local/bin 
+etcd --version
+etcdctl version
+etcdutl version
+```
 
 # Securing etcd cluster
 - Access to etcd is equivalent to root permission in the cluster so ideally only the API server should have access to it.
