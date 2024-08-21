@@ -51,6 +51,12 @@ ETCDCTL_API=3 etcdctl --endpoints 127.0.0.1:2379 \
   member list
 ```
 
+# Deploy sample application:
+```
+kubectl run nginx --image=nginx --port=80
+kubectl get pods
+
+```
 # Backing up etcd cluster
 <b>Note:</b> where trusted-ca-file, cert-file and key-file can be obtained from the description of the etcd Pod.
 ```
