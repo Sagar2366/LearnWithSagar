@@ -1,5 +1,6 @@
 # ETCD Backup and restore
 - Kubernetes Documenation link: https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/
+- etcd release page: https://github.com/etcd-io/etcd/releases/
 - etcd v3.6.0 Documentation: https://etcd.io/docs/v3.6/op-guide/recovery/#restoring-a-cluster
 - etcd v3.5 Documentation: https://etcd.io/docs/v3.5/op-guide/security/
 
@@ -25,7 +26,7 @@ kubectl describe pod <etcd-pod-id> | grep file
    A five-member cluster is recommended in production.
 3. Multinode etcd cluster with loadbalancer
 
-# How to install etcd v3.5 or latest on your Kubernetes cluster?
+# How to [install etcd v3.5](https://etcd.io/docs/v3.5/install) or latest on your Kubernetes cluster?
 ```
 export RELEASE=$(curl -s https://api.github.com/repos/etcd-io/etcd/releases/latest|grep tag_name | cut -d '"' -f 4)
 wget https://github.com/etcd-io/etcd/releases/download/${RELEASE}/etcd-${RELEASE}-linux-amd64.tar.gz
