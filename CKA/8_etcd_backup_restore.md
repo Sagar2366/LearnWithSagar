@@ -114,3 +114,12 @@ where <data-dir-location> is a directory that will be created during the restore
 kubectl get pods -A
 kubectl get nodes
 ```
+
+
+# Troubleshooting etcd pod issues
+```
+crictl ps -al
+crictl logs <etcd-container-id>
+kubectl get pod -n kube-system
+kubectl describe pod <etcd-pod-id> -n kube-system
+```
