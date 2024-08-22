@@ -54,7 +54,8 @@ users:
 6. Webhook Token Authentication
 7. Anonymous requests
 
-   
+
+# [How to issue a certificate for a user](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#normal-user):
 Here's how you can grant authentication and authorization using X509 certificates created using [openssl](https://kubernetes.io/docs/tasks/administer-cluster/certificates/#openssl) in Kubernetes:
 
 Kubernetes provides a <b>built-in mechanism to sign CSRs using its own CA</b>. This method is often used to create client certificates for service accounts or users within the cluster.
@@ -75,6 +76,7 @@ metadata:
 spec:
   request: $(cat user.csr | base64 | tr -d '\n')
   signerName: kubernetes.io/kube-apiserver-client
+  expirationSeconds: 86400
   usages:
   - client auth
   - digital signature
@@ -84,6 +86,7 @@ spec:
 
 You can apply this CSR resource using kubectl:
 ```
+kubectl get csr
 kubectl apply -f csr.yaml
 ```
 
@@ -99,6 +102,17 @@ After approval, the CSR object will have the signed certificate included in its 
 kubectl get csr username-csr -o jsonpath='{.status.certificate}' | base64 --decode > user.crt
 ```
 
+# Create role and rolebinding
+This is a sample command to create a Role for this new user:
+```
+kubectl create role developer --verb=create --verb=get --verb=list --verb=update --verb=delete --resource=pods
+```
+
+This is a sample command to create a RoleBinding for this new user:
+```
+kubectl create rolebinding developer-binding-myuser --role=developer --user=myuser
+```
+
 # Configure the Client
 The signed certificate (user.crt) and the private key (user.key) are then configured in the client’s kubeconfig file, allowing the user to authenticate with the Kubernetes API server.
 ```
@@ -108,4 +122,18 @@ users:
   user:
     client-certificate: /path/to/user.crt
     client-key: /path/to/user.key
+```
+or
+```
+kubectl config set-credentials myuser --client-key=myuser.key --client-certificate=myuser.crt --embed-certs=true
+```
+
+Then, you need to add the context:
+```
+kubectl config set-context myuser --cluster=kubernetes --user=myuser
+```
+
+To test it, change the context to myuser:
+```
+kubectl config use-context myuser
 ```
