@@ -1,9 +1,11 @@
 
 # Controlling access to Kubernetes API:
-Users interact with the Kubernetes API through kubectl, client libraries, or by directly making REST requests. 
-Both human users and Kubernetes service accounts can be granted access to the API. 
-When a request is made to the API, it undergoes a series of stages for processing, such as authentication, authorization, 
-admission control, and finally, the execution of the request if all checks are passed. 
+- Users interact with the Kubernetes API through kubectl, client libraries, or by directly making REST requests. 
+- Both human users and Kubernetes service accounts can be granted access to the API. 
+- When a request is made to the API, it undergoes a series of stages for processing, such as:
+  1. Authentication
+  2. Authorization
+  3. Admission control, and finally, the execution of the request if all checks are passed. 
 This structured approach ensures that only authorized requests are processed, maintaining the security and integrity of the Kubernetes cluster.
 
 ![access-control-overview](https://github.com/user-attachments/assets/9d310cea-e7d3-4ba9-91ec-26a833220d34)
@@ -15,7 +17,7 @@ TLS (Transport Layer Security) is integral to securing communication within a Ku
 ![tls-sequence-diagram](https://github.com/user-attachments/assets/d3cb8022-6e10-41c6-bd75-4fcb08e7a3a8)
 
 SSL/TLS Handshake
-- Server cert Signed by the CA
+- Server cert Signed by the CA: CA Sends the certificate with a signature which includes server public key + CA public key
 - ClientHello: The client sends a message detailing its supported SSL/TLS versions, ciphersuites, and compression types.
 - ServerHello and Certificate Response: The server replies with similar details and provides its certificate signed by the CA. The certificate sent by the server includes the public key for the server, which then client uses in asymmetric encryption.
 - Certificate Verification: Client and server agree on TLS version and cipher suite. The client verifies the server's certificate to ensure it's valid and not a man-in-the-middle attack. 
