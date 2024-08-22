@@ -22,6 +22,8 @@ SSL/TLS Handshake in general
 - ClientKeyExchange: Key exchange occurs, such as through the Diffie–Hellman algorithm, to establish a shared secret. Client uses server's public key to encrypt it's own session key and share symmetric encryption key to the server. Now Server can use it's private to decrypt the encrypted session key and encrypted data.
 - Finished/Application Data: With the handshake complete and keys exchanged, encrypted communication can begin between the client and server using symmetric cryptography.
 
+![mutualssl_small](https://github.com/user-attachments/assets/a5787aed-c189-4855-a833-496cd10a2f72)
+
 # Client-server communication in Kubernetes:
 By default, the Kubernetes API server listens on port 6443 on the first non-localhost network interface, and this communication is protected by TLS.
 # Certificate Presentation: 
