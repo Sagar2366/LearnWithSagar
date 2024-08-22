@@ -17,9 +17,9 @@ TLS (Transport Layer Security) is integral to securing communication within a Ku
 SSL/TLS Handshake
 - Server cert Signed by the CA
 - ClientHello: The client sends a message detailing its supported SSL/TLS versions, ciphersuites, and compression types.
-- ServerHello and Certificate Response: The server replies with similar details and provides its certificate.
-- Certificate Verification: The client verifies the server's certificate to ensure it's valid and not a man-in-the-middle attack.
-- ClientKeyExchange: Key exchange occurs, such as through the Diffie–Hellman algorithm, to establish a shared secret.
+- ServerHello and Certificate Response: The server replies with similar details and provides its certificate signed by the CA. The certificate sent by the server includes the public key for the server, which then client uses in asymmetric encryption.
+- Certificate Verification: Client and server agree on TLS version and cipher suite. The client verifies the server's certificate to ensure it's valid and not a man-in-the-middle attack. 
+- ClientKeyExchange: Key exchange occurs, such as through the Diffie–Hellman algorithm, to establish a shared secret. Client uses server's public key to encrypt it's own session key and share symmetric encryption key to the server. Now Server can use it's private to decrypt the encrypted session key and encrypted data.
 - Finished/Application Data: With the handshake complete and keys exchanged, encrypted communication can begin between the client and server using symmetric cryptography.
 
 1. Kubernetes API Server and TLS
