@@ -1,8 +1,12 @@
+Controlling access to Kubernetes API:
+![access-control-overview](https://github.com/user-attachments/assets/9d310cea-e7d3-4ba9-91ec-26a833220d34)
 
 In Kubernetes, authentication (authn) and authorization (authz) are essential processes to control access to the cluster's resources. 
-Certificates (TLS) play a significant role in both of these processes. Here's how you can grant authentication and authorization using certificates in Kubernetes:
+Certificates (TLS) play a significant role in both of these processes. 
 
-Kubernetes provides a built-in mechanism to sign CSRs using its own CA. This method is often used to create client certificates for service accounts or users within the cluster.
+Here's how you can grant authentication and authorization using certificates in Kubernetes:
+
+Kubernetes provides a <b>built-in mechanism to sign CSRs using its own CA</b>. This method is often used to create client certificates for service accounts or users within the cluster.
 
 # Generate the CSR and Private Key
 ```
