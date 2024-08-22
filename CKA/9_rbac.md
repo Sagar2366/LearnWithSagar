@@ -4,3 +4,8 @@
 1. Authentication
 2. Authorization
 3. Admission Controllers
+
+
+How HTTPS, SSL/TLS Works
+Encryption and Decryption
+Symmetric VS Asymmetric Encryption
