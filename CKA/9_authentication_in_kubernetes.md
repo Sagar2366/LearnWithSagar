@@ -6,7 +6,6 @@
   1. Authentication
   2. Authorization
   3. Admission control, and finally, the execution of the request if all checks are passed. 
-This structured approach ensures that only authorized requests are processed, maintaining the security and integrity of the Kubernetes cluster.
 
 ![access-control-overview](https://github.com/user-attachments/assets/9d310cea-e7d3-4ba9-91ec-26a833220d34)
 
