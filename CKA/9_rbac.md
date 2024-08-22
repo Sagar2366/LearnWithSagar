@@ -9,3 +9,6 @@
 How HTTPS, SSL/TLS Works
 Encryption and Decryption
 Symmetric VS Asymmetric Encryption
+Main in the Middle Attack
+
+CA - LetsEncrypt, Digicert, Entrust, CyberTrust
