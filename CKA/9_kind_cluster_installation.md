@@ -13,7 +13,6 @@ brew install kind
 ## Creating a cluster
 1. Create a kind cluster config file:
 ```
-# three node (two workers) cluster config
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
@@ -21,8 +20,23 @@ nodes:
 - role: control-plane
 - role: control-plane
 - role: worker
+  extraPortMappings:
+  - containerPort: 30000
+    hostPort: 32001
+    listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
+    protocol: tcp # Optional, defaults to tcp
 - role: worker
+  extraPortMappings:
+  - containerPort: 30000
+    hostPort: 32002
+    listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
+    protocol: tcp # Optional, defaults to tcp
 - role: worker
+  extraPortMappings:
+  - containerPort: 30000
+    hostPort: 32003
+    listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
+    protocol: tcp # Optional, defaults to tcp
 ```
 
 2. Start a cluster:
