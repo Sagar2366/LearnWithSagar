@@ -71,6 +71,11 @@ openssl req -new -key myuser.key -out myuser.csr -subj "/CN=myuser"
 ```
 
 # Create a CSR Object in Kubernetes
+Encode the CSR with base64 format
+```
+$(cat myuser.csr | base64 | tr -d '\n')
+```
+
 The CSR is then submitted to Kubernetes as a CSR resource object.
 ```
 apiVersion: certificates.k8s.io/v1
@@ -78,7 +83,7 @@ kind: CertificateSigningRequest
 metadata:
   name: myuser
 spec:
-  request: $(cat myuser.csr | base64 | tr -d '\n')
+  request: <<BASE64_ENCODED_CSR>>
   signerName: kubernetes.io/kube-apiserver-client
   expirationSeconds: 86400
   usages:
