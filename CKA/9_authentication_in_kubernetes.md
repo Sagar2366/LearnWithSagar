@@ -9,10 +9,12 @@
 
 <img src="https://github.com/user-attachments/assets/9d310cea-e7d3-4ba9-91ec-26a833220d34" width="600">
 
-In Kubernetes, authentication (authn) and authorization (authz) are essential processes to control access to the cluster's resources. 
-Certificates (TLS) play a significant role in both of these processes. 
-TLS (Transport Layer Security) is integral to securing communication within a Kubernetes cluster, particularly in interactions with the Kubernetes API server. Here's how TLS is implemented and functions within Kubernetes, enhanced with details from your provided information:
-![tls-sequence-diagram](https://github.com/user-attachments/assets/d3cb8022-6e10-41c6-bd75-4fcb08e7a3a8)
+
+- In Kubernetes, authentication (authn) and authorization (authz) are essential processes to control access to the cluster's resources. 
+- Certificates (TLS) play a significant role in both of these processes. 
+- TLS (Transport Layer Security) is integral to securing communication within a Kubernetes cluster, particularly in interactions with the Kubernetes API server.
+
+<img src="https://github.com/user-attachments/assets/d3cb8022-6e10-41c6-bd75-4fcb08e7a3a8" width="600">
 
 SSL/TLS Handshake in general
 - Server cert Signed by the CA: CA Sends the certificate with a signature which includes server public key + CA public key
