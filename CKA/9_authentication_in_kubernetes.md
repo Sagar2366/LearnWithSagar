@@ -7,7 +7,7 @@
   2. Authorization
   3. Admission control, and finally, the execution of the request if all checks are passed. 
 
-![access-control-overview](https://github.com/user-attachments/assets/9d310cea-e7d3-4ba9-91ec-26a833220d34)
+<img src="https://github.com/user-attachments/assets/9d310cea-e7d3-4ba9-91ec-26a833220d34" width="600">
 
 In Kubernetes, authentication (authn) and authorization (authz) are essential processes to control access to the cluster's resources. 
 Certificates (TLS) play a significant role in both of these processes. 
