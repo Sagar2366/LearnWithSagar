@@ -1,4 +1,7 @@
-# KIND : 
+# KIND :
+<p align="center">
+<img src="https://github.com/user-attachments/assets/85f324ef-da5c-47d7-b4e4-8dee08c4e450"  width="600" align=center>
+</p>
 - kind is a tool for running local Kubernetes clusters using Docker container “nodes”.
 - kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI.
 
