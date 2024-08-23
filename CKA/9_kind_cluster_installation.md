@@ -50,3 +50,38 @@ kind delete cluster clustername
 ```
 kind load docker-image my-custom-image-0 my-custom-image-1 --name kind-2
 ```
+
+## Run sample demo application
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hello-kind
+  name: hello-kind
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-kind
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hello-kind
+    spec:
+      containers:
+      - image: getting-started:latest
+        name: getting-started
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+```
+
+
+## Create a service for application deployment
+```
+kubectl expose deployment hello-kind --type=NodePort --port=3000
+kubectl get services hello-kind
+```
