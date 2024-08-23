@@ -6,15 +6,16 @@
   1. Authentication
   2. Authorization
   3. Admission control, and finally, the execution of the request if all checks are passed. 
-
+</br>
 <img src="https://github.com/user-attachments/assets/9d310cea-e7d3-4ba9-91ec-26a833220d34" width="600">
-
+</br></br>
 
 - In Kubernetes, authentication (authn) and authorization (authz) are essential processes to control access to the cluster's resources. 
 - Certificates (TLS) play a significant role in both of these processes. 
 - TLS (Transport Layer Security) is integral to securing communication within a Kubernetes cluster, particularly in interactions with the Kubernetes API server.
 
-<img src="https://github.com/user-attachments/assets/d3cb8022-6e10-41c6-bd75-4fcb08e7a3a8" width="600">
+<img src="https://github.com/user-attachments/assets/d3cb8022-6e10-41c6-bd75-4fcb08e7a3a8" width="400">        <img src="https://github.com/user-attachments/assets/a5787aed-c189-4855-a833-496cd10a2f72" width="400" height="440">
+
 
 SSL/TLS Handshake in general
 - Server cert Signed by the CA: CA Sends the certificate with a signature which includes server public key + CA public key
@@ -24,7 +25,6 @@ SSL/TLS Handshake in general
 - ClientKeyExchange: Key exchange occurs, such as through the Diffie–Hellman algorithm, to establish a shared secret. Client uses server's public key to encrypt it's own session key and share symmetric encryption key to the server. Now Server can use it's private to decrypt the encrypted session key and encrypted data.
 - Finished/Application Data: With the handshake complete and keys exchanged, encrypted communication can begin between the client and server using symmetric cryptography.
 
-![mutualssl_small](https://github.com/user-attachments/assets/a5787aed-c189-4855-a833-496cd10a2f72)
 
 # Client-server communication in Kubernetes:
 By default, the Kubernetes API server listens on port 6443 on the first non-localhost network interface, and this communication is protected by TLS.
