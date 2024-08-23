@@ -66,8 +66,8 @@ Kubernetes provides a <b>built-in mechanism to sign CSRs using its own CA</b>. T
 
 # Generate the CSR and Private Key
 ```
-openssl genrsa -out user.key 2048
-openssl req -new -key user.key -out user.csr -subj "/CN=username/O=group"
+openssl genrsa -out myuser.key 2048
+openssl req -new -key myuser.key -out myuser.csr -subj "/CN=myuser"
 ```
 
 # Create a CSR Object in Kubernetes
@@ -76,9 +76,9 @@ The CSR is then submitted to Kubernetes as a CSR resource object.
 apiVersion: certificates.k8s.io/v1
 kind: CertificateSigningRequest
 metadata:
-  name: username-csr
+  name: myuser
 spec:
-  request: $(cat user.csr | base64 | tr -d '\n')
+  request: $(cat myuser.csr | base64 | tr -d '\n')
   signerName: kubernetes.io/kube-apiserver-client
   expirationSeconds: 86400
   usages:
@@ -97,13 +97,13 @@ kubectl apply -f csr.yaml
 # Approve the CSR
 Once the CSR resource is created, a cluster administrator needs to approve the CSR for it to be signed by the Kubernetes CA.
 ```
-kubectl certificate approve username-csr
+kubectl certificate approve myuser
 ```
 
 # Retrieve the Signed Certificate
 After approval, the CSR object will have the signed certificate included in its status. You can extract the certificate from the CSR object:
 ```
-kubectl get csr username-csr -o jsonpath='{.status.certificate}' | base64 --decode > user.crt
+kubectl get csr username-csr -o jsonpath='{.status.certificate}' | base64 --decode > myuser.crt
 ```
 
 # Create role and rolebinding
@@ -124,8 +124,8 @@ The signed certificate (user.crt) and the private key (user.key) are then config
 users:
 - name: username
   user:
-    client-certificate: /path/to/user.crt
-    client-key: /path/to/user.key
+    client-certificate: /path/to/myuser.crt
+    client-key: /path/to/myuser.key
 ```
 or
 ```
