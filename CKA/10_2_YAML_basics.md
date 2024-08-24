@@ -52,24 +52,24 @@ spec:
           value: "true"  # Although it's a boolean, it's passed as a string here
 
 ```
-## YAML Syntax
-1. Key Value Pairs:
+# YAML Syntax
+1. <b>Key Value Pairs:</b>
    The basic type of entry in a YAML file is of a key value pair. After the Key and colon there is a space and then the value.
    
-2. Arrays/List:
+2. <b>Arrays/List:</b>
    Lists would have a number of items listed under the name of the list.</br>
    The elements of the list would start with a -. There can be a n of lists, however the indentation of various elements of the array matters a lot.
    Used for grouping multiple items of the same type
 
-3. Dictionary/Maps
+3. <b>Dictionary/Maps:</b>
  YAML dictionaries are collections of key-value pairs, often nested to represent hierarchical data.
  where each key is unique and the order doesn't matter
 
-4. Boolean
+4. <b>Boolean:</b>
    Booleans in YAML can take one of two values: true or false.
    These values are unquoted and case-insensitive, so you can write them as true, True, TRUE, false, False, or FALSE.
 
-5. Multiline strings:
+5. <b>Multiline strings:</b>
 ```
 apiVersion: v1
 kind: ConfigMap
@@ -91,6 +91,7 @@ data:
    ```
 
 6. Multiple YAML documents can be separated by three '-' 
-Note: 
+
+# Note: 
 - YAML uses indentation to denote hierarchy. Always use spaces (not tabs) for indentation.
 - Use # for adding comments
