@@ -3,34 +3,19 @@
 - Widely used format for writing Kubernetes resource files
 - Data serialization language
 - When you create an object in Kubernetes, you must provide the object spec that describes its desired state, as well as some basic information about the object (such as a name).
-- When you use the Kubernetes API to create the object (either directly or via kubectl), that API request must include that information as JSON in the request body.
-- Most often, you provide the information to kubectl in a file known as a manifest.
-- By convention, manifests are YAML (you could also use JSON format).
+- Most often, you provide the information to kubectl in a file known as a manifest written in YAML format.
 - Tools such as kubectl convert the information from a manifest into JSON or another supported serialization format when making the API request over HTTP.
 
 In the manifest (YAML or JSON file) for the Kubernetes object you want to create, you'll need to set values for the following fields:
-
 ```
 apiVersion - Which version of the Kubernetes API you're using to create this object
 kind - What kind of object you want to create
 metadata - Data that helps uniquely identify the object, including a name string, UID, and optional namespace
-spec - What state you desire for the object
+spec - What state do you desire for the object
 ```
 
-# YAML Syntax
-1. <b>Key Value Pairs:</b>
-   The basic type of entry in a YAML file is of a key value pair. After the Key and colon there is a space and then the value.
-   
-2. <b>Arrays/List:</b>
-   Lists would have a number of items listed under the name of the list.</br>
-   The elements of the list would start with a -. There can be a n of lists, however the indentation of various elements of the array matters a lot.
-   Used for grouping multiple items of the same type
-
-3. <b>Dictionary/Maps:</b>
- YAML dictionaries are collections of key-value pairs, often nested to represent hierarchical data and represented with a ':'
- where each key is unique and the order doesn't matter
-
-## Simple Example:
+## Creating a pod using the declarative method:
+1. Write a pod manifest file
 ```
 apiVersion: v1
 kind: Pod
@@ -43,6 +28,31 @@ spec:
     ports:
     - containerPort: 80
 ```
+2. Apply the manifest file to create a pod
+   ```
+   kubectl apply -f pod_manifest.yaml
+   ```
+
+## Creating a pod using the imperative method
+```
+kubectl run nginx --image=nginx:1.14.2 --port=80
+kubectl run nginx --image=nginx:1.14.2 --port=80 --dry-run=client -o yaml > pod_manifest.yaml
+```
+
+# YAML Syntax
+1. <b>Key Value Pairs:</b>
+   The basic type of entry in a YAML file is of a key value pair. After the Key and colon there is a space and then the value.
+   
+2. <b>Arrays/List:</b>
+   Lists would have a number of items listed under the name of the list.</br>
+   The elements of the list would start with a -. There can be a n of lists, however the indentation of various elements of the array matters a lot.
+   Used for grouping multiple items of the same type
+
+3. <b>Dictionary/Maps:</b>
+   YAML dictionaries are collections of key-value pairs, often nested to represent hierarchical data and represented with a ':'
+   where each key is unique and the order doesn't matter
+
+
 
 ## Another example:
 ```
