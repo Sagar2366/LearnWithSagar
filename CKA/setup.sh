@@ -139,12 +139,12 @@ EOF
 # Main execution
 main() {
     disable_swap
-    install_kubernetes
     install_docker_containerd
     install_cni_plugins
     install_crictl
     configure_crictl
     configure_sysctl
+    install_kubernetes
 }
 
 main
