@@ -36,7 +36,7 @@ kubectl get namespace
 kubectl get ns
 kubectl describe ns dev
 kubectl api-resources | grep namespace
-kubectl create namespace test --dry-run=client -o wide > dev-ns.yaml
+kubectl create namespace test --dry-run=client -o yaml > dev-ns.yaml
 kubectl get pods
 kubectl run nginx --image=nginx -n dev
 kubectl run nginx --image=nginx -n dev
