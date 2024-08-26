@@ -1,4 +1,6 @@
 # Namespaces (Virtual sub-clusters) in Kubernetes
+![namespaces](https://github.com/user-attachments/assets/990c186d-9d60-4cd9-a380-3d45164d9120)
+
 In Kubernetes, namespaces provide a mechanism for 
 1. Isolating and organising groups of resources within a single cluster
 2. Namespaces provide a scope for names. Names of resources need to be unique within a namespace, but not across namespaces.
