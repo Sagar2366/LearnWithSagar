@@ -78,12 +78,52 @@ kubectl api-resources --namespaced=false
 - This is useful for using the same configuration across multiple namespaces such as Development, Staging and Production.
 - If you want to reach across namespaces, you need to use the fully qualified domain name (FQDN).
 - For example, to access the payroll service in the development namespace you would use the address payroll.development and to access the payroll service in the production namespace you would use: payroll.production
-  
+
+deployment.yaml
 ```
-kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
-kubectl expose deployment/kubernetes-bootcamp --port 8080
-kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1 -n prod
-kubectl expose deployment/kubernetes-bootcamp --port 8080 -n prod
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+```
+
+svc.yaml
+```
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx
+  name: nginx-deployment
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx
+  type: ClusterIP
+```
+
+Test
+```
 curl podip
 curl svc-name
 curl svcname.default.svc.cluster.local
