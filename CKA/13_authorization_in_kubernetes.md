@@ -147,5 +147,13 @@ kubectl auth can-i list pods \
    kubectl create clusterrolebinding myapp-view-binding --clusterrole=view --serviceaccount=acme:myapp
    ```
 
+
+# Limitations of RBAC
+1. Roles and RoleBindings must exist in the same namespace.
+2. RoleBindings can exist in separate namespaces to Service Accounts.
+3. RoleBindings can link ClusterRoles, but they only grant access to the namespace of the RoleBinding.
+4. ClusterRoleBindings link accounts to ClusterRoles and grant access across all resources.
+5. ClusterRoleBindings can not reference Roles.
+
 [Command line utilities](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#command-line-utilities)
 
