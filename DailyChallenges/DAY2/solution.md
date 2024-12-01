@@ -2,112 +2,67 @@
 import json
 from datetime import datetime, timedelta
 
-# Constants
-COST_PER_GB = 0.023  # Cost per GB for S3 Standard
-GLACIER_COST_PER_GB = 0.004  # Cost per GB for Glacier
-DAYS_UNUSED_THRESHOLD = 90
-DAYS_INACTIVE_THRESHOLD = 20
+# Load the JSON file
+with open("buckets.json", "r") as file:
+    data = json.load(file)
 
+# Cost per GB in various storage classes
+COST_STANDARD = 0.023
+COST_GLACIER = 0.004
 
+# Function to calculate days since the bucket was last accessed
+def days_since_last_access(last_access_date):
+    last_access = datetime.strptime(last_access_date, "%Y-%m-%d")
+    return (datetime.now() - last_access).days
 
-def load_json_file(filepath):
-    """Load JSON data from a file."""
-    try:
-        with open(filepath, "r") as file:
-            return json.load(file)
-    except FileNotFoundError:
-        print(f"Error: File {filepath} not found.")
-        exit(1)
-    except json.JSONDecodeError as e:
-        print(f"Error: Failed to parse JSON file {filepath}. Details: {e}")
-        exit(1)
+# Task 1: Summary Report
+print("=== Bucket Summary Report ===")
+for bucket in data["buckets"]:
+    print(f"Name: {bucket['name']}, Region: {bucket['region']}, Size: {bucket['sizeGB']} GB, Versioning: {bucket['versioning']}")
 
-# Helper function to calculate days since creation
-def days_since_creation(date_string):
-    created_on = datetime.strptime(date_string, "%Y-%m-%d")
-    return (datetime.now() - created_on).days
+# Task 2 & 3: Identify Unused Buckets and Generate Cost Report
+print("\n=== Cost Report ===")
+region_cost = {}
+team_cost = {}
+deletion_queue = []
+archival_candidates = []
 
-# 1. Summary of each bucket
-def print_summary(buckets):
-    print("Bucket Summary:")
-    print("=" * 50)
-    for bucket in buckets:
-        print(f"Name: {bucket['name']}, Region: {bucket['region']}, Size: {bucket['sizeGB']} GB, Versioning: {bucket['versioning']}")
-    print("=" * 50)
+for bucket in data["buckets"]:
+    size = bucket["sizeGB"]
+    region = bucket["region"]
+    team = bucket["tags"]["team"]
+    last_accessed_date = bucket.get("lastAccessed", bucket["createdOn"])  # Default to createdOn if lastAccessed missing
 
-# 2. Identify buckets larger than 80 GB and unused for 90+ days
-def identify_large_unused_buckets(buckets):
-    large_unused = []
-    for bucket in buckets:
-        if bucket["sizeGB"] > 80 and days_since_creation(bucket["createdOn"]) > DAYS_UNUSED_THRESHOLD:
-            large_unused.append(bucket)
-    return large_unused
+    # Update region and team cost
+    region_cost[region] = region_cost.get(region, 0) + size * COST_STANDARD
+    team_cost[team] = team_cost.get(team, 0) + size * COST_STANDARD
 
-# 3. Generate cost report grouped by region and department
-def generate_cost_report(buckets):
-    region_costs = {}
-    deletion_queue = []
-    glacier_candidates = []
+    # Check for unused buckets larger than 80GB
+    if size > 80 and days_since_last_access(last_accessed_date) > 90:
+        print(f"Unused Bucket (>80GB): {bucket['name']} in {region} not accessed in 90+ days.")
 
-    for bucket in buckets:
-        # Group costs by region and department
-        region = bucket["region"]
-        department = bucket["tags"]["team"]
-        size = bucket["sizeGB"]
-        cost = size * COST_PER_GB
+    # Add to deletion queue or archival list based on conditions
+    if size > 100 and days_since_last_access(last_accessed_date) > 20:
+        deletion_queue.append(bucket["name"])
+    elif days_since_last_access(last_accessed_date) > 90:
+        archival_candidates.append(bucket["name"])
 
-        if region not in region_costs:
-            region_costs[region] = {}
-        if department not in region_costs[region]:
-            region_costs[region][department] = 0
-        region_costs[region][department] += cost
+# Print cost breakdown by region and team
+print("\n--- Cost by Region ---")
+for region, cost in region_cost.items():
+    print(f"Region: {region}, Total Cost: ${cost:.2f}")
 
-        # Recommendations based on size and age
-        days_unused = days_since_creation(bucket["createdOn"])
-        if size > 100 and days_unused > DAYS_INACTIVE_THRESHOLD:
-            deletion_queue.append(bucket)
-        elif size > 50:
-            glacier_candidates.append(bucket)
+print("\n--- Cost by Team ---")
+for team, cost in team_cost.items():
+    print(f"Team: {team}, Total Cost: ${cost:.2f}")
 
-    return region_costs, deletion_queue, glacier_candidates
+# Task 4: Final List of Actions
+print("\n=== Final Actions ===")
+print("Buckets to Delete:")
+for bucket_name in deletion_queue:
+    print(f"- {bucket_name}")
 
-# 4. Final list of buckets to delete and archive
-def generate_final_recommendations(deletion_queue, glacier_candidates):
-    print("\nBuckets Recommended for Deletion:")
-    print("=" * 50)
-    for bucket in deletion_queue:
-        print(f"Name: {bucket['name']}, Size: {bucket['sizeGB']} GB, Last Accessed: {bucket['createdOn']}")
-
-    print("\nBuckets Recommended for Glacier Archival:")
-    print("=" * 50)
-    for bucket in glacier_candidates:
-        if bucket not in deletion_queue:  # Exclude those already in deletion queue
-            print(f"Name: {bucket['name']}, Size: {bucket['sizeGB']} GB, Last Accessed: {bucket['createdOn']}")
-
-# Main Execution
-"""Main entry point for the script."""
-filepath = "buckets.json"  # Path to your JSON file
-data = load_json_file(filepath)
-buckets = data["buckets"]
-
-
-# Step 1: Print summary of all buckets
-print_summary(buckets)
-
-# Step 2: Identify buckets larger than 80 GB unused for 90+ days
-large_unused_buckets = identify_large_unused_buckets(buckets)
-print("\nLarge Buckets Unused for 90+ Days:")
-for bucket in large_unused_buckets:
-    print(f"Name: {bucket['name']}, Size: {bucket['sizeGB']} GB, Created On: {bucket['createdOn']}")
-
-# Step 3: Generate cost report
-region_costs, deletion_queue, glacier_candidates = generate_cost_report(buckets)
-print("\nCost Report by Region and Department:")
-for region, departments in region_costs.items():
-    print(f"Region: {region}")
-    for department, total_cost in departments.items():
-        print(f"  Department: {department}, Total Cost: ${total_cost:.2f}")
-
-# Step 4: Final Recommendations
-generate_final_recommendations(deletion_queue, glacier_candidates)
+print("\nBuckets to Archive:")
+for bucket_name in archival_candidates:
+    print(f"- {bucket_name}")
 ```
