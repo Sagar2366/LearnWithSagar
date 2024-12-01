@@ -44,3 +44,86 @@ sudo apt-get update
 sudo apt-get install jenkins
 sudo status jenkins
 ```
+
+### Install and Configure Nginx as a Reverse Proxy
+- Install Nginx on one EC2 instance (e.g., Grafana EC2): ```sudo apt-get install -y nginx```
+- Configure Nginx: Edit the Nginx configuration file:
+```
+sudo nano /etc/nginx/sites-available/default
+Replace the file contents with:
+
+nginx
+Copy code
+server {
+    listen 80;
+    server_name grafana.local jenkins.local;
+
+    # Redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name grafana.local;
+
+    ssl_certificate /etc/nginx/ssl/server.crt;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+
+    location / {
+        proxy_pass http://<GRAFANA_EC2_PRIVATE_IP>:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name jenkins.local;
+
+    ssl_certificate /etc/nginx/ssl/server.crt;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+
+    auth_basic "Restricted Access";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+
+    location / {
+        proxy_pass http://<JENKINS_EC2_PRIVATE_IP>:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+- Generate a self-signed SSL certificate:
+```
+sudo mkdir /etc/nginx/ssl
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt
+```
+- Create a .htpasswd file for Jenkins basic authentication:
+```
+sudo apt-get install -y apache2-utils
+sudo htpasswd -c /etc/nginx/.htpasswd admin
+```
+
+- Test and restart Nginx:
+```
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+### Validate Configuration
+- Update your local system's /etc/hosts file to resolve domains:
+```
+<NGINX_EC2_PUBLIC_IP> grafana.local
+<NGINX_EC2_PUBLIC_IP> jenkins.local
+```
+- Open a browser and verify:
+```
+Access Grafana: https://grafana.local
+Access Jenkins: https://jenkins.local (use credentials set in .htpasswd).
+Ensure HTTP redirects to HTTPS.
+```
+
+
