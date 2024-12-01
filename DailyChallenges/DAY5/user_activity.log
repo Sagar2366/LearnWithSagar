@@ -1,0 +1,47 @@
+192.168.1.1 - user1 [10/Nov/2024:14:05:12] "GET /index.html" 200
+user2 192.168.1.2 [10/Nov/2024:14:06:00] "POST /submit" 404
+[10/Nov/2024:14:07:00] user3 192.168.1.3 "GET /about" 500
+user4 - [10/Nov/2024:14:08:00] "GET /contact" 200
+192.168.1.5 user5 [10/Nov/2024:14:09:00] "DELETE /account" 403
+[10-Nov-2024 14:10:00] user6 192.168.1.6 "PATCH /update" 404
+2001:db8::ff00:42:8329 user7 [10/Nov/2024:14:11:11] "GET /ipv6" 200
+user8 192.168.1.8 [11/Nov/2024:14:12:12] "POST /upload" 500
+[11/11/2024:14:13:13] user9 192.168.1.9 "GET /home" 200
+192.168.1.10 - user10 [11/Nov/2024:14:14:14] "PUT /settings" 403
+user11 192.168.1.11 [12/Nov/2024:14:15:15] "DELETE /delete" 404
+[12-Nov-2024T14:16:16Z] user12 192.168.1.12 "GET /stats" 200
+192.168.1.13 user13 [12/Nov/2024:14:17:17] "POST /feedback" 404
+[12-Nov-2024 14:18:18] - user14 192.168.1.14 "PATCH /info" 403
+2001:db8:abcd:0012::1 user15 [12-Nov-2024:14:19:19] "GET /ipv6_example" 500
+user16 [13-Nov-2024 14:20:20] 192.168.1.16 "PUT /dashboard" 200
+192.168.1.17 - user17 [13/Nov/2024T14:21:21Z] "DELETE /logout" 403
+user18 192.168.1.18 [13-Nov-2024:14:22:22] "GET /faq" 200
+[13/11/2024:14:23:23] user19 192.168.1.19 "POST /form" 404
+user20 192.168.1.20 [13/Nov/2024:14:24:24] "GET /about" 200
+192.168.1.21 - [14-Nov-2024 14:25:25] user21 "PATCH /comment" 403
+user22 192.168.1.22 [14/11/2024:14:26:26] "DELETE /remove" 404
+[14/Nov/2024:14:27:27] - user23 192.168.1.23 "POST /update" 500
+2001:db8:3333:4444:CCCC:DDDD:EEEE:FFFF user24 [14-Nov-2024T14:28:28Z] "GET /details" 200
+user25 192.168.1.25 [14-Nov-2024:14:29:29] "GET /overview" 403
+192.168.1.26 user26 [15/Nov/2024:14:30:30] "POST /edit" 200
+[15-Nov-2024 14:31:31] user27 192.168.1.27 "DELETE /history" 404
+192.168.1.28 - [15/11/2024:14:32:32] user28 "PATCH /privacy" 403
+user29 2001:db8::42 [15-Nov-2024:14:33:33] "GET /test" 200
+[15/11/2024T14:34:34Z] user30 192.168.1.30 "POST /security" 500
+192.168.1.31 - [15/Nov/2024:14:35:35] user31 "PUT /policy" 404
+user32 2001:db8:85a3::8a2e:370:7334 [16-Nov-2024:14:36:36] "GET /rules" 200
+[16-Nov-2024T14:37:37Z] - user33 192.168.1.33 "DELETE /service" 403
+192.168.1.34 user34 [16/Nov/2024:14:38:38] "PATCH /features" 500
+user35 192.168.1.35 [16-Nov-2024:14:39:39] "GET /help" 200
+[16/11/2024T14:40:40Z] user36 192.168.1.36 "POST /support" 404
+192.168.1.37 - user37 [16-Nov-2024:14:41:41] "PUT /api" 200
+user38 2001:db8:1111:2222::abcd [17/Nov/2024:14:42:42] "DELETE /apps" 403
+[17-Nov-2024T14:43:43Z] - 192.168.1.38 user39 "PATCH /login" 404
+192.168.1.39 user40 [17-Nov-2024:14:44:44] "GET /contact" 200
+[17/11/2024T14:45:45Z] user41 192.168.1.40 "POST /register" 403
+user42 192.168.1.41 [17/Nov/2024:14:46:46] "PUT /docs" 500
+[17-Nov-2024:14:47:47] user43 2001:db8::1 "GET /guide" 404
+user44 192.168.1.42 [17/Nov/2024:14:48:48] "GET /summary" 200
+192.168.1.43 - [17-Nov-2024T14:49:49Z] user45 "POST /start" 403
+user46 2001:db8:2:2::2 [17-Nov-2024:14:50:50] "PATCH /logout" 500
+
