@@ -7,7 +7,7 @@ if [ "$DEBUG" = true ]; then
     set -x
 fi
 
-EMAIL="sutekar@omnissa.com"
+EMAIL="getfitwithsagar2366@gmail.com"
 
 REPORT_FILE="/tmp/system_health_report.txt"
 
