@@ -1,4 +1,4 @@
-
+```
 #!/bin/bash
 
 log_file="user_activity.log"
@@ -95,3 +95,4 @@ END {
     print "Total Failed Requests (404 and 403): " failed_requests
 }' "$log_file" > summary_report.txt
 echo "Summary report saved to summary_report.txt."
+```
