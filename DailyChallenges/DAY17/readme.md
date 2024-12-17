@@ -48,9 +48,9 @@ Welcome to today's challenge! Today, we’ll focus on Container Fundamentals cru
 
 
 ## Resources to Help You:
-- Container Fundamentals
-- Docker documentation
-- Docker Tutorial for Beginners (YouTube)
+- [Container Fundamentals](https://github.com/Sagar2366/LearnWithSagar/blob/main/CKA/2_containers.md)
+- [Docker documentation](https://docs.docker.com/)
+- [Docker Tutorial for Beginners](https://youtu.be/NnUv0a51Bvw?si=_1tWtcOe1v-mZYTQ)
 
 
 Good luck, and remember, mastering these basics is your first step toward acing the CKA exam! 🚀
