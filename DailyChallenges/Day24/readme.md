@@ -348,8 +348,8 @@ Steps:
 ``` kubectl get pods```
 
 ## Step 8. Enable or control Networking
-Deploy a second Pod named backend running busybox.
-Verify communication between ecommerce-pod and backend using DNS.
+- Deploy a second Pod named backend running busybox.
+- Verify communication between ecommerce-pod and backend using DNS.
 Steps:
 
 Create the backend Pod:
@@ -366,14 +366,14 @@ spec:
 ```
 
 Test communication:
-kubectl exec ecommerce-pod -- ping backend
+```kubectl exec ecommerce-pod -- ping backend```
 
 
 Now limit the communication between Pods to ensure that only authorized Pods can communicate with each other.
 
 Create a Network Policy
 Define a simple Network Policy that allows only Pods with a specific label to communicate with your Pod:
-
+```
 apiVersion: networking.k8s.io/v1  
 kind: NetworkPolicy  
 metadata:  
@@ -386,21 +386,24 @@ spec:
   - from:  
     - podSelector:  
         matchLabels:  
-          app: nginx  
+          app: nginx
+```
+
 Apply the Network Policy
 Apply the policy using:
 
-kubectl apply -f network-policy.yaml  
+```kubectl apply -f network-policy.yaml  ```
 Test Communication Between Pods
 Deploy another Pod (e.g., curl-pod) in the same namespace and test if it can access the ecommerce Pod.
 
-kubectl run curl-pod --rm -it --image=curlimages/curl -- /bin/sh  
+```kubectl run curl-pod --rm -it --image=curlimages/curl -- /bin/sh  
 curl ecommerce-pod:80  
+```
 
 ## Step 9. Test Pod Behavior
-Simulate a resource conflict by deploying the Pod on a node with limited resources.
-Deploy pod with the same name in same and different namespaces
-Test the liveness and readiness probes by making /healthz unavailable temporarily.
+- Simulate a resource conflict by deploying the Pod on a node with limited resources.
+- Deploy pod with the same name in same and different namespaces
+- Test the liveness and readiness probes by making /healthz unavailable temporarily.
 
 
 # References:
