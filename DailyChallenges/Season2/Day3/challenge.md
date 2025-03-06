@@ -18,6 +18,8 @@ Version Control Systems (VCS) help developers track changes, collaborate efficie
 
 ### Centralized vs. Distributed Version Control
 
+![CVCS-vs-DVCS](https://github.com/user-attachments/assets/16766bbd-d8d4-48a6-8ed7-3d754d0c09be)
+
 Earlier, centralized version control systems like SVN required all code changes to be stored on a central server. This created a single point of failure. Git, a **distributed version control system (DVCS),** allows developers to maintain local repositories and synchronize with a remote repository like GitHub, GitLab, or Bitbucket.
 
 | Feature | Centralized VCS (CVCS) | Distributed VCS (DVCS) |
