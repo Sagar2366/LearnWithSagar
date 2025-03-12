@@ -448,7 +448,7 @@ git blame file.txt  # View line-by-line changes
     *   Screenshots of rebase/cherry-pick workflows.
     *   Diagrams explaining origin/upstream sync.
 *   Push to GitHub and create a PR titled: **Day 4: Advanced Git Mastery**.
-*   Share on LinkedIn with **#getfitwithsagar #GitWizard #DevOpsForAll**.
+*   Share on LinkedIn with **#getfitwithsagar #DevOpsForAll**.
 
 ## Join the Community
 
