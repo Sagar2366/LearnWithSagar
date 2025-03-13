@@ -21,6 +21,7 @@ Create a secure and collaborative GitHub environment for a sample project. Learn
 10. Use GitHub Secrets for sensitive information.
 11. Integrate vulnerability scanning tools like Snyk for dependency checks.
 
+## Supply chain security: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-supply-chain-security#what-is-dependabot
 
 ## **Challenge Tasks** 
 ### **1. Set Up a GitHub Organization and Manage Access**
