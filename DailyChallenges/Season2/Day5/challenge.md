@@ -241,5 +241,7 @@ Every challenge you complete brings you closer to mastering Git, DevOps, and SRE
 
 Happy Learning! 
 
+-----------
+
 **Best regards,**  
 Sagar Utekar
