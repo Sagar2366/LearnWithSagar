@@ -168,7 +168,7 @@ CMD ["python", "app.py"]
 - Follow security best practices, such as setting permissions and using secrets.
 - Ensure logging and error handling are in place to debug issues easily.
 
-Kind Regards
+Kind Regards <br/>
 Sagar Utekar & Raihan Iqbal
 
 
