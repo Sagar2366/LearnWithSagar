@@ -1,164 +1,175 @@
-Challenge Overview
-Theory: Explain the key differences between GitHub and GitLab, the migration process, and the importance of migrating all objects.
+# Day 6 : GitHub Actions Theory & Practical Challenge
+
+## **1. What is GitHub Actions?**
+GitHub Actions is a CI/CD automation tool that enables developers to automate workflows within their GitHub repositories. It allows you to automate software development workflows, such as building, testing, and deploying applications.
+
+## **2. When Should GitHub Actions Be Used? When Should It Not Be Used?**
+### **When to Use GitHub Actions:**
+- Automating CI/CD pipelines.
+- Running tests automatically on code commits.
+- Deploying applications to cloud services (AWS, Azure, GCP, etc.).
+- Managing infrastructure as code (Terraform, Ansible, etc.).
+- Automating security scans and linting.
+- Scheduling periodic jobs (e.g., nightly builds, cron jobs).
+
+### **When Not to Use GitHub Actions:**
+- When you need on-premises-only solutions.
+- If strict security compliance requires hosting the CI/CD pipeline on internal infrastructure.
+- If you need advanced enterprise features available only in other CI/CD tools like Jenkins.
+
+| Feature           | GitHub Actions | Jenkins |
+|------------------|---------------|---------|
+| Hosting         | Cloud-based (GitHub-hosted runners) | Self-hosted (or cloud-based with effort) |
+| Ease of Use     | Simple YAML-based workflows | Requires setup & configuration |
+| Integration     | Native GitHub integration | Supports multiple VCS (Git, SVN, etc.) |
+| Cost           | Free for public repos, limited free usage for private repos | Requires dedicated infrastructure |
+| Plugins        | Built-in Marketplace | Extensive plugin ecosystem |
+| Scalability    | Managed by GitHub | Requires manual scaling |
+
+## **3. Steps to Create a GitHub Action**
+1. Navigate to your GitHub repository.
+2. Click on the `Actions` tab.
+3. Choose a predefined template or create a `.github/workflows/main.yml` file.
+4. Define your workflow steps using YAML.
+5. Commit and push the file to trigger the workflow.
+
+## **4. GitHub Actions Workflow Structure**
+A typical GitHub Actions workflow consists of:
+- **name**: Name of the workflow.
+- **on**: Defines when the workflow should run (e.g., push, pull_request, schedule, workflow_dispatch).
+- **jobs**: Contains the tasks to be executed.
+- **steps**: Defines individual steps in a job.
+- **uses**: Calls an external GitHub Action.
+- **run**: Executes custom commands or scripts.
+
+Example:
+```yaml
+name: Example Workflow
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run a script
+        run: echo "Hello, GitHub Actions!"
+```
+
+## **5. What is a Job? What is an Action?**
+- **Job**: A job is a set of steps that execute in the same runner.
+  ```yaml
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        - run: echo "This is a job"
+  ```
+
+- **Action**: A reusable unit of work within GitHub Actions.
+  ```yaml
+  steps:
+    - name: Use a Docker-based Action
+      uses: actions/hello-world-docker-action@v1
+  ```
+
+## **6. What Are Inputs and Outputs in GitHub Actions?**
+- **Inputs** allow workflows to accept dynamic values.
+- **Outputs** store results from one step/job and pass them to another.
+
+Example:
+```yaml
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+      - id: step1
+        run: echo "::set-output name=myoutput::Hello"
+      - run: echo "Output from step1: ${{ steps.step1.outputs.myoutput }}"
+```
+
+## **7. General Steps in a GitHub Action**
+1. **Checkout Code** → Use `actions/checkout` to fetch repository code.
+2. **Authenticate & Authorize** → Configure AWS, Azure, or any required credentials.
+3. **Perform Necessary Operations** → Run scripts, deploy applications, execute tests, etc.
+
+## **8. Why Should Permissions Be Declared at the Top?**
+Permissions should be set at the workflow level to ensure security by restricting access to only required resources.
+Example:
+```yaml
+permissions:
+  id-token: write
+  contents: read
+```
+This prevents unauthorized actions from executing within the workflow.
+
+## **9. Theory Challenge**
+### **Answer the following questions:**
+1. What are the key differences between GitHub Actions and Jenkins?
+2. Explain the purpose of inputs and outputs in GitHub Actions.
+3. Describe the general structure of a GitHub Actions workflow.
+4. Why is it important to declare permissions at the top of a workflow file?
+
+## **10. Practical Challenge**
+### **Challenge Scenario:**
+You are required to create a GitHub Actions workflow that:
+1. **Builds and pushes a Docker image** to Docker Hub.
+2. **Deploys the application on an AWS EC2 instance** using AWS Systems Manager (SSM).
+3. **Validates that the application is running correctly**.
+4. **Sends an email notification** with the deployment status.
+
+### **Provided Code:**
+#### **app.py**
+```python
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Hello, Welcome to Season 2! You are learning GitHub Actions."
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+```
+
+#### **Dockerfile**
+```dockerfile
+# Use official Python image
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy files
+COPY app.py /app
+
+# Install Flask
+RUN pip install flask
+
+# Expose port 5000
+EXPOSE 5000
+
+# Run Flask app
+CMD ["python", "app.py"]
+```
+
+### **Submission Guidelines:**
+- Make a **GitHub repository** for the challenge.
+- Create necessary cloud services required (e.g., **AWS EC2**, **Gmail App Password**, **AWS IAM Roles**, etc.).
+- Take **screenshots** of significant steps.
+- Document the **solution** in a `README.md` file, explaining each step clearly.
+- Mention **challenges faced** and how you overcame them.
+- Ensure that your repository is well-structured and follows best practices.
+
+### **Additional Notes:**
+- Make sure to use proper authentication methods while pushing Docker images.
+- Structure your workflow efficiently by separating build, deployment, and notification steps.
+- Follow security best practices, such as setting permissions and using secrets.
+- Ensure logging and error handling are in place to debug issues easily.
+
+Kind Regards <br/>
+Sagar Utekar & Raihan Iqbal
 
-Subtasks:
 
-Migrate repositories and their content.
-
-Migrate users, permissions, and teams.
-
-Migrate issues, pull requests, and projects.
-
-Migrate GitHub Actions workflows to GitLab CI/CD.
-
-Migrate repository settings, webhooks, and integrations.
-
-Process: Provide a step-by-step guide for the candidate to follow.
-
-Evaluation: Assess the candidate's understanding, execution, and problem-solving skills.
-
-Detailed Steps and Plan
-1. Theory (Knowledge Assessment)
-Ask the candidate to answer the following questions:
-
-What are the key differences between GitHub and GitLab?
-
-What are the challenges of migrating all GitHub objects (repositories, users, workflows, etc.) to GitLab?
-
-How would you ensure data integrity during the migration?
-
-What are the best practices for migrating CI/CD pipelines and workflows?
-
-2. Subtasks
-Subtask 1: Migrate Repositories and Content
-The candidate should:
-
-Use GitLab's built-in GitHub importer (recommended in the GitLab blog) to migrate repositories.
-
-Ensure all branches, tags, and commit history are preserved.
-
-Verify that the repository content (code, files, etc.) is intact.
-
-Subtask 2: Migrate Users, Permissions, and Teams
-The candidate should:
-
-Create corresponding users in GitLab.
-
-Map GitHub users to GitLab users.
-
-Migrate teams and permissions (e.g., admin, maintainer, developer) using GitLab groups and access controls.
-
-Subtask 3: Migrate Issues, Pull Requests, and Projects
-The candidate should:
-
-Use GitLab's import tools or third-party tools (e.g., github-gitlab-importer) to migrate issues, pull requests, and projects.
-
-Ensure all metadata (e.g., labels, milestones, comments) is preserved.
-
-Subtask 4: Migrate GitHub Actions Workflows to GitLab CI/CD
-The candidate should:
-
-Convert GitHub Actions workflows (.github/workflows/*.yml) to GitLab CI/CD pipelines (.gitlab-ci.yml).
-
-Replicate all steps (e.g., build, test, deploy) in GitLab CI/CD.
-
-Use GitLab CI/CD features like caching, artifacts, and environments to optimize the pipeline.
-
-Subtask 5: Migrate Repository Settings and Webhooks
-The candidate should:
-
-Migrate repository settings (e.g., branch protection rules, merge request settings).
-
-Recreate webhooks in GitLab for integrations (e.g., Slack, Jira).
-
-3. Process
-Provide the candidate with the following step-by-step instructions:
-
-Prepare for Migration:
-
-Audit the GitHub organization to identify all objects to be migrated (repositories, users, projects, workflows, etc.).
-
-Create a GitLab group or namespace to mirror the GitHub organization structure.
-
-Migrate Repositories:
-
-Use GitLab's GitHub importer (as described in the GitLab blog) to migrate repositories.
-
-Verify that all branches, tags, and commit history are preserved.
-
-Migrate Users, Permissions, and Teams:
-
-Create users in GitLab and map them to GitHub users.
-
-Assign appropriate roles and permissions in GitLab using groups and access controls.
-
-Migrate Issues, Pull Requests, and Projects:
-
-Use GitLab's import tools or third-party tools to migrate issues, pull requests, and projects.
-
-Verify that all metadata (labels, milestones, comments) is preserved.
-
-Migrate GitHub Actions Workflows:
-
-Convert GitHub Actions workflows to GitLab CI/CD pipelines.
-
-Test the pipelines to ensure they work as expected.
-
-Migrate Repository Settings and Webhooks:
-
-Recreate repository settings (e.g., branch protection rules) in GitLab.
-
-Recreate webhooks for integrations.
-
-Validate the Migration:
-
-Run the GitLab CI/CD pipelines and verify that all steps pass.
-
-Deploy the application (if applicable) and ensure it works as expected.
-
-Verify that all issues, pull requests, and projects are intact.
-
-Document the Process:
-
-Write a detailed report explaining the migration steps, challenges faced, and solutions implemented.
-
-4. Evaluation Criteria
-Evaluate the candidate based on the following:
-
-Knowledge: Understanding of GitHub, GitLab, and migration concepts.
-
-Execution: Ability to migrate all objects and ensure data integrity.
-
-Problem-Solving: Handling errors and optimizing the migration process.
-
-Documentation: Clarity and completeness of the migration report.
-
-Tools and Resources
-GitHub Organization: Provide access to a sample GitHub organization with repositories, users, projects, and workflows.
-
-GitLab Group: Provide access to a GitLab group for migration.
-
-Documentation:
-
-GitLab's GitHub Importer
-
-GitLab CI/CD Documentation
-
-Third-Party Migration Tools
-
-Timeline
-Preparation: 1 hour (audit GitHub organization and plan migration).
-
-Migration: 4 hours (migrate repositories, users, projects, workflows, etc.).
-
-Validation and Documentation: 2 hours.
-
-Bonus Tasks (Optional)
-Migrate GitHub Wikis and Pages to GitLab.
-
-Implement advanced GitLab CI/CD features (e.g., environments, artifacts).
-
-Set up monitoring and alerting for the migrated pipelines.
-
-This challenge will test the candidate's ability to perform a complete migration while ensuring data integrity, minimal downtime, and adherence to best practices. It also provides insight into their problem-solving and documentation skills. The referenced guides will serve as excellent resources for the candidate to follow during the challenge.
 
