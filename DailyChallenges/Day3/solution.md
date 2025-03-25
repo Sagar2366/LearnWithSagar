@@ -1,3 +1,26 @@
+```
+1. Core Concepts
+Client: Requests a service (e.g., browser accessing a website).
+
+Server: Responds to requests (e.g., Google’s servers).
+
+Proxy: Acts as an intermediary.
+
+Forward Proxy: Sits on the client side (e.g., corporate VPNs to monitor employee internet access).
+
+Reverse Proxy: Sits on the server side (e.g., Nginx routing traffic to backend services like Grafana/Jenkins).
+
+Load Balancer: Distributes traffic across servers (e.g., AWS ALB/NLB).
+
+2. Why Nginx?
+Reverse Proxy + Load Balancing: Routes requests to multiple backend services.
+
+Security: SSL/TLS termination, IP whitelisting, rate limiting.
+
+Performance: Caching static content, reducing server load.
+```
+
+
 ## Launch EC2 Instances
 - Create Two EC2 Instances  - One for Grafana, One for Jenkins.
 - Open required ports in the EC2 security group:
