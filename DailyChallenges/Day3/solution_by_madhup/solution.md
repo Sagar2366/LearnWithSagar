@@ -1,26 +1,3 @@
-```
-1. Core Concepts
-Client: Requests a service (e.g., browser accessing a website).
-
-Server: Responds to requests (e.g., Google’s servers).
-
-Proxy: Acts as an intermediary.
-
-Forward Proxy: Sits on the client side (e.g., corporate VPNs to monitor employee internet access).
-
-Reverse Proxy: Sits on the server side (e.g., Nginx routing traffic to backend services like Grafana/Jenkins).
-
-Load Balancer: Distributes traffic across servers (e.g., AWS ALB/NLB).
-
-2. Why Nginx?
-Reverse Proxy + Load Balancing: Routes requests to multiple backend services.
-
-Security: SSL/TLS termination, IP whitelisting, rate limiting.
-
-Performance: Caching static content, reducing server load.
-```
-
-
 ## Launch EC2 Instances
 - Create Two EC2 Instances  - One for Grafana, One for Jenkins.
 - Open required ports in the EC2 security group:
@@ -53,7 +30,6 @@ sudo systemctl status grafana-server
 sudo apt update
 sudo apt install fontconfig openjdk-17-jre
 java -version
-openjdk version "17.0.8" 2023-07-18
 ```
 
 ### Install Jenkins on the Jenkins EC2 instance:
@@ -65,66 +41,54 @@ echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
 sudo apt-get update
 sudo apt-get install jenkins
-sudo status jenkins
+sudo systemctl status jenkins
 ```
 
 ### Install and Configure Nginx as a Reverse Proxy
-- Install Nginx on one EC2 instance (e.g., Grafana EC2): ```sudo apt-get install -y nginx```
-- Configure Nginx: Edit the Nginx configuration file:
+- Install Nginx on one EC2 instance (e.g., Grafana EC2):
+  
+```bash 
+sudo apt-get install -y nginx
 ```
-sudo nano /etc/nginx/sites-available/default
-Replace the file contents with:
+- Configure Nginx: Edit the Nginx configuration file:
 
-nginx
-Copy code
+```bash
+sudo vim /etc/nginx/sites-available/default
+```
+
+Replace the file contents with:
+```
 server {
     listen 80;
-    server_name grafana.local jenkins.local;
-
-    # Redirect HTTP to HTTPS
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl;
-    server_name grafana.local;
-
-    ssl_certificate /etc/nginx/ssl/server.crt;
-    ssl_certificate_key /etc/nginx/ssl/server.key;
+    server_name <your-domain-name>;
 
     location / {
-        proxy_pass http://<GRAFANA_EC2_PRIVATE_IP>:3000;
+        proxy_pass http://127.0.0.1:8080;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
 
 server {
-    listen 443 ssl;
-    server_name jenkins.local;
-
-    ssl_certificate /etc/nginx/ssl/server.crt;
-    ssl_certificate_key /etc/nginx/ssl/server.key;
+    listen 80;
+    server_name <your-domian-name>;
 
     auth_basic "Restricted Access";
     auth_basic_user_file /etc/nginx/.htpasswd;
 
     location / {
-        proxy_pass http://<JENKINS_EC2_PRIVATE_IP>:8080;
+        proxy_pass http://127.0.0.1:3000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
 ```
 
-- Generate a self-signed SSL certificate:
-```
-sudo mkdir /etc/nginx/ssl
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt
-```
-- Create a .htpasswd file for Jenkins basic authentication:
+- Create a .htpasswd file for Grafana basic authentication:
 ```
 sudo apt-get install -y apache2-utils
 sudo htpasswd -c /etc/nginx/.htpasswd admin
@@ -136,17 +100,12 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
-### Validate Configuration
-- Update your local system's /etc/hosts file to resolve domains:
-```
-<NGINX_EC2_PUBLIC_IP> grafana.local
-<NGINX_EC2_PUBLIC_IP> jenkins.local
-```
-- Open a browser and verify:
-```
-Access Grafana: https://grafana.local
-Access Jenkins: https://jenkins.local (use credentials set in .htpasswd).
-Ensure HTTP redirects to HTTPS.
-```
-
-
+- Generate a self-signed SSL certificate using certbot:
+  - Install python-certbot
+  ```bash
+  sudo apt install certbot python3-certbot-nginx
+  ```
+  - Obtain an SSL Certificate
+  ```bash
+  sudo certbot --nginx -d <your-jenkins-domian> -d <your-grafana-domain>
+  ```

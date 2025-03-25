@@ -1,0 +1,41 @@
+Why Virtualization?
+Many a times, we need to or prefer running Linux for development or for personal use. But it is not always possible to allocate a seperate machine for running Linux. There are multiple ways of running Linux without having a seperate machine for the same. One of the ways is to dual boot a system wherein you make a choise of which operating system to use when staring a machine. But if you do not want to go the dual boot way, then creating a virtual machine or creating a VM on a cloud system line AWS is alao an option. Mentioned below are the two ways on creating a linux instance for your perusal.
+
+1. Install using Oracle Virtual Box
+	1.1 First step is to download Oracle Virtual Box.
+		A. Go to https://www.oracle.com/in/virtualization/technologies/vm/downloads/virtualbox-downloads.html.
+		B. Download the appropriate version on Virtual Box based on the operating system being used. [For this tutorial, we will assume that Windows is the base operating system being used].
+		C. Since the operating system is assumed to be Windows, double click on the installer and follow the on-screen instructions for install Oracle Virtual Box. You can also follow the detailed instruction on [https://www.virtualbox.org/manual/] this page.
+	1.2 Second Step is to download the latest version of Ubuntu
+		A. Download the latest version of Ubuntu from https://ubuntu.com/download/desktop
+		B. By default, on Windows, the ISO image will downloaded under the Download folder.
+		C. Create a separate folder on your hard disk and move the downloaded file to the same.
+	1.3 Creating a New VM
+	[Before starting this step, please ensure that you have downloaded and installed Oracle Virtual Box as well as downloaded the latest version of Ubuntu and moved the same from the Download folder to a sepearte folder.]
+		A. Start Oracle Virtual Box.
+		B. Click on the New Icon or Select Machine -> New from the Menu Bar.
+		C. Give a suitable to your Virtual Machine. In case you plan to use multiple Linux OS's then naming them makes it easy to access them. In this case, name the virtual machine as Ubuntu.
+		D. The next step is the specify where will the VM file be stored. In case you have multiple drives, Select/Create a folder on the drive which has a reasonable amount of space.
+		E. Next step is to select the OS downloade by us as part of Step 1.2. Click on the Down Button and then Click on Other option. Navigate to the folder where the downloade Ubuntu ISO Image has been kept and select the same.
+		F. Click on Unattended Install Option. This will help us install Ubuntu unattened.
+			F.1 Enter an User Name.
+			F.2 Enter and then confirm a password.
+		G. Select the Hardware Option. Here you can define the amount of Ram and the number of CPU's to be used by Vurtual Box.
+		H. Select the Hardisk option and define the amount of space to the used on the Hard Disk based on availability.
+		I. Click on Finish to complete the configuration process.
+		J. Click on Start button the main screen to start the installation process. Note: This is a one time process that happens when you start the Ubuntu Virtual Machine the first time.
+		K. You can also refer to this tutorial [https://ubuntu.com/tutorials/how-to-run-ubuntu-desktop-on-a-virtual-machine-using-virtualbox#1-overview] from Ubuntu for a detailed understanding of the process.
+2. Creating VM om AWS
+	1.1. Create an accoount on AWS.
+	1.2. Log in to your AWS account and navigate to the EC2 service in the AWS Management Console
+	1.3. Give a relevant name for your instance. [eg: My Linux Machine]
+	1.4. Choose an Instance Type. For this tutorial, I have selected an Ubuntu Instance.
+	1.5. Choose an appropriate instance type based on your requirement. 
+	1.6. Create a Key Pair to securly login to your instance. For this click on the Create New Key Pair button and select RSA. Give a relevant Key Pair name to identify the same. Select PEM file for Private Key File Format. This file will be downloaded to your Download directory. Shift the same to a more secure location on your har disk.
+	1.7. Under Network Setting,
+		1.7.1. Select Create Security Group. This is selected by default. In case, you have already created a Security Group, you can use the same.
+		1.7.2. Select the Allow SSH Traffic From Check Box. Here, select My IP from the drop down.
+	1.8. Configure the storage in case your use case demands additional storage requirment. If not, go with the default.
+	1.9. Click on Launch Instance to start the Ubuntu Machine.
+	1.10. Click on the connect button to connect to the Ubuntu Instance.
+
