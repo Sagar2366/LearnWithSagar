@@ -21,6 +21,8 @@ In simple terms, without an operating system, your computer is just a box of har
 
 An Operating System (OS) is built using several layers, each with its own purpose. 
 
+![image](https://github.com/user-attachments/assets/26678a2d-b4c6-4180-83d8-256daef70eab)
+
 ### Here’s a breakdown of the architecture from top to bottom:
 - User Interface (UI):
     - This is what users see and interact with.
