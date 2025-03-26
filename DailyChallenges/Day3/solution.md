@@ -56,6 +56,12 @@ java -version
 openjdk version "17.0.8" 2023-07-18
 ```
 
+```
+curl -fL -o corretto.rpm https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.rpm
+yum localinstall -y corretto.rpm
+export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
+```
+
 ### Install Jenkins on the Jenkins EC2 instance:
 ```
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
