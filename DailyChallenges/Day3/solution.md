@@ -48,30 +48,38 @@ sudo systemctl enable grafana-server
 sudo systemctl status grafana-server
 ```
 
-## Install Java
+## Install Java & Jenkins
 ```
-sudo apt update
-sudo apt install fontconfig openjdk-17-jre
-java -version
-openjdk version "17.0.8" 2023-07-18
-```
+Downloading and installing Jenkins
+Completing the previous steps enables you to download and install Jenkins on AWS. To download and install Jenkins:
 
-```
-curl -fL -o corretto.rpm https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.rpm
-yum localinstall -y corretto.rpm
-export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
-```
+Ensure that your software packages are up to date on your instance by using the following command to perform a quick software update:
 
-### Install Jenkins on the Jenkins EC2 instance:
-```
-sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
-  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
-  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-sudo apt-get update
-sudo apt-get install jenkins
-sudo status jenkins
+[ec2-user ~]$ sudo yum update –y
+Add the Jenkins repo using the following command:
+
+[ec2-user ~]$ sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+Import a key file from Jenkins-CI to enable installation from the package:
+
+[ec2-user ~]$ sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+[ec2-user ~]$ sudo yum upgrade
+Install Java (Amazon Linux 2023):
+
+[ec2-user ~]$ sudo dnf install java-17-amazon-corretto -y
+Install Jenkins:
+
+[ec2-user ~]$ sudo yum install jenkins -y
+Enable the Jenkins service to start at boot:
+
+[ec2-user ~]$ sudo systemctl enable jenkins
+Start Jenkins as a service:
+
+[ec2-user ~]$ sudo systemctl start jenkins
+You can check the status of the Jenkins service using the command:
+
+[ec2-user ~]$ sudo systemctl status jenkins
+
 ```
 
 ### Install and Configure Nginx as a Reverse Proxy
