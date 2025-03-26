@@ -47,6 +47,7 @@ sudo systemctl start grafana-server
 sudo systemctl enable grafana-server
 sudo systemctl status grafana-server
 ```
+Official Doc for Grafana Installation: https://grafana.com/grafana/download?edition=oss
 
 ## Install Java & Jenkins
 ```
@@ -81,6 +82,7 @@ You can check the status of the Jenkins service using the command:
 [ec2-user ~]$ sudo systemctl status jenkins
 
 ```
+Official Doc for Jenkins Installation: https://www.jenkins.io/doc/tutorials/tutorial-for-installing-jenkins-on-AWS/#prerequisites
 
 ### Install and Configure Nginx as a Reverse Proxy
 - Install Nginx on one EC2 instance (e.g., Grafana EC2): ```sudo apt-get install -y nginx```
