@@ -1,5 +1,7 @@
 # Day 6 : GitHub Actions Theory & Practical Challenge
 
+![Untitled design (1)](https://github.com/user-attachments/assets/085eac7f-92a3-4af4-a406-e94fced1e84a)
+
 ## **1. What is GitHub Actions?**
 GitHub Actions is a CI/CD automation tool that enables developers to automate workflows within their GitHub repositories. It allows you to automate software development workflows, such as building, testing, and deploying applications.
 
