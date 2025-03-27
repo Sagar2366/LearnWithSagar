@@ -146,9 +146,11 @@ CMD ["python", "app.py"]
 ### **Submission Guidelines:**
 - Make a **GitHub repository** for the challenge.
 - Take **screenshots** of significant steps.
-- Document the **solution** in a `README.md` file, explaining each step clearly.
+- Document the **solution** in a `solution.md` file, explaining each step clearly.
 - Mention **challenges faced** and how you overcame them.
 - Ensure that your repository is well-structured and follows best practices.
+- Post your experience on social media with #getfitwithsagar #SRELife #DevOpsForAll.
+- Tag us in your posts for visibility and networking.
 
 ### **Additional Notes:**
 - Make sure to use proper authentication methods while pushing Docker images.
@@ -156,8 +158,29 @@ CMD ["python", "app.py"]
 - Follow security best practices, such as setting permissions and using secrets.
 - Ensure logging and error handling are in place to debug issues easily.
 
-Kind Regards <br/>
-Sagar Utekar & Raihan Iqbal
+---
+
+## **Join Our Community** 
+
+To make the most of this journey, connect with fellow learners:
+- **Discord** – Ask questions and collaborate: [Join here](https://discord.gg/mNDm39qB8t)
+- **Google Group** – Get updates and discussions: [Join here](https://groups.google.com/forum/#!forum/daily-devops-sre-challenge-series/join)
+- **YouTube** – Watch solution videos and tutorials: [Subscribe here](https://www.youtube.com/@Sagar.Utekar)
+
+---
+
+---
+
+## **Stay Motivated!** 
+
+Every challenge you complete brings you closer to mastering Git, DevOps, and SRE practices. Keep pushing your limits and collaborating with the community.
+
+Happy Learning! 
+
+-----------
+
+**Best regards,**  
+Sagar Utekar & Raihan
 
 
 
