@@ -93,27 +93,17 @@ jobs:
 2. **Authenticate & Authorize** → Configure AWS, Azure, or any required credentials.
 3. **Perform Necessary Operations** → Run scripts, deploy applications, execute tests, etc.
 
-## **8. Why Should Permissions Be Declared at the Top?**
-Permissions should be set at the workflow level to ensure security by restricting access to only required resources.
-Example:
-```yaml
-permissions:
-  id-token: write
-  contents: read
-```
-This prevents unauthorized actions from executing within the workflow.
-
-## **9. Theory Challenge**
+## **8. Theory Challenge**
 ### **Answer the following questions:**
 1. What are the key differences between GitHub Actions and Jenkins?
 2. Describe the general structure of a GitHub Actions workflow.
 3. How to manage variables and secrets in GitHub Actions
 
-## **10. Practical Challenge**
+## **9. Practical Challenge**
 ### **Challenge Scenario:**
 You are required to create a GitHub Actions workflow that:
 1. **Builds and pushes a Docker image** to Docker Hub.
-2. **Deploys the application on an AWS EC2 instance** using AWS Systems Manager (SSM).
+2. **Deploys the application on GitHub Runners**
 3. **Validates that the application is running correctly**.
 4. **Sends an email notification** with the deployment status.
 
@@ -155,7 +145,6 @@ CMD ["python", "app.py"]
 
 ### **Submission Guidelines:**
 - Make a **GitHub repository** for the challenge.
-- Create necessary cloud services required (e.g., **AWS EC2**, **Gmail App Password**, **AWS IAM Roles**, etc.).
 - Take **screenshots** of significant steps.
 - Document the **solution** in a `README.md` file, explaining each step clearly.
 - Mention **challenges faced** and how you overcame them.
