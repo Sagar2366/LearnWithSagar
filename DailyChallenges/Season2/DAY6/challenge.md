@@ -106,9 +106,8 @@ This prevents unauthorized actions from executing within the workflow.
 ## **9. Theory Challenge**
 ### **Answer the following questions:**
 1. What are the key differences between GitHub Actions and Jenkins?
-2. Explain the purpose of inputs and outputs in GitHub Actions.
-3. Describe the general structure of a GitHub Actions workflow.
-4. Why is it important to declare permissions at the top of a workflow file?
+2. Describe the general structure of a GitHub Actions workflow.
+3. How to manage variables and secrets in GitHub Actions
 
 ## **10. Practical Challenge**
 ### **Challenge Scenario:**
