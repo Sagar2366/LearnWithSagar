@@ -131,7 +131,7 @@ To make the most of this journey, connect with fellow learners:
 
 ---
 
-Keep learning and happy automating! 🚀
+Keep learning and happy automating!
 
 Kind Regards,  
 Sagar Utekar and Raihan
