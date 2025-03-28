@@ -24,12 +24,10 @@ jobs:
           sudo apt update -y
           sudo apt install -y python3 python3-pip python3-venv git
 
-          # Navigate to the deployment directory
-          if [ -d "~/season2-snake_game" ]; then
-            git clone https://github.com/Sagar2366/season2-snake_game.git
-            cd season2-snake_game
-          fi 
-          ls -al ~/season2-snake_game
+          git clone https://github.com/Sagar2366/season2-snake_game.git
+          cd season2-snake_game
+          ls -al
+          
           # Set up a virtual environment
           python3 -m venv venv
           source venv/bin/activate
