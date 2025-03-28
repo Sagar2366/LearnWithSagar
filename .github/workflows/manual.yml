@@ -1,0 +1,43 @@
+name: Deploy Snake Game to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          # Update packages
+          sudo apt update
+
+          # Install Docker if not installed
+          if ! command -v docker &> /dev/null
+          then
+              sudo apt install docker.io -y
+              sudo systemctl start docker
+              sudo systemctl enable docker
+          fi
+
+          # Remove existing Snake Game if exists
+          sudo rm -rf Snake
+
+          # Clone the repository
+          git clone https://github.com/clear-code-projects/Snake
+          cd Snake
+
+          # Build and run the Docker container
+          sudo docker build -t snake-game .
+          sudo docker run -d -p 80:5000 --name snake-container --restart always snake-game
