@@ -33,13 +33,6 @@ jobs:
           source venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
-
-          # Stop previous instance cleanly
-          if pgrep -f "gunicorn"; then
-            pkill -f "gunicorn"
-          fi
-
-          # Start the application using Gunicorn
-          nohup venv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 app:app > snake_game.log 2>&1 &
+          python app.py&
 
           echo "✅ Snake Game deployed successfully!"
