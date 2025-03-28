@@ -24,6 +24,13 @@ jobs:
           sudo apt update -y
           sudo apt install -y python3 python3-pip python3-venv git
 
+          # Stop any running instance of app.py
+          pkill -f "python3 app.py" || true
+
+          # Remove old directory if it exists
+          sudo rm -rf season2-snake_game
+
+          # Clone fresh
           git clone https://github.com/Sagar2366/season2-snake_game.git
           cd season2-snake_game
           ls -al
