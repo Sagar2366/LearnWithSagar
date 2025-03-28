@@ -70,6 +70,11 @@ Answer the following questions:
    ```
 
 #### **Step 3: Deploy the Snake Game**
+
+
+https://github.com/user-attachments/assets/3c0e0fc7-a5ef-4285-9b3a-4cdb57915f0e
+
+
 1. Install **Docker** on your EC2 instance:
    ```bash
    sudo apt update
