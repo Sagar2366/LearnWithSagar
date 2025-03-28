@@ -1,0 +1,42 @@
+name: Deploy Snake Game to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          # Update system packages
+          sudo apt update -y
+          sudo apt install -y python3 python3-pip python3-venv git
+
+          # Remove old directory if it exists
+          sudo rm -rf season2-snake_game
+
+          # Clone fresh
+          git clone https://github.com/Sagar2366/season2-snake_game.git
+          cd season2-snake_game
+          ls -al
+          
+          # Set up a virtual environment
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          sudo nohup python3 app.py > snake_game.log 2>&1 &
+
+          echo "✅ Snake Game deployed successfully!"
