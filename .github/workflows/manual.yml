@@ -26,7 +26,7 @@ jobs:
 
           # Navigate to the deployment directory
           if [ -d "~/SnakeGame" ]; then
-            git clone https://github.com/Sagar2366/season2-snake-game
+            git clone https://github.com/Sagar2366/season2-snake_game.git
             cd season2-snake-game
           fi 
           ls -al season2-snake-game
