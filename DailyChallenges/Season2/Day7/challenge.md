@@ -114,7 +114,6 @@ Answer the following questions:
 ---
 
 ## 5️⃣ Bonus Tasks 🎯
-- Use **GitHub Actions** to automate the deployment.
 - Auto-scale self-hosted runners with **multiple EC2 instances**.
 - Implement **load balancing** using **Nginx**.
 
