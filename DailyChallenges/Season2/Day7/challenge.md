@@ -9,7 +9,7 @@ By the end of this challenge, you will:
 - Understand what GitHub runners are and their types.
 - Compare **hosted** vs. **self-hosted** runners with advantages and disadvantages.
 - Set up a **self-hosted runner** on an **AWS EC2 instance**.
-- **Dockerize and deploy** the Snake game from [this repo](https://github.com/clear-code-projects/Snake) using the self-hosted runner.
+- **Dockerize and deploy** the Snake game from [this repo](https://github.com/Sagar2366/season2-snake_game.git) using the self-hosted runner.
 
 ---
 
