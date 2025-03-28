@@ -20,26 +20,29 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          # Update packages
-          sudo apt update
+          # Update system packages
+          sudo apt update -y
 
-          # Install Docker if not installed
-          if ! command -v docker &> /dev/null
+          # Install Python and pip if not already installed
+          if ! command -v python3 &> /dev/null
           then
-              sudo apt install docker.io -y
-              sudo systemctl start docker
-              sudo systemctl enable docker
+              sudo apt install python3 python3-pip -y
           fi
 
-          # Remove existing Snake Game if exists
-          sudo rm -rf Snake
+          # Remove old application if it exists
+          sudo rm -rf ~/SnakeGame
 
           # Clone the repository
-          git clone https://github.com/clear-code-projects/Snake
-          cd Snake
-          ls -al
+          git clone https://github.com/Sagar2366/season2-snake-game ~/SnakeGame
+          cd ~/SnakeGame
 
-          # Build and run the Docker container
-          sudo docker build -t snake-game .
-          sudo docker images
-          sudo docker run -d -p 80:5000 --name snake-container --restart always snake-game
+          # Install dependencies manually (modify as needed)
+          pip3 install --user flask gunicorn
+
+          # Kill any previous instance of the game
+          pkill -f "gunicorn" || true
+
+          # Run the application using Gunicorn (or Flask for testing)
+          nohup gunicorn --bind 0.0.0.0:5000 app:app > snake_game.log 2>&1 &
+
+          echo "Snake Game deployed successfully"
