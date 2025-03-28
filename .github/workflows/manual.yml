@@ -26,14 +26,10 @@ jobs:
 
           # Navigate to the deployment directory
           if [ -d "~/SnakeGame" ]; then
-            cd ~/SnakeGame
-            git reset --hard
-            git pull origin main
-          else
-            git clone https://github.com/Sagar2366/season2-snake-game ~/SnakeGame
-            cd ~/SnakeGame
-          fi
-
+            git clone https://github.com/Sagar2366/season2-snake-game
+            cd season2-snake-game
+          fi 
+          ls -al season2-snake-game
           # Set up a virtual environment
           python3 -m venv venv
           source venv/bin/activate
