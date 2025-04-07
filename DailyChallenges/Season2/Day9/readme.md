@@ -28,6 +28,9 @@ The shell is the backbone of Linux system administration, DevOps, and SRE. It’
 
 Linux is a modular, layered system, with each layer abstracting complexity for the next:  
 
+![linux](https://github.com/user-attachments/assets/4bba243a-b552-451b-9891-3fdf6896bc6a)
+
+
 | **Layer**           | **Role**                              | **Example**           |
 |---------------------|---------------------------------------|-----------------------|
 | **Hardware**        | Physical devices                     | CPU, RAM, SSDs        |
