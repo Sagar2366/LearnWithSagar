@@ -250,24 +250,25 @@ source ~/.bashrc
 **Pro Tip:** Vim stuck? Esc, :q! forces exit!
 
 
-5️⃣ Submission Guidelines
-✅ Proof of Completion:
-Screenshot of EC2 terminal with combined.txt content.
-Screenshot of RHEL VM terminal showing sys_*.txt content.
-Text output of both files.
-✅ Documentation:
-Steps for both tasks.
-Issues (e.g., Permission denied) and fixes (e.g., sudo).
-Example Submission:
+## 5️⃣ Submission Guidelines
+✅ **Proof of Completion:**
+- Screenshot of EC2 terminal with combined.txt content.
+- Screenshot of RHEL VM terminal showing sys_*.txt content.
+- Text output of both files.
+✅ **Documentation:**
+- Steps for both tasks.
+- Issues (e.g., Permission denied) and fixes (e.g., sudo).
 
-EC2 combined.txt:
+**Example Submission:**
+
+**EC2 combined.txt:**
 ```
 dir1  dir2  file1
 ls: nofile: No such file
 Host: ip-10-0-0-1
 ```
 
-RHEL VM sys_20250407.txt:
+**RHEL VM sys_20250407.txt:**
 ```
 Check - Mon Apr 07 2025
 User: ec2-user
@@ -275,6 +276,22 @@ up 1 hour
 /dev/sda1 20G 5G 15G 25% /
 ```
 
-6️⃣ Bonus Tasks 🎯
-Help Hunt: Run man -k disk | grep 8—screenshot admin commands.
-Vim Swap: In monitor.sh, use :%s/User/USER/g—screenshot result.
+## 6️⃣ Bonus Tasks 🎯
+- Help Hunt: Run man -k disk | grep 8—screenshot admin commands.
+- Vim Swap: In monitor.sh, use :%s/User/USER/g—screenshot result.
+
+### **Share Your Progress!**  
+Post your experience on social media with the hashtags: **#getfitwithsagar, #SRELife, #DevOpsForAll**  
+
+---
+
+## **Join Our Community**  
+Connect with fellow learners:  
+- **Discord:** [Join here](https://discord.gg/mNDm39qB8t)  
+- **Google Group:** [Join here](https://groups.google.com/forum/#!forum/daily-devops-sre-challenge-series/join)  
+- **YouTube:** [Subscribe here](https://www.youtube.com/@Sagar.Utekar)  
+
+---
+
+Keep learning and happy exploring!
+Sagar Utekar
