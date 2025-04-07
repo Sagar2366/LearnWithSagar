@@ -18,6 +18,7 @@ Linux powers the cloud, containers, and automation tools that DevOps and SRE eng
 ---
 
 ## 1️⃣ What Are Unix and Linux?  
+![0_Qqqd7UsfFDPL7WXh](https://github.com/user-attachments/assets/126f72c0-6d92-440a-a42d-c758394f7046)
 
 - **Unix:** A powerful, multi-user, multitasking OS born in the 1970s at AT&T Bell Labs. It’s the ancestor of many modern systems, built for stability and modularity.  
 - **Linux:** A Unix-inspired, open-source OS—free, customizable, and community-driven. It runs everywhere: servers, clouds, even your phone!  
@@ -37,6 +38,8 @@ Virtualization lets you run multiple **virtual machines (VMs)** on one physical 
 A **hypervisor** manages VMs, abstracting hardware to create isolated environments.  
 
 **Types of Hypervisors:**  
+![611e5d7e-953a-41db-9171-c7ba1cd6df9c](https://github.com/user-attachments/assets/817b944b-848a-426d-a6a3-1c030ff3adb2)
+
 | Type    | Description         | Examples            |
 |---------|---------------------|---------------------|
 | Type 1  | Runs on bare metal  | VMware ESXi, Hyper-V |
