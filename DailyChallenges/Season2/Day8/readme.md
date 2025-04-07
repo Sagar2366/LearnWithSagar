@@ -138,9 +138,90 @@ Answer these to solidify your understanding:
    ssh -i mykey.pem ec2-user@<public-ip>    # Amazon Linux
    ssh -i mykey.pem ec2-user@<public-ip>    # RHEL
 
+### Connect via PuTTY (Windows)
+
+**Step-by-step:**
+
+1. **Install [PuTTY and PuTTYgen](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)**  
+   Download and install both tools on your Windows machine.
+
+2. **Convert `.pem` to `.ppk` using PuTTYgen**  
+   - Open **PuTTYgen**
+   - Click **"Load"** and select your `mykey.pem` file  
+   - Click **"Save private key"**  
+   - Save it as `mykey.ppk` (you can skip the passphrase if not required)
+
+3. **Open PuTTY and configure connection**  
+   - In **Host Name**, enter:  
+     ```
+     ubuntu@<public-ip>       # For Ubuntu  
+     ec2-user@<public-ip>     # For Amazon Linux / RHEL
+     ```
+   - **Port:** `22`  
+   - In the left panel, go to:  
+     `Connection` → `SSH` → `Auth`  
+     - Click **Browse**, and attach your `mykey.ppk` file
+
+4. **Connect**
+   - Click **"Open"**
+   - Accept any security alert
+   - You should now be logged into your EC2 instance 🎉
+
+**You are now connected to your VM via PuTTY!**
+
+
 6. Run this on each:  
    ```bash
    cat /etc/os-release
+
+---
+
+### Repeat the Same on Azure & GCP
+
+---
+
+#### **Azure – Launch a Linux VM**
+
+1. Go to **[Azure Portal](https://portal.azure.com)** → `Virtual Machines` → **Create VM**
+2. Choose your desired Linux distribution:
+   - Ubuntu  
+   - RHEL  
+   - CentOS
+3. For free-tier eligible setup:
+   - **Size:** `Standard_B1s`
+4. **Authentication type:**  
+   - Select **SSH public key**
+   - Upload or generate a new key pair
+5. Under **Networking**, open **Port 22 (SSH)**
+6. Click **Review + Create**, then **Create**
+
+**Connect Options:**  
+- Use Azure Cloud Shell's SSH option  
+- Or use **PuTTY / terminal** with your `.pem` or converted `.ppk` key (same as AWS SSH steps)
+
+---
+
+#### **GCP – Launch a Linux VM (Compute Engine)**
+
+1. Go to **[GCP Console](https://console.cloud.google.com)** → `Compute Engine` → `VM Instances` → **Create Instance**
+2. Select your preferred OS:
+   - Ubuntu  
+   - RHEL  
+   - Debian
+3. Choose machine type:
+   - **e2-micro** (Free tier eligible)
+4. Scroll to **Security** section:
+   - Add your **SSH public key**
+5. Under **Firewall**, check:
+   - ✅ Allow HTTP traffic  
+   - ✅ Allow SSH traffic
+6. Click **Create**
+
+**Connect Options:**  
+- Use GCP’s built-in browser-based SSH  
+- Or use **external SSH client / PuTTY**:
+   ```bash
+   ssh -i your-key.pem username@<external-ip>
 
 
 **Troubleshooting Tip:** SSH failing? Double-check your security group and key permissions (`chmod 400 mykey.pem`).
@@ -204,3 +285,5 @@ Connect with fellow learners:
 ---
 
 Keep learning and happy exploring!
+Sagar Utekar
+
