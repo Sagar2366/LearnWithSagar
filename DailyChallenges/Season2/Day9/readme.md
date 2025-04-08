@@ -1,10 +1,10 @@
 # Daily DevOps + SRE Challenge Series – Season 2  
-## Day 2: Mastering the Linux Shell  
+## Day 9: Mastering the Linux Shell  
 
 ## Introduction  
 Welcome to Day 2 of the Daily DevOps SRE Challenge Series - Season 2! 🎉  
 
-Today, we’re diving into **the Linux Shell**, blending *Chapter 3: Using the Shell* (*Linux Bible*) and *Chapter 2: Using Essential Tools* (RHCSA prep). You’ll explore OS architecture, master Bash commands, edit with Vim, and harness help tools. By the end, you’ll:  
+Today, we’re diving into **the Linux Shell**, You’ll explore OS architecture, master Bash commands, edit with Vim, and harness help tools. By the end, you’ll:  
 - Grasp Linux’s layered structure and the shell’s critical role.  
 - Master commands, redirection, piping, history, variables, aliases, and Vim.  
 - Apply these on your Day 1 EC2 instances and RHEL VM.  
