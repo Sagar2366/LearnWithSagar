@@ -124,6 +124,7 @@ Bash stores ~1,000 commands in `~/.bash_history`, updated on session close.
 - **Search:** Ctrl+R, type `ls`, cycle with Ctrl+R.  
 - **Edit:** `history -d 299` (delete line), `history -c` (clear memory), `history -c; history -w` (clear file too).  
 **Theory:** History enhances productivity, letting you reuse complex commands (e.g., `!curl` for API tests). Clearing sensitive entries (`history -d`) is crucial for security—passwords typed in cleartext (e.g., `mysql -psecret`) persist otherwise. Saved to disk only on exit, so `history -c` alone isn’t enough.
+<img width="559" alt="Screenshot 2025-04-08 at 8 08 03 AM" src="https://github.com/user-attachments/assets/dd0d29f0-4ab1-425b-851d-207c8e1a44b0" />
 
 #### **Bash Completion**  
 Tab completion works for commands, files, and variables:  
@@ -135,13 +136,23 @@ Tab completion works for commands, files, and variables:
 Variables store dynamic values: `NAME=value`, `echo $NAME`.  
 - **Types:**  
   - **Shell Vars:** Local, e.g., `MYDIR=/tmp`.  
-  - **Env Vars:** Exported, e.g., `export PATH`, inherited by child processes.  
+  - **Env Vars:** Exported, e.g., `export PATH`, inherited by child processes.
+  - You can display the value of a specific environment variable by using the echo command followed by the variable name preceded by a dollar sign ($). For example:
+```bash
+echo $USER
+```
+- To refer to the value of an environment variable in a command simply prefix the variable name with a dollar sign ($). For example:
+```bash
+echo $USER
+```
 - **Key Vars:** `PATH`, `HOME`, `LANG` (e.g., `en_US.UTF-8` for locale), `PS1` (prompt).  
-- **Config Files:**  
+- **Config Files:**
   - `/etc/profile`: Global login shell settings.  
   - `/etc/bashrc`: Global subshell settings.  
   - `~/.bash_profile`: User login shell (calls `~/.bashrc`).  
-  - `~/.bashrc`: User subshells, aliases, custom vars.  
+  - `~/.bashrc`: User subshells, aliases, custom vars.
+<img width="560" alt="Screenshot 2025-04-08 at 8 14 04 AM" src="https://github.com/user-attachments/assets/6e610e6e-804c-4554-91e8-7ff58b8ba17e" />
+
 - **Messages:** `/etc/motd` (post-login notice), `/etc/issue` (pre-login banner).  
 **Theory:** Variables create a tailored environment—`LANG` affects date formats, `PATH` enables commands. Config files build a hierarchy: system-wide (`/etc`) then user-specific (`~`). Subshells (e.g., scripts) inherit login shell vars unless overridden. `/etc/motd` is ideal for admin alerts (e.g., “Maintenance at 2AM”).
 
