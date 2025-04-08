@@ -1,5 +1,5 @@
-# 🚀 Daily DevOps + SRE Challenge Series – Season 2  
-## 🗓️ Day 2: Mastering the Linux Shell  
+# Daily DevOps + SRE Challenge Series – Season 2  
+## Day 2: Mastering the Linux Shell  
 
 ## Introduction  
 Welcome to Day 2 of the Daily DevOps SRE Challenge Series - Season 2! 🎉  
