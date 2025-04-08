@@ -2,7 +2,7 @@
 ## Day 9: Mastering the Linux Shell  
 
 ## Introduction  
-Welcome to Day 2 of the Daily DevOps SRE Challenge Series - Season 2! 🎉  
+Welcome to Day 9 of the Daily DevOps SRE Challenge Series - Season 2! 🎉  
 
 Today, we’re diving into **the Linux Shell**, You’ll explore OS architecture, master Bash commands, edit with Vim, and harness help tools. By the end, you’ll:  
 - Grasp Linux’s layered structure and the shell’s critical role.  
