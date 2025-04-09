@@ -164,6 +164,7 @@ $ ls -la ~
 ```
 
 This command lists all files and directories in your home directory, including hidden ones, with detailed information.
+
 2. **Checking Permissions**
 
 ```bash
@@ -171,6 +172,7 @@ $ ls -la /etc/passwd
 ```
 
 Use this to check the permissions, owner, and group of the `/etc/passwd` file.
+
 3. **Troubleshooting**
 If you're missing configuration files, running `ls -la` will show you if they exist and what their permissions are.
 
