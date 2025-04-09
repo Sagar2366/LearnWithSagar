@@ -1,0 +1,67 @@
+## Essential Tools for Managing Text File Contents (Table 4-2)
+| Command | Explanation                                                                 |
+|---------|-----------------------------------------------------------------------------|
+| `less`  | Opens a file in a pager for easy reading and scrolling                      |
+| `cat`   | Displays the entire file contents on the screen                             |
+| `head`  | Shows the first few lines of a file (default: 10)                           |
+| `tail`  | Shows the last few lines of a file (default: 10)                            |
+| `cut`   | Filters specific columns or characters from a file                         |
+| `sort`  | Sorts the file contents alphabetically or numerically                      |
+| `wc`    | Counts lines, words, and characters in a file                               |
+
+### Versatility with Pipes
+These commands shine when paired with pipes:
+- `less /etc/passwd`: View the `/etc/passwd` file.
+- `ps aux | less`: Pipe process list output to `less` for scrollable reading.
+
+---
+
+## Mastering `less`
+The `less` utility is a go-to tool for reading text files as a Linux admin.
+
+### Usage
+- Open a file: `less /etc/passwd`
+- Navigate: Use **Page Up**/**Page Down** to scroll, press **`q`** to quit.
+- Search:
+  - Forward: `/sometext`
+  - Backward: `?sometext`
+  - Repeat: **`n`**
+
+### Connection to `vim` and `man`
+`less` shares navigation and search mechanics with `vim` and `man` due to their common code base.
+
+> **Note:**  
+> `less` was created to outdo `more`, a basic pager, inspiring the phrase "do more with less." Today, both tools have similar features, but `more` exits at file end (use `-p` to change this) and is standard everywhere, while `less` may require installation.
+
+---
+
+## Exercise 1: Applying Basic `less` Skills
+
+### Objective
+
+Practice using the `less` command to view and navigate through text files.
+
+### Steps
+
+1. **Open a File:**
+Open the `/etc/passwd` file using `less`:
+
+```bash
+less /etc/passwd
+```
+
+2. **Search:**
+Type `/root` to search for and highlight all occurrences of "root" in the file.
+3. **Go to End:**
+Press `G` to jump to the last line of the file.
+4. **Quit:**
+Press `q` to exit the `less` viewer.
+5. **Pipe Output:**
+Pipe the output of the `ps aux` command to `less` to browse the process list:
+
+```bash
+ps aux | less
+```
+
+6. **Quit Again:**
+Press `q` to exit the `less` viewer.
