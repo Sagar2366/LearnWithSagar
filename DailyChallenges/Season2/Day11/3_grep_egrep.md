@@ -96,6 +96,26 @@ grep -v -e '^#' -e '^$' /etc/services
 
 ---
 
+### Finding lines starting with a comment (`#`)**:
+
+```bash
+grep ' #' /etc/services
+```
+
+### Excluding lines starting with a comment**:
+
+```bash
+grep -v '^#' /etc/services
+```
+
+* Shows only lines that do not start with `#`.
+### Showing lines before matches**:
+
+```bash
+grep -v '^#' /etc/services -B 5
+```
+* Shows lines that do not start with `#`, along with the 5 lines before each match.
+    
 ## Tips
 
 - Combine `grep` with `sort`, `uniq`, and `wc` for powerful text processing.
@@ -167,52 +187,10 @@ grep -E 'b.+t' regex.txt
 
     * Finds lines that have at least one character between `b` and `t`.
 
-## Using `grep` to Analyze Text
 
-### Overview
-
-`grep` (Global Regular Expression Parser) is a powerful utility for searching text using regular expressions.
-
-### Useful `grep` Options
-
-| Option | Use |
-| :-- | :-- |
-| `-i` | Matches upper- and lowercase letters (case-insensitive). |
-| `-v` | Shows only lines that do *not* contain the regular expression. |
-| `-r` | Searches files in the current directory and all subdirectories. |
-| `-e` | Searches for lines matching more than one regular expression. Use `-e` before each regular expression. |
-| `-E` | Interprets the search pattern as an extended regular expression. |
-| `-A number` | Shows `&lt;number&gt;` of lines *after* the matching regular expression. |
-| `-B number` | Shows `&lt;number&gt;` of lines *before* the matching regular expression. |
 
 ### Examples and Usage
 
-1. **Finding lines starting with a comment (`#`)**:
 
-```bash
-grep ' #' /etc/services
-```
-
-2. **Excluding lines starting with a comment**:
-
-```bash
-grep -v '^#' /etc/services
-```
-
-    * Shows only lines that do not start with `#`.
-3. **Showing lines before matches**:
-
-```bash
-grep -v '^#' /etc/services -B 5
-```
-
-    * Shows lines that do not start with `#`, along with the 5 lines before each match.
-4. **Excluding comments and blank lines**:
-
-```bash
-grep -v -e '^#' -e '^$' /etc/services
-```
-
-    * Excludes all blank lines and lines that start with `#`.
 
 
