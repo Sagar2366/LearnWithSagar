@@ -22,86 +22,90 @@ Grab your terminal—it’s time to take down the text chaos!
 
 In UNIX and Linux systems, configuration and information management have traditionally relied on plain-text files. Despite the availability of graphical tools today, editing these files manually with a text editor remains essential, especially for full system control and on servers without GUIs. Aspiring system administrators must learn to use text editors and tools like find (to locate files) and grep (to search within files) to manage and configure Linux systems effectively.
 
-# vi/vim Cheat Sheet – Quick Reference
+ ## Practical Tasks Setup: Linux Text Avengers Training Camp
 
-## Modes
-| Mode            | Key         | Description                        |
-|-----------------|-------------|------------------------------------|
-| Command         | Default     | For navigation and actions         |
-| Insert          | `i` / `a` / `o` | Enter insert mode (insert, append, open) |
-| Return to Command | `Esc`     | Switch from insert to command mode |
+Welcome, recruits! You've been selected to join the Linux Text Avengers, the elite team responsible for manipulating text files to save the world (or at least your systems). Get ready for a series of challenges that will test your text-fu and prepare you for any text-based crisis.
 
-## Insert Mode Commands
-| Command | Description                     |
-|---------|---------------------------------|
-| `i`     | Insert before the cursor        |
-| `a`     | Append after the cursor         |
-| `I`     | Insert at the beginning of the line |
-| `A`     | Append at the end of the line   |
-| `o`     | Open new line below             |
-| `O`     | Open new line above             |
-| `Esc`   | Return to command mode          |
+### 1. Create Your Base of Operations
 
-## Navigation
-| Key         | Moves Cursor To               |
-|-------------|-------------------------------|
-| `h` / `l`   | Left / Right one character    |
-| `j` / `k`   | Down / Up one line            |
-| `w` / `W`   | Next word (by punctuation / space) |
-| `b` / `B`   | Previous word                 |
-| `0`         | Start of line                 |
-| `$`         | End of line                   |
-| `H`         | Top of screen                 |
-| `M`         | Middle of screen              |
-| `L`         | Bottom of screen              |
-| `G`         | Last line of file             |
-| `1G`        | First line of file            |
-| `35G`       | Line 35                       |
-| `Ctrl+f`    | Page forward                  |
-| `Ctrl+b`    | Page backward                 |
-| `Ctrl+d`    | Half page forward             |
-| `Ctrl+u`    | Half page backward            |
+* Every hero needs a base! Create your training directory:
 
-## ✂️ Editing Text
-| Command     | Description                       |
-|-------------|-----------------------------------|
-| `x` / `X`   | Delete character under / before cursor |
-| `dd`        | Delete current line               |
-| `dw`        | Delete word after cursor          |
-| `db`        | Delete word before cursor         |
-| `d$`        | Delete from cursor to end of line |
-| `c + move`  | Change text (e.g., `c$` changes to end) |
-| `cc`        | Change entire line                |
-| `yy`        | Yank (copy) current line          |
-| `y}`        | Yank paragraph                    |
-| `p`         | Paste below/after                 |
-| `P`         | Paste above/before                |
-| `.`         | Repeat last change                |
+```bash
+mkdir ~/textlab
+cd ~/textlab
+```
 
-## Searching
-| Command          | Description                           |
-|------------------|---------------------------------------|
-| `/text`          | Search forward for "text"             |
-| `?text`          | Search backward for "text"            |
-| `n` / `N`        | Repeat search forward / backward      |
-| `/The.*end`      | Regex: match “The” followed by “end”  |
-| `?[Pp]rint`      | Case-insensitive search for “Print” or “print” |
 
-## Ex Commands (use `:`)
-| Command           | Description                           |
-|-------------------|---------------------------------------|
-| `:w`              | Save file                             |
-| `:q`              | Quit if no unsaved changes            |
-| `:wq` / `ZZ`      | Save and quit                         |
-| `:q!`             | Quit without saving                   |
-| `:s/old/new/`     | Replace first “old” with “new” in current line |
-| `:g/old/s//new/g` | Replace all “old” with “new” in file  |
-| `:g/old/s//new/gp`| Replace and print affected lines      |
+### 2. The Intelligence File
 
-## Pro Tips
-| Command   | Description                           |
-|-----------|---------------------------------------|
-| `u`       | Undo last change                      |
-| `Ctrl+r`  | Redo (undo the undo)                  |
-| `:!command`| Run shell command (e.g., `:!date`, `:!ls`) |
-| `Ctrl+G`  | Show filename, line number, and position |
+* Your first mission requires analyzing an intelligence file. Create `myfile.txt` with this vital information:
+
+```bash
+cat << EOF > myfile.txt
+Line 1: This is a test file. Initializing systems...
+Line 2: Administrator access granted. Beware of rogue agents.
+Line 3: Memory usage: 500MB. System stable.
+Line 4: Error log entry: Unauthorized access attempt detected.
+Line 5: IP address: 192.168.1.100. Target server.
+Line 6: Password: secret123. DO NOT SHARE.
+Line 7: End of file. Mission critical.
+EOF
+```
+
+
+### 3. Log Simulation: The Enemy's Activity
+
+* Simulate enemy activity by creating fake logs. The logs directory will track their actions.
+
+```bash
+mkdir ~/textlab/logs
+echo "error: disk full. System compromised!" > ~/textlab/logs/log1.log
+echo "ERROR: network down. Communications disrupted!" > ~/textlab/logs/log2.log
+echo "warning: low memory. System stability threatened!" >  ~/textlab/logs/log3.log
+# Make log1.log larger than 1MB to simulate a real log.
+for i in {1..10000}; do echo "filler line $i" >> ~/textlab/logs/log1.log; done
+```
+
+
+### 4. System Check
+
+* Before you begin, ensure you have the necessary tools and access.
+    * You should be able to read system files like `/etc/passwd` and `/var/log/messages` (some tasks might require sudo).
+    * Install `mailx` for communication tasks:
+
+```bash
+sudo dnf install mailx # Or sudo apt install mailutils on Debian/Ubuntu
+```
+
+
+### Mission Briefing: Data Analysis
+
+* Our world depends on your ability to analyze and manipulate text data. Every line in `myfile.txt` is critical:
+    * Line 1: Initialization status.
+    * Line 2: Administrator alert, with a hidden warning.
+    * Line 3: Memory info to optimize system.
+    * Line 4: Error log for security checks.
+    * Line 5: Target IP address.
+    * Line 6: A Secret!
+
+
+## Operation: Text Manipulation
+
+### Original Tasks: Core Skills Training
+
+1. **Decoding the Intelligence:** Show line 5 from `~/textlab/myfile.txt` using two different methods. What does this IP address represent?
+2. **Hunting the Target:** Locate text files in `~/textlab` containing `"192.168.1.100"`. Is a regex needed for this simple search?
+3. **Reversing the Sabotage:** A rogue agent changed `"Administrator"` to `"root"` in `~/textlab/myfile.txt` using `sed`. Can you undo this sabotage *without* a backup?
+4. **Memory Optimization:** Sort `myfile.txt` lines, simulating system performance by putting the largest memory value first (based on line 3). This tests ability to analyze numerical info within text.
+5. **System Recon:** Extract the sixth column from `ps aux` to understand system usage. (This is a unchanged recon mission, unrelated to the rest of this scenario).
+6. **Deleting Sensitive Info:** Remove the potentially compromised "Password" line (line 6) from `~/textlab/myfile.txt`.
+
+### Additional Interesting Tasks: Advanced Missions
+
+1. **Swapping Intel:** Swap lines 3 and 4 in `~/textlab/myfile.txt` using `vi/vim` to reorganize mission-critical info.
+2. **Archiving Enemy Logs:** Find all `.log` files larger than 1MB under `~/textlab/logs`, and archive them to a `.tar.gz` in `~/textlab` for analysis. Think of this step as containing damage after an attack.
+3. **Finding Patterns:** Use `grep`, `sort`, and `uniq` to count unique words with `"error"` (case-insensitive) in `~/textlab/logs/log1.log`. What does that data signify about system stability?
+4. **Alerting the Team:** Search `~/textlab` for `"password"`, highlight it in color, and email this vital alert to yourself using `mail`. (Configure `mail` first if you haven't done so)
+
+
+
