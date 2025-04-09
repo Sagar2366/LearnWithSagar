@@ -1,3 +1,109 @@
+## Using `grep` to Analyze Text
+
+### Overview
+
+`grep` (Global Regular Expression Parser) is a powerful utility for searching plain-text data using regular expressions. It works on files or command outputs.
+
+### Key Features
+
+- **Case-sensitive by default**
+- **Can search files, directories, and command output**
+- **Supports regular and extended regular expressions**
+- **Highlights matches using `--color`**
+
+---
+
+### Commonly Used Options
+
+| Option | Description |
+| :-- | :-- |
+| `-i` | Case-insensitive matching |
+| `-v` | Invert match (show lines that do **not** match) |
+| `-r` | Recursively search directories |
+| `-l` | Print only filenames with matches |
+| `-e` | Use multiple regex patterns |
+| `-E` | Interpret pattern as an extended regular expression |
+| `-A N` | Show N lines *after* each match |
+| `-B N` | Show N lines *before* each match |
+| `--color` | Highlight the matching text |
+
+---
+
+### Practical Examples
+
+#### 1. **Simple Match in File**
+
+```bash
+grep desktop /etc/services
+```
+
+* Matches exact lowercase `desktop`.
+
+
+#### 2. **Case-Insensitive Match**
+
+```bash
+grep -i desktop /etc/services
+```
+
+* Matches variations like `Desktop`, `DESKTOP`, etc.
+
+
+#### 3. **Exclude Matches**
+
+```bash
+grep -vi tcp /etc/services
+```
+
+* Show all lines **except** those containing `tcp`.
+
+
+#### 4. **Recursive Search (Case-Insensitive)**
+
+```bash
+grep -rli peerdns /usr/share/doc/
+```
+
+* Search recursively for `peerdns`, show filenames only.
+
+
+#### 5. **Recursive Search with Highlight**
+
+```bash
+grep -ri --color root /etc/sysconfig/
+```
+
+* Highlights `root` in red (by default) wherever it appears.
+
+
+#### 6. **Filter Output of Another Command**
+
+```bash
+ip addr show | grep inet
+```
+
+* Shows only lines with `inet`, useful for filtering IP addresses.
+
+---
+
+### Filtering Comments and Blank Lines
+
+```bash
+grep -v -e '^#' -e '^$' /etc/services
+```
+
+* Removes comment lines (`#`) and empty lines.
+
+---
+
+## Tips
+
+- Combine `grep` with `sort`, `uniq`, and `wc` for powerful text processing.
+- Use double quotes for patterns with spaces or variables: `grep "$pattern" file.txt`.
+- Use `^` and `$` to anchor searches to the beginning or end of lines.
+
+
+
 ## Using Extended Regular Expressions (EREs)
 
 ### Overview
