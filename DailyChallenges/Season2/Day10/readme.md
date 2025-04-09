@@ -147,3 +147,45 @@ Before you dive into the heist, test your knowledge with these questions. They�
   9. Compress `/root/essentials.tar` to `.gz`.
 
 ---
+
+# Submission Guidelines for Day 10: The Filesystem Heist
+
+Congrats on cracking the vault! To claim your victory and share your heist mastery, follow these guidelines. Submit your evidence and insights to showcase your filesystem skills!
+
+## Proof of Completion
+Submit the following to prove you’ve conquered the challenge:
+- **Screenshot of EC2 Terminal**: Show `ls -l ~/heist_vault` after Task 6 (post-restore of `evidence.txt`), displaying `evidence_sym`, `evidence_copy`, and `evidence.txt`.
+- **Screenshot of EC2 Terminal**: Display `ls -l /data/shared_space` from Task 5, showing `alice_file.txt` and `bob_file.txt` with `agents` group ownership.
+- **Text Output**: Contents of `~/heist_vault/theory_answers.txt` (your theory responses).
+- **Screenshot of EC2 Terminal**: Run `history 5` to show your last 5 commands (any Linux distro).
+- **Screenshot of EC2 Terminal**: Recall and run a command from history (e.g., `!?ls?`)—capture the output.
+- **Text Output**: Run `cat ~/.bash_history | tail -n 3` on both EC2 and RHEL VM to show your last 3 logged commands.
+
+## Documentation
+Detail your heist in a text file or markdown doc:
+- **Steps Taken**: Explain how you:
+  - Accessed shells (e.g., SSH to EC2 as `ec2-user`, switched to root with `sudo -i`, logged in as `alice`/`bob`).
+  - Executed key tasks (e.g., mounted `/data`, managed files, used `tar`).
+  - Answered theory questions (e.g., researched `/var` purpose).
+- **Challenges Faced & Fixes**: Note any hiccups and solutions, e.g.:
+  - “`fdisk` wouldn’t save partitions” → “Forgot `w`, reran it.”
+  - “Permission denied on `/etc/passwd` link” → “Expected per task, used symbolic link instead.”
+  - “`lsblk` missing” → “Installed `util-linux` with `yum`.”
+- **Optional**: Add reflections (e.g., “SGID was tricky but clicked after testing!”).
+
+## Share Your Progress!
+Broadcast your heist success to the world:
+- Post on social media with your screenshots, insights, or a quick “I cracked Day 10!” shoutout.
+- Use hashtags: `#getfitwithsagar`, `#SRELife`, `#DevOpsForAll`.
+- Tag me (@SagarUtekar) for a chance to get featured!
+
+## **Join Our Community**  
+Connect with fellow learners:  
+- **Discord:** [Join here](https://discord.gg/mNDm39qB8t)  
+- **Google Group:** [Join here](https://groups.google.com/forum/#!forum/daily-devops-sre-challenge-series/join)  
+- **YouTube:** [Subscribe here](https://www.youtube.com/@Sagar.Utekar)  
+
+---
+
+Keep learning and happy exploring!
+Sagar Utekar
