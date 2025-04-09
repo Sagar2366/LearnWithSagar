@@ -1,8 +1,8 @@
-## 1. Using Links
+# Using Links
 
 Links on Linux are like aliases assigned to a file. There are symbolic links and hard links. To understand a link, you need to know how the Linux filesystem uses inodes for filesystem administration.
 
-### 1.1. Understanding Hard Links
+### Understanding Hard Links
 
 Linux stores administrative data about files in inodes. The inode stores all administrative data about files. Every file on Linux has an inode, and important information is stored in it:
 
@@ -33,7 +33,7 @@ Here's a simple representation of how hard links and inodes work:
     |Hard Link |
     +----------+
     
-### 1.2. Understanding Symbolic Links
+### Understanding Symbolic Links
 
 A **symbolic link** (also referred to as a soft link) does not link directly to the inode but to the name of the file. This makes symbolic links more flexible but has some disadvantages. The advantage of symbolic links is that they can link to files on other devices and directories. The major disadvantage is that when the original file is removed, the symbolic link becomes invalid.
 
@@ -44,7 +44,7 @@ A **symbolic link** (also referred to as a soft link) does not link directly to 
     +----------+     +--------------+     +----------+     +---------+
                    (Points to name)
     
-### 1.3. Creating Links
+### Creating Links
 
 Use the `ln` command to create links. It uses the same order of parameters as `cp` and `mv`; first, you mention the source name, followed by the destination name. If you want to create a symbolic link, use the option `-s`, and then specify the source and target file or directory. One important restriction applies: to be able to create hard links, you must be the owner of the item that you want to link to.
 
@@ -68,7 +68,7 @@ lrwxrwxrwx. 1 root root 5 Jan 19 04:38 home -> /home
 
 In the example above, `home` is a symbolic link pointing to `/home`, and `hosts` is a file with 3 hard links.
 
-### 1.4. Removing Links
+### Removing Links
 
 Removing links can be dangerous. Let’s consider the following procedure:
 
@@ -84,7 +84,7 @@ Removing links can be dangerous. Let’s consider the following procedure:
 10. Type `ls`. You’ll see that the directory `link` still exists.
 11. Type `ls test/`. You’ll see the directory `test` is now empty.
 
-### 1.5. Exercise: Working with Symbolic Links and Hard Links
+### 1Exercise: Working with Symbolic Links and Hard Links
 
 1. Open a shell as the `student` user.
 2. From your home directory, type `ln /etc/passwd .` (Make sure that the command ends with a dot that has a space before it!). This command gives you an “operation not permitted” error because you are not the owner of `/etc/passwd`.
