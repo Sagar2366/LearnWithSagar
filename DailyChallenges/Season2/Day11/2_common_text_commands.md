@@ -1,4 +1,4 @@
-## Essential Tools for Managing Text File Contents (Table 4-2)
+## Essential Tools for Managing Text File Contents
 | Command | Explanation                                                                 |
 |---------|-----------------------------------------------------------------------------|
 | `less`  | Opens a file in a pager for easy reading and scrolling                      |
