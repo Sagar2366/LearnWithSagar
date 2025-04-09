@@ -179,20 +179,94 @@ If you're missing configuration files, running `ls -la` will show you if they ex
 
 #### 3.4 Copying Files and Directories
 
-- **Command**: `cp &lt;source&gt; &lt;dest&gt;`.
-- **Usage**:
-    - `cp /etc/hosts /tmp`: Copies `hosts` to `/tmp`.
-    - `cp -R /etc /tmp`: Copies directory recursively.
-    - `cp -a ~ /tmp`: Preserves permissions (archive mode).
-- **Hidden Files**:
-    - `cp /somedir/.* /tmp`: Copies hidden files only.
-    - `cp -a /somedir/. .`: Copies all (hidden + regular) to the current directory.
-- **Tip**: Use trailing `/` (e.g., `/tmp/`) to ensure the destination is a directory.
+- **Command**: `cp source dest;`.
+- **Purpose**: The `cp` command allows you to copy files and directories from one location to another.
+- **Basic Usage**:
+    - To copy a single file:
+
+```bash
+cp /path/to/source/file /path/to/destination/
+```
+
+    - Example:
+
+```bash
+cp /etc/hosts /tmp/
+```
+
+This copies the file `/etc/hosts` to the `/tmp/` directory.
+- **Options**:
+
+
+| Option | Description |
+| :-- | :-- |
+| `-R` | Recursive: Copies directories and their contents recursively. |
+| `-a` | Archive: Preserves file attributes (permissions, ownership, timestamps). It is equivalent to `-dpR`. |
+| `-i` | Interactive: Prompts before overwriting existing files. |
+| `-u` | Update: Copies only when the source file is newer than the destination file or when the destination file is missing. |
+| `-v` | Verbose: Shows the files being copied. |
+
+- **Important Considerations**:
+    - **Target Directory**: Always ensure the target directory exists.  If you copy a file to a non-existent directory without a trailing `/`, it will create a file named as the directory instead.
+
+```bash
+cp /etc/hosts /tmp # If /tmp doesn't exist, it creates a file named 'tmp'
+cp /etc/hosts /tmp/ # Correct way, ensures /tmp is treated as a directory
+```
+
+    - **Copying Directories Recursively**:
+To copy an entire directory, use the `-R` option.
+
+```bash
+cp -R /etc /tmp
+```
+
+This copies the `/etc` directory and all its contents to the `/tmp` directory.
+    - **Preserving Attributes**:
+To keep the original file permissions and other attributes, use the `-a` option (archive mode).
+
+```bash
+cp -a ~ /tmp
+```
+
+This copies your entire home directory to the `/tmp` directory while preserving all file attributes.
+    - **Hidden Files**:
+Hidden files (files starting with `.`) are not copied by default. Here's how to handle them:
+
+1. **Using `.*`**:
+
+```bash
+cp /somedir/.* /tmp
+```
+
+This copies hidden files from `/somedir/` to `/tmp`. Note that this will produce an error for the `.` and `..` directories unless you use the `-R` option.
+2. **Copying the entire directory**:
+
+```bash
+cp -a /somedir/ .
+```
+
+This creates a `somedir` subdirectory in the current directory and copies all contents, including hidden files.
+3. **Copying all files, including hidden files, into the current directory**:
+
+```bash
+cp -a /somedir/. .
+```
+
+Make sure there is a space between the two dots. This copies all files and directories (including hidden ones) from /somedir into the current directory.
+
+
+### Best Practices and Tips
+
+- Ensure the destination directory exists to avoid creating a file instead of copying into a directory.
+- Use the -a option when you want to preserve file attributes like permissions and timestamps.
+- Be cautious when using wildcards, and always double-check your command before executing to avoid unintended consequences.
+
 
 
 #### 3.5 Moving Files and Directories
 
-- **Command**: `mv &lt;source&gt; &lt;dest&gt;`.
+- **Command**: `mv source dest`.
 - **Usage**:
     - `mv file1 /tmp`: Moves to `/tmp`.
     - `mv file1 file2`: Renames.
@@ -202,7 +276,7 @@ If you're missing configuration files, running `ls -la` will show you if they ex
 
 #### 3.6 Deleting Files and Directories
 
-- **Command**: `rm &lt;target&gt;`.
+- **Command**: `rm target;`.
 - **Usage**:
     - `rm file1`: Deletes a file.
     - `rm -r dir`: Deletes directory recursively.
