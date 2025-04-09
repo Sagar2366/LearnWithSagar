@@ -1,5 +1,6 @@
 # Daily DevOps + SRE Challenge Series – Season 2
 ## Day 10: The Filesystem Heist – Crack the Vault of Linux Mastery
+![ChatGPT Image Apr 9, 2025, 07_30_45 AM](https://github.com/user-attachments/assets/738656ce-b015-4ddd-8b42-fb310654cf39)
 
 ### Introduction
 Welcome to Day 10 of the Daily DevOps + SRE Challenge Series – Season 2! 🎉
@@ -153,25 +154,33 @@ Before you dive into the heist, test your knowledge with these questions. They�
 Congrats on cracking the vault! To claim your victory and share your heist mastery, follow these guidelines. Submit your evidence and insights to showcase your filesystem skills!
 
 ## Proof of Completion
-Submit the following to prove you’ve conquered the challenge:
-- **Screenshot of EC2 Terminal**: Show `ls -l ~/heist_vault` after Task 6 (post-restore of `evidence.txt`), displaying `evidence_sym`, `evidence_copy`, and `evidence.txt`.
-- **Screenshot of EC2 Terminal**: Display `ls -l /data/shared_space` from Task 5, showing `alice_file.txt` and `bob_file.txt` with `agents` group ownership.
-- **Text Output**: Contents of `~/heist_vault/theory_answers.txt` (your theory responses).
-- **Screenshot of EC2 Terminal**: Run `history 5` to show your last 5 commands (any Linux distro).
-- **Screenshot of EC2 Terminal**: Recall and run a command from history (e.g., `!?ls?`)—capture the output.
-- **Text Output**: Run `cat ~/.bash_history | tail -n 3` on both EC2 and RHEL VM to show your last 3 logged commands.
+Submit these deliverables to confirm you’ve cracked the challenge:
+- **Screenshot of EC2 Terminal (Task 1)**: After the final step, run `pwd` to show `/home/ec2-user`, proving you hit `/tmp` and bounced back.
+- **Screenshot of EC2 Terminal (Task 2)**: Display `ls -ld ~/heist_vault/newfiles` (expect `drwx------`) and `ls -a ~/heist_vault/newfiles` (showing `.secret`, `decoy.txt`).
+- **Screenshot of EC2 Terminal (Task 3)**: As root, run `df -h | grep /data` and `lsblk`, confirming `/data` is mounted with a partition (e.g., `/dev/xvdf1` or `/dev/loop0p1`).
+- **Screenshot of EC2 Terminal (Task 4)**: Post-task, show `ls -l ~/projects/house2` (perms `rw-r-----`) and `ls -R ~/projects` (no `doors/` subdir present).
+- **Screenshot of EC2 Terminal (Task 5)**: Run `ls -l /data/shared_space`, displaying `alice_file.txt` and `bob_file.txt` with group `agents` and SGID (`drwxrws---`).
+- **Screenshot of EC2 Terminal (Task 6)**: After restoring `evidence.txt`, show `ls -l ~/heist_vault` with `evidence_sym -> evidence.txt`, `evidence_copy`, and `evidence.txt` (link count 2).
+- **Screenshot of EC2 Terminal (Task 7)**: As root, display `ls -l /tmp/etc/passwd` and `ls -R /root/etc/ | grep hosts`, verifying extracted archive files.
+- **Screenshot of EC2 Terminal (Task 8)**: As root, show `ls -l /root/essentials.tar.gz` and `ls -l /root/link.tar` (broken link post-removal).
+- **Text Output**: Full contents of `~/heist_vault/theory_answers.txt` with your answers to all 10 theory questions.
 
 ## Documentation
-Detail your heist in a text file or markdown doc:
-- **Steps Taken**: Explain how you:
-  - Accessed shells (e.g., SSH to EC2 as `ec2-user`, switched to root with `sudo -i`, logged in as `alice`/`bob`).
-  - Executed key tasks (e.g., mounted `/data`, managed files, used `tar`).
-  - Answered theory questions (e.g., researched `/var` purpose).
-- **Challenges Faced & Fixes**: Note any hiccups and solutions, e.g.:
-  - “`fdisk` wouldn’t save partitions” → “Forgot `w`, reran it.”
-  - “Permission denied on `/etc/passwd` link” → “Expected per task, used symbolic link instead.”
-  - “`lsblk` missing” → “Installed `util-linux` with `yum`.”
-- **Optional**: Add reflections (e.g., “SGID was tricky but clicked after testing!”).
+Detail your heist in a text file or markdown doc (e.g., `heist_notes.md`):
+- **Steps Taken**: Outline your approach for each task:
+  - Task 1: Navigating with `cd` and `pwd`.
+  - Task 2: Setting up `heist_vault` with `mkdir`, `touch`, and `chmod`.
+  - Task 3: Mounting `/data` with `fdisk`, `mkfs.ext4`, and `mount`.
+  - Task 4: Managing files in `oldfiles` and `projects` with `cp`, `rm`, `mv`, etc.
+  - Task 5: Creating users and syncing files in `/data/shared_space`.
+  - Task 6: Handling hard and soft links in `heist_vault`.
+  - Task 7: Archiving `/etc` and `/home` with `tar`, `gzip`, and `bzip2`.
+  - Task 8: Root ops with linking and compression.
+- **Challenges & Fixes**: Document hurdles and solutions, e.g.:
+  - “`fdisk` didn’t save” → “Missed `w`, reran it.”
+  - “Permission denied on `/etc/passwd` hard link” → “Expected, switched to soft link.”
+  - “`ls -R` flooded terminal” → “Piped to `less` as instructed.”
+- **Optional**: Add a takeaway (e.g., “Hard links survive deletion—mind blown!”).
 
 ## Share Your Progress!
 Broadcast your heist success to the world:
