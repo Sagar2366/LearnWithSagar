@@ -108,4 +108,24 @@ sudo dnf install mailx # Or sudo apt install mailutils on Debian/Ubuntu
 4. **Alerting the Team:** Search `~/textlab` for `"password"`, highlight it in color, and email this vital alert to yourself using `mail`. (Configure `mail` first if you haven't done so)
 
 
+# Submission Guidelines
+- Store your findings and execution steps in a markdown file (`solution.md`).
+- Submit it in your GitHub repository and share the link.
+- Post your experience on social media with **#getfitwithsagar #SRELife #DevOpsForAll**.
+- Tag us in your posts for visibility and networking.
 
+### **Share Your Progress!**  
+Post your experience on social media with the hashtags: **#getfitwithsagar, #SRELife, #DevOpsForAll**  
+
+---
+
+## **Join Our Community**  
+Connect with fellow learners:  
+- **Discord:** [Join here](https://discord.gg/mNDm39qB8t)  
+- **Google Group:** [Join here](https://groups.google.com/forum/#!forum/daily-devops-sre-challenge-series/join)  
+- **YouTube:** [Subscribe here](https://www.youtube.com/@Sagar.Utekar)  
+
+---
+
+Keep learning and happy exploring!
+Sagar Utekar
