@@ -831,7 +831,7 @@ This completes the full networking challenge with comprehensive theory and pract
 
 Deliverables
 - A markdown file solution.md with:
-  - Commands and outputs for Tasks 1–4
+  - Commands and outputs for Tasks
   - 3–5 bullet notes on what you learned
 
 ---
