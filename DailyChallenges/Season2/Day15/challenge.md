@@ -826,3 +826,35 @@ flowchart TD
 ---
 
 This completes the full networking challenge with comprehensive theory and practical exercises. The additional theory sections cover DNS, MTU, and routing concepts that are essential for complete networking understanding.
+
+---
+
+Deliverables
+- A markdown file solution.md with:
+  - Commands and outputs for Tasks 1–4
+  - 3–5 bullet notes on what you learned
+
+---
+
+## Submission Guidelines
+- Store your findings and execution steps in solution.md
+- Submit it in your GitHub repository and share the link
+- Post your experience on social media with #getfitwithsagar #SRELife #DevOpsForAll
+- Tag us in your posts for visibility and networking
+
+---
+
+## Join Our Community
+- Discord – Ask questions and collaborate: https://discord.gg/mNDm39qB8t
+- Google Group – Get updates and discussions: https://groups.google.com/forum/#!forum/daily-devops-sre-challenge-series/join
+- YouTube – Watch solution videos and tutorials: https://www.youtube.com/@Sagar.Utekar
+
+---
+
+## Stay Motivated!
+Keep it simple. Master the basics. You’ll use these commands every week in real DevOps/SRE work.
+
+Happy Learning!
+
+Best regards,  
+Sagar Utekar
