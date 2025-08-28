@@ -4,7 +4,7 @@
 
 ## 🌟 Introduction
 
-Welcome to **Day 3** of the Daily DevOps + SRE Challenge Series – Season 2!
+Welcome to **Day 17** of the Daily DevOps + SRE Challenge Series – Season 2!
 
 Today we dive into the **Routing & Switching basics** every DevOps/SRE must master: **Static Routing, Default Gateways, NAT/PAT, and VLANs.** These are the invisible highways of networking that ensure packets get from point A to point B securely, efficiently, and reliably.
 
