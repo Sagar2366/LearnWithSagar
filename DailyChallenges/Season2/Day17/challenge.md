@@ -8,7 +8,7 @@ Welcome to **Day 3** of the Daily DevOps + SRE Challenge Series – Season 2!
 
 Today we dive into the **Routing & Switching basics** every DevOps/SRE must master: **Static Routing, Default Gateways, NAT/PAT, and VLANs.** These are the invisible highways of networking that ensure packets get from point A to point B securely, efficiently, and reliably.
 
-Instead of just reading theory, you'll solve **real-world, production-style challenges** with Linux commands, diagrams, and troubleshooting steps.
+Instead of just reading theory, you'll solve **real-world, production-style challenges** with Linux commands, diagrams, and troubleshooting steps - all within a single virtual machine using network namespaces.
 
 ---
 
@@ -35,19 +35,7 @@ Instead of just reading theory, you'll solve **real-world, production-style chal
 
 ### 🔹 Static Routing
 
-Static routing involves manually configuring routes on network devices (routers, firewalls, or even servers) to specify the path network traffic should take to reach specific destinations. Unlike dynamic routing protocols (OSPF, BGP) that automatically exchange routing information, static routes are fixed and don't adapt to network changes unless manually modified.
-
-**Key Characteristics:**
-- **Administrative Distance**: Static routes typically have a lower AD (1) than dynamic routes, making them preferred
-- **Persistence**: Usually remain in routing table until manually removed
-- **No Overhead**: Unlike dynamic protocols, they don't consume bandwidth for route advertisements
-- **Scalability Limitation**: Manual configuration becomes impractical in large, complex networks
-
-**Common Use Cases:**
-- Default routes for internet connectivity
-- Backup routes for redundant connections
-- Stub networks with single exit points
-- Security-sensitive paths where dynamic routing might be exploited
+Static routing involves manually configuring routes on network devices to specify the path network traffic should take to reach specific destinations. Unlike dynamic routing protocols that automatically exchange routing information, static routes are fixed and don't adapt to network changes unless manually modified.
 
 ```mermaid
 flowchart TD
@@ -72,21 +60,11 @@ flowchart TD
     style R2 fill:#e1f5fe
 ```
 
-**Technical Details:**
-When a packet arrives at Router A destined for Network B (10.0.2.0/24), Router A checks its routing table. The static route instructs it to forward the packet to Router B (172.16.1.2). Router B then delivers it to the appropriate host in Network B.
-
-The reverse path requires a complementary static route on Router B pointing to Router A for Network A (192.168.1.0/24), ensuring bidirectional communication.
-
 ---
 
 ### 🔹 Default Gateway
 
-The default gateway (also called default route) is a special type of static route that serves as the "gateway of last resort." When a device needs to send traffic to a destination network not explicitly listed in its routing table, it forwards the packet to the default gateway.
-
-**Technical Implementation:**
-- Represented as 0.0.0.0/0 in CIDR notation (matches any destination)
-- Essential for client devices to reach beyond their local subnet
-- Critical for internet connectivity in most network setups
+The default gateway serves as the "gateway of last resort." When a device needs to send traffic to a destination network not explicitly listed in its routing table, it forwards the packet to the default gateway.
 
 ```mermaid
 flowchart TD
@@ -108,25 +86,11 @@ flowchart TD
     style Router fill:#fff3e0
 ```
 
-**Technical Details:**
-When Workstation (192.168.1.10) needs to communicate with a server on the internet (e.g., 8.8.8.8), it performs these steps:
-1. Compares destination IP (8.8.8.8) with its own IP and subnet mask
-2. Determines the destination is outside its local network
-3. Forwards the packet to its configured default gateway (192.168.1.1)
-4. The edge router then routes the packet toward the internet
-
-Without a proper default gateway configuration, devices can only communicate within their local subnet.
-
 ---
 
 ### 🔹 NAT & PAT
 
-Network Address Translation (NAT) and Port Address Translation (PAT) are methods to remap IP address space by modifying network address information in packet headers while in transit. This allows multiple devices to share a single public IP address.
-
-**NAT Types:**
-1. **Static NAT**: One-to-one mapping between private and public IPs
-2. **Dynamic NAT**: Pool of public IPs mapped to private IPs as needed
-3. **PAT/NAT Overload**: Many private IPs to one public IP using port differentiation
+Network Address Translation (NAT) and Port Address Translation (PAT) are methods to remap IP address space by modifying network address information in packet headers while in transit.
 
 ```mermaid
 flowchart LR
@@ -153,31 +117,11 @@ flowchart LR
     style NATRouter fill:#f3e5f5
 ```
 
-**Technical Details:**
-PAT (the most common form of NAT) works by:
-1. Maintaining a translation table mapping internal (private IP, port) to external (public IP, port)
-2. When an internal device initiates outbound traffic, the router:
-   - Replaces the source private IP with the public IP
-   - Replaces the source port with a unique port number
-   - Records this mapping in its translation table
-3. When inbound traffic arrives, the router:
-   - Checks the destination port against its translation table
-   - Rewrites the destination IP and port to the internal values
-   - Forwards the packet to the internal device
-
-This process allows thousands of internal devices to share a single public IP address while maintaining session state.
-
 ---
 
 ### 🔹 VLANs
 
 Virtual LANs (VLANs) create logically separate networks within a physical network infrastructure. VLANs operate at Layer 2 of the OSI model and provide segmentation, security, and broadcast containment.
-
-**VLAN Benefits:**
-- **Security**: Isolation between sensitive departments (HR, Finance)
-- **Performance**: Reduced broadcast traffic
-- **Flexibility**: Logical grouping regardless of physical location
-- **Management**: Simplified network administration
 
 ```mermaid
 flowchart TD
@@ -218,173 +162,358 @@ flowchart TD
     style Switch fill:#e8f5e9
 ```
 
-**Technical Details:**
-VLANs work through IEEE 802.1Q tagging, where a 4-byte tag is inserted into Ethernet frames to identify VLAN membership. This allows:
-
-1. **Access Ports**: Connect end devices to a single VLAN (untagged)
-2. **Trunk Ports**: Carry multiple VLANs between switches/routers (tagged)
-3. **Inter-VLAN Routing**: Layer 3 devices route between VLANs
-
-Without VLANs, all devices on a physical network would belong to the same broadcast domain, creating security risks and performance issues as networks scale.
-
 ---
 
-## ⚡ Hands-On Challenges with Solutions
+## ⚡ Hands-On Challenges with Solutions (Single VM Edition)
+
+### Prerequisites: Setup Network Namespaces
+First, let's create the network namespaces that will simulate different devices:
+
+```bash
+# Create network namespaces
+sudo ip netns add client1
+sudo ip netns add client2
+sudo ip netns add router
+
+# Create virtual Ethernet pairs
+sudo ip link add veth0 type veth peer name veth1
+sudo ip link add veth2 type veth peer name veth3
+
+# Move interfaces to appropriate namespaces
+sudo ip link set veth0 netns client1
+sudo ip link set veth1 netns router
+sudo ip link set veth2 netns client2
+sudo ip link set veth3 netns router
+
+# Configure IP addresses
+sudo ip netns exec client1 ip addr add 192.168.1.10/24 dev veth0
+sudo ip netns exec router ip addr add 192.168.1.1/24 dev veth1
+sudo ip netns exec client2 ip addr add 10.0.2.10/24 dev veth2
+sudo ip netns exec router ip addr add 10.0.2.1/24 dev veth3
+
+# Bring interfaces up
+sudo ip netns exec client1 ip link set veth0 up
+sudo ip netns exec router ip link set veth1 up
+sudo ip netns exec client2 ip link set veth2 up
+sudo ip netns exec router ip link set veth3 up
+sudo ip netns exec client1 ip link set lo up
+sudo ip netns exec client2 ip link set lo up
+sudo ip netns exec router ip link set lo up
+```
 
 ---
 
 ### 🔹 Static Routing (5 Challenges)
 
-1️⃣ **Configure a static route between two routers and test connectivity**
+1️⃣ **Configure static routes between namespaces**
 
 ```bash
-# On Router A
-ip route add 10.0.2.0/24 via 192.168.1.2
-# Verify
-ping 10.0.2.1
+# On router namespace
+sudo ip netns exec router ip route add 192.168.1.0/24 dev veth1
+sudo ip netns exec router ip route add 10.0.2.0/24 dev veth3
+
+# On client1 namespace (add route to network 10.0.2.0/24 via router)
+sudo ip netns exec client1 ip route add 10.0.2.0/24 via 192.168.1.1
+
+# On client2 namespace (add route to network 192.168.1.0/24 via router)
+sudo ip netns exec client2 ip route add 192.168.1.0/24 via 10.0.2.1
+
+# Test connectivity
+sudo ip netns exec client1 ping 10.0.2.10 -c 3
+sudo ip netns exec client2 ping 192.168.1.10 -c 3
 ```
 
 2️⃣ **Add multiple static routes and analyze preference**
 
 ```bash
-ip route add 10.0.3.0/24 via 192.168.1.2 metric 100
-ip route add 10.0.3.0/24 via 192.168.1.3 metric 200
-ip route show
+# Create an alternative path (simulated)
+sudo ip netns exec router ip route add 10.0.2.0/24 dev veth3 metric 100
+sudo ip netns exec router ip route add 10.0.2.0/24 dev veth3 metric 200
+
+# View routing table and analyze preference
+sudo ip netns exec router ip route show
 ```
 
-👉 Lower metric = higher preference.
-
-3️⃣ **Break a static route intentionally**
+3️⃣ **Break a static route intentionally and troubleshoot**
 
 ```bash
-ip route del 10.0.2.0/24
-ping 10.0.2.1   # should fail
+# Remove the route
+sudo ip netns exec client1 ip route del 10.0.2.0/24
+
+# Test connectivity (should fail)
+sudo ip netns exec client1 ping 10.0.2.10 -c 2
+
+# Troubleshoot with traceroute
+sudo ip netns exec client1 traceroute 10.0.2.10
+
+# Fix the route
+sudo ip netns exec client1 ip route add 10.0.2.0/24 via 192.168.1.1
 ```
 
-👉 Use `ip route` and `traceroute` to debug.
+4️⃣ **Compare static vs dynamic routing concepts**
 
-4️⃣ **Compare static vs dynamic routing**
+```bash
+# Examine current static routes
+sudo ip netns exec router ip route show
 
-* Static = manual, simple, no overhead.
-* Dynamic = automatic updates, scales better (OSPF, BGP).
+# Compare with what dynamic routing would provide
+echo "Static routing: Manual configuration, no overhead"
+echo "Dynamic routing: Automatic updates, better for large networks"
+```
 
-5️⃣ **Document branch-to-HQ static routing topology**
-👉 Draw with Mermaid or tools like draw\.io.
+5️⃣ **Document the namespace routing topology**
+
+```bash
+# Show all interfaces and their addresses
+sudo ip netns exec client1 ip addr show
+sudo ip netns exec client2 ip addr show
+sudo ip netns exec router ip addr show
+
+# Show routing tables
+sudo ip netns exec client1 ip route show
+sudo ip netns exec client2 ip route show
+sudo ip netns exec router ip route show
+```
 
 ---
 
 ### 🔹 Default Gateway (5 Challenges)
 
-1️⃣ **Set up default gateway on Linux**
+1️⃣ **Set up default gateway in namespace**
 
 ```bash
-ip route add default via 192.168.1.1
-ping 8.8.8.8
+# Create a simulated internet namespace
+sudo ip netns add internet
+sudo ip link add veth4 type veth peer name veth5
+sudo ip link set veth4 netns router
+sudo ip link set veth5 netns internet
+sudo ip netns exec router ip addr add 203.0.113.1/24 dev veth4
+sudo ip netns exec internet ip addr add 203.0.113.2/24 dev veth5
+sudo ip netns exec router ip link set veth4 up
+sudo ip netns exec internet ip link set veth5 up
+
+# Set default gateway on router
+sudo ip netns exec router ip route add default via 203.0.113.2
+
+# Set default gateway on clients
+sudo ip netns exec client1 ip route add default via 192.168.1.1
+sudo ip netns exec client2 ip route add default via 10.0.2.1
 ```
 
-2️⃣ **Remove/modify gateway**
+2️⃣ **Remove/modify gateway and test**
 
 ```bash
-ip route del default
-ping 8.8.8.8   # fails
+# Remove default gateway
+sudo ip netns exec client1 ip route del default
+
+# Test connectivity (should fail)
+sudo ip netns exec client1 ping 203.0.113.2 -c 2
+
+# Restore gateway
+sudo ip netns exec client1 ip route add default via 192.168.1.1
 ```
 
 3️⃣ **Multiple gateways with metrics**
 
 ```bash
-ip route add default via 192.168.1.1 metric 100
-ip route add default via 192.168.1.2 metric 200
+# Add multiple default routes with different metrics
+sudo ip netns exec client1 ip route add default via 192.168.1.1 metric 100
+sudo ip netns exec client1 ip route add default via 192.168.1.1 metric 200
+
+# Show routing table to see preference
+sudo ip netns exec client1 ip route show
 ```
 
-4️⃣ **Capture packets via gateway**
+4️⃣ **Capture packets going through gateway**
 
 ```bash
-sudo tcpdump -i eth0 icmp
+# Start packet capture on router
+sudo ip netns exec router timeout 10 tcpdump -i veth1 icmp &
+
+# Generate traffic from client1
+sudo ip netns exec client1 ping 203.0.113.2 -c 3
 ```
 
-👉 Shows pings exiting via gateway.
+5️⃣ **Troubleshoot wrong gateway configuration**
 
-5️⃣ **Troubleshoot wrong gateway**
+```bash
+# Intentionally set wrong gateway
+sudo ip netns exec client1 ip route del default
+sudo ip netns exec client1 ip route add default via 192.168.1.99
 
-* Symptom: Can ping local but not internet.
-* Fix: Correct default gateway in `/etc/netplan/*` or `/etc/network/interfaces`.
+# Test connectivity (should fail)
+sudo ip netns exec client1 ping 203.0.113.2 -c 2
+
+# Diagnose the issue
+sudo ip netns exec client1 ip route show
+sudo ip netns exec client1 traceroute 203.0.113.2
+
+# Fix the gateway
+sudo ip netns exec client1 ip route del default
+sudo ip netns exec client1 ip route add default via 192.168.1.1
+```
 
 ---
 
 ### 🔹 NAT & PAT (5 Challenges)
 
-1️⃣ **Configure NAT on Linux**
+1️⃣ **Configure NAT on the router namespace**
 
 ```bash
-sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+# Enable IP forwarding on router
+sudo ip netns exec router sysctl -w net.ipv4.ip_forward=1
+
+# Configure NAT using iptables
+sudo ip netns exec router iptables -t nat -A POSTROUTING -o veth4 -j MASQUERADE
+sudo ip netns exec router iptables -A FORWARD -i veth1 -o veth4 -j ACCEPT
+sudo ip netns exec router iptables -A FORWARD -i veth4 -o veth1 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Test NAT functionality
+sudo ip netns exec client1 ping 203.0.113.2 -c 3
 ```
 
-2️⃣ **PAT with multiple hosts**
-👉 NAT maps each host's **port** to the shared public IP.
-Check with `curl ifconfig.me` from 2 VMs.
-
-3️⃣ **iptables NAT test**
+2️⃣ **Test PAT with multiple hosts**
 
 ```bash
-curl -4 ifconfig.me   # shows public IP
+# Simulate multiple clients making connections
+sudo ip netns exec client1 ping 203.0.113.2 -c 2 &
+sudo ip netns exec client2 ping 203.0.113.2 -c 2 &
+
+# Check NAT translations
+sudo ip netns exec router iptables -t nat -L -n -v
+```
+
+3️⃣ **Test iptables NAT configuration**
+
+```bash
+# Check NAT table
+sudo ip netns exec router iptables -t nat -L
+
+# Verify NAT is working by checking connection tracking
+sudo ip netns exec router conntrack -L
 ```
 
 4️⃣ **Capture NAT packets**
 
 ```bash
-sudo tcpdump -i eth0 port 80
+# Capture packets on the external interface
+sudo ip netns exec router timeout 10 tcpdump -i veth4 -n &
+
+# Generate traffic from clients
+sudo ip netns exec client1 ping 203.0.113.2 -c 3
 ```
 
 5️⃣ **Troubleshoot NAT failure**
 
-* Check IP forwarding:
-
 ```bash
-sysctl net.ipv4.ip_forward
-```
+# Disable IP forwarding to simulate NAT failure
+sudo ip netns exec router sysctl -w net.ipv4.ip_forward=0
 
-* Verify firewall rules.
+# Test connectivity (should fail)
+sudo ip netns exec client1 ping 203.0.113.2 -c 2
+
+# Check sysctl settings
+sudo ip netns exec router sysctl net.ipv4.ip_forward
+
+# Re-enable and verify
+sudo ip netns exec router sysctl -w net.ipv4.ip_forward=1
+sudo ip netns exec client1 ping 203.0.113.2 -c 2
+```
 
 ---
 
 ### 🔹 VLAN Basics (5 Challenges)
 
-1️⃣ **Create VLANs on a switch (Linux bridge example)**
+1️⃣ **Create VLAN interfaces in namespaces**
 
 ```bash
-sudo ip link add link eth0 name eth0.10 type vlan id 10
-sudo ip addr add 192.168.10.1/24 dev eth0.10
+# Create VLAN interfaces on router
+sudo ip netns exec router ip link add link veth1 name veth1.10 type vlan id 10
+sudo ip netns exec router ip link add link veth1 name veth1.20 type vlan id 20
+sudo ip netns exec router ip addr add 192.168.10.1/24 dev veth1.10
+sudo ip netns exec router ip addr add 192.168.20.1/24 dev veth1.20
+sudo ip netns exec router ip link set veth1.10 up
+sudo ip netns exec router ip link set veth1.20 up
+
+# Create VLAN interfaces on client1 (VLAN 10)
+sudo ip netns exec client1 ip link add link veth0 name veth0.10 type vlan id 10
+sudo ip netns exec client1 ip addr add 192.168.10.10/24 dev veth0.10
+sudo ip netns exec client1 ip link set veth0.10 up
+
+# Create VLAN interfaces on client2 (VLAN 20)
+sudo ip netns exec client2 ip link add link veth2 name veth2.20 type vlan id 20
+sudo ip netns exec client2 ip addr add 192.168.20.10/24 dev veth2.20
+sudo ip netns exec client2 ip link set veth2.20 up
 ```
 
-2️⃣ **Inter-VLAN routing (Router-on-a-stick)**
+2️⃣ **Configure inter-VLAN routing**
 
 ```bash
-# Router with sub-interfaces
-ip addr add 192.168.10.1/24 dev eth0.10
-ip addr add 192.168.20.1/24 dev eth0.20
+# Enable IP forwarding on router
+sudo ip netns exec router sysctl -w net.ipv4.ip_forward=1
+
+# Test inter-VLAN connectivity
+sudo ip netns exec client1 ping 192.168.20.10 -c 3
+sudo ip netns exec client2 ping 192.168.10.10 -c 3
 ```
 
 3️⃣ **Misconfigure VLAN and troubleshoot**
-👉 Put two devices in different VLANs, they won't talk.
-Fix: put them in the same VLAN or configure routing.
-
-4️⃣ **Explore VLAN tagging (802.1Q)**
 
 ```bash
-sudo tcpdump -e -i eth0 vlan
+# Put client2 in wrong VLAN
+sudo ip netns exec client2 ip link del veth2.20
+sudo ip netns exec client2 ip link add link veth2 name veth2.30 type vlan id 30
+sudo ip netns exec client2 ip addr add 192.168.30.10/24 dev veth2.30
+sudo ip netns exec client2 ip link set veth2.30 up
+
+# Test connectivity (should fail)
+sudo ip netns exec client1 ping 192.168.30.10 -c 2
+
+# Troubleshoot
+sudo ip netns exec client1 ip addr show
+sudo ip netns exec client2 ip addr show
+sudo ip netns exec router ip addr show
+
+# Fix the configuration
+sudo ip netns exec client2 ip link del veth2.30
+sudo ip netns exec client2 ip link add link veth2 name veth2.20 type vlan id 20
+sudo ip netns exec client2 ip addr add 192.168.20.10/24 dev veth2.20
+sudo ip netns exec client2 ip link set veth2.20 up
+```
+
+4️⃣ **Explore VLAN tagging**
+
+```bash
+# Capture VLAN tagged packets
+sudo ip netns exec router timeout 10 tcpdump -i veth1 -e vlan &
+
+# Generate VLAN traffic
+sudo ip netns exec client1 ping 192.168.20.10 -c 2
+```
+
+5️⃣ **Document multi-VLAN setup**
+
+```bash
+# Show VLAN configuration
+echo "VLAN 10: 192.168.10.0/24 (Client1)"
+echo "VLAN 20: 192.168.20.0/24 (Client2)"
+echo "Router interfaces:"
+sudo ip netns exec router ip addr show | grep -E "(veth1.10|veth1.20)"
+echo "Client interfaces:"
+sudo ip netns exec client1 ip addr show veth0.10
+sudo ip netns exec client2 ip addr show veth2.20
 ```
 
 ---
 
 ## ✅ Deliverables
 
-* Write solutions in `solution.md` with:
-
-  * Commands run
-  * Observations
-  * Screenshots/diagrams
-* Push to your GitHub repo & share link.
-* Post your experience with hashtags:
+* Document your solutions in `solution.md` with:
+  * All commands executed
+  * Output observations and screenshots
+  * Network diagrams of your namespace setup
+* Push to your GitHub repository
+* Share your experience with hashtags:
   **#getfitwithsagar #SRELife #DevOpsForAll**
 
 ---
