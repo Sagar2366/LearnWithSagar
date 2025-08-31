@@ -1,4 +1,3 @@
-Of course. Here is the **Day 18 – Firewalls & Security** README, incorporating your requests precisely. I have added a detailed **Lab Setup** section and fixed the Mermaid diagram for the TLS handshake to be technically accurate, without altering any of the original content you provided.
 
 ---
 
@@ -72,6 +71,16 @@ flowchart TD
     FW -->|Blocked| Drop[Packet Dropped 🚫]
 ```
 
+**Detailed Explanation:**
+A firewall is a network security system that monitors and controls incoming and outgoing network traffic based on predetermined security rules. It acts as a barrier between a trusted internal network and untrusted external networks, like the Internet.
+
+*   **Packet Filtering:** The core function. The firewall inspects each **packet** of data (looking at headers for source/destination IP, port, and protocol) and compares it against a set of **rules**.
+*   **Rule Evaluation:** Rules are processed in order. A packet is checked against the first rule; if it matches, the specified action (e.g., `ACCEPT`, `DROP`) is taken. If not, it moves to the next rule. If no rules match, a default policy (usually `DROP`) is applied.
+*   **Actions:**
+    *   **ACCEPT:** Allows the packet to proceed.
+    *   **DROP:** Silently discards the packet as if it never arrived. This is more secure than rejecting.
+    *   **REJECT:** Discards the packet but sends an error message (e.g., a TCP reset packet) back to the sender. This is more polite but reveals the existence of the firewall.
+
 ---
 
 ### 🔹 Stateful vs Stateless Filtering
@@ -87,6 +96,17 @@ sequenceDiagram
     Server->>Firewall: TCP SYN-ACK
     Firewall->>Client: Allow (stateful remembers connection)
 ```
+
+**Detailed Explanation:**
+This diagram highlights the critical difference between stateful and stateless firewalls.
+
+*   **Stateless Firewalls (Packet Filters):**
+    *   **How they work:** They examine each packet in isolation, with no memory of previous packets. A rule like `ACCEPT TCP port 22` would allow *any* packet destined for port 22, whether it's a new connection attempt or a response to a previous one.
+    *   **The Problem:** To allow legitimate responses, you'd have to open ports for all *potential* return traffic, creating a larger attack surface. They are simple and fast but lack context, making them vulnerable to spoofing attacks and less secure.
+
+*   **Stateful Firewalls (The Modern Standard):**
+    *   **How they work:** They maintain a **state table** that tracks the state of all active connections (e.g., `NEW`, `ESTABLISHED`, `RELATED`). This is the "memory" shown in the diagram.
+    *   **The Advantage:** The firewall understands if a packet is starting a new connection or is part of an existing one. A simple rule like `ACCEPT ESTABLISHED,RELATED` traffic can allow return traffic for any outgoing connection, without needing specific rules for every return port. This is more secure and easier to manage. For example, if an internal client connects to a web server, the firewall automatically allows the return packets (SYN-ACK, etc.) back through, even if the default policy is to `DROP` incoming traffic.
 
 ---
 
@@ -110,6 +130,21 @@ sequenceDiagram
 
     Note over C, S: Secure Session Established 🔐<br>Encrypted Application Data
 ```
+
+**Detailed Explanation:**
+The Transport Layer Security (TLS) handshake is a critical process that enables secure communication over a network by authenticating the server (and optionally the client) and establishing a shared secret key for symmetric encryption.
+
+1.  **`ClientHello`:** The client initiates the handshake by sending a message containing the TLS versions it supports, a list of suggested cipher suites (cryptographic algorithms), and a random string of bytes (`Client Random`).
+
+2.  **`ServerHello` & Certificate:** The server responds with its chosen TLS version and cipher suite from the client's list. It also sends its own `Server Random` and its **SSL Certificate**. This certificate contains the server's public key and is signed by a trusted Certificate Authority (CA), allowing the client to verify the server's identity.
+
+3.  **Key Exchange (PreMaster Secret):** The client verifies the server's certificate. If trusted, it generates a `PreMaster Secret`, encrypts it with the server's public key (from the certificate), and sends it back. **Only the server possessing the corresponding private key can decrypt this secret.**
+
+4.  **Session Keys Generated:** Both the client and server now independently generate the same **session keys** (symmetric keys for encryption/decryption) using the `Client Random`, `Server Random`, and `PreMaster Secret`. The PreMaster Secret is immediately discarded on both sides. This ensures **Forward Secrecy**.
+
+5.  **`ChangeCipherSpec` & `Finished`:** Both parties send a `ChangeCipherSpec` message to signal that subsequent messages will be encrypted with the newly established session keys. A `Finished` message is sent encrypted to verify that the handshake was successful and the keys are working correctly.
+
+6.  **Secure Communication:** The handshake is complete. All subsequent application data (HTTP, etc.) is encrypted and authenticated using the symmetric session keys, ensuring **confidentiality** and **integrity**.
 
 ---
 
