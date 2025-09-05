@@ -2,9 +2,9 @@
 ## Day 15: OSI & TCP/IP Model Foundations for DevOps/SRE
 
 ### Introduction
-Welcome to Day 15 of the Daily DevOps + SRE Challenge Series – Season 2!
+Welcome to Day 15 of the Daily DevOps + SRE Challenge Series - Season 2!
 
-Today marks the start of your Networking for DevOps journey. Before diving into commands and configs, you'll build a strong mental model of how networking actually works—layer by layer. Understanding the OSI and TCP/IP models will make you a faster troubleshooter, a better cloud/network engineer, and help you communicate clearly with your team.
+Today marks the start of your Networking for DevOps journey. Before diving into commands and configs, you'll build a strong mental model of how networking actually works layer by layer. Understanding the OSI and TCP/IP models will make you a faster troubleshooter, a better cloud/network engineer, and help you communicate clearly with your team.
 
 By the end of today, you'll be able to:
 - Draw and describe both the OSI and TCP/IP models
@@ -22,31 +22,26 @@ Why this matters:
 
 ### 1) The OSI & TCP/IP Models
 
-#### OSI Model (7 Layers)
-| Layer    | Number | Example Protocols           | Example Tools      |
-|----------|--------|----------------------------|--------------------|
-| Application   | 7      | HTTP, SSH, DNS, SMTP           | curl, ssh, dig     |
-| Presentation  | 6      | SSL/TLS, ASCII, JPEG           | openssl            |
-| Session       | 5      | NetBIOS, RPC, TLS session      |                    |
-| Transport     | 4      | TCP, UDP                       | nc, ss, netstat    |
-| Network       | 3      | IP, ICMP                       | ip, ping, traceroute|
-| Data Link     | 2      | Ethernet, ARP, MAC             | ip link, arp       |
-| Physical      | 1      | Cables, Wi-Fi, fiber           | ethtool, ip link   |
+#### OSI Model (7 Layers) and Data Formats
+
+| Layer         | Number | Example Protocols           | Example Tools      | Data Unit (PDU)           |
+|---------------|--------|----------------------------|--------------------|---------------------------|
+| Application   | 7      | HTTP, SSH, DNS, SMTP       | curl, ssh, dig     | Data / Message            |
+| Presentation  | 6      | SSL/TLS, ASCII, JPEG       | openssl            | Data                      |
+| Session       | 5      | NetBIOS, RPC, TLS session  |                    | Data                      |
+| Transport     | 4      | TCP, UDP                   | nc, ss, netstat    | Segment (TCP) / Datagram (UDP) |
+| Network       | 3      | IP, ICMP                   | ip, ping, traceroute | Packet                  |
+| Data Link     | 2      | Ethernet, ARP, MAC         | ip link, arp       | Frame                     |
+| Physical      | 1      | Cables, Wi-Fi, fiber       | ethtool, ip link   | Bit                       |
 
 #### TCP/IP Model (4 Layers)
-| Layer        | OSI Layer(s)             | Example Protocols/Tools      |
-|--------------|--------------------------|------------------------------|
-| Application  | 7, 6, 5                  | HTTP, SSH, DNS, TLS, curl    |
-| Transport    | 4                        | TCP, UDP, nc, ss             |
-| Internet     | 3                        | IP, ICMP, ping, traceroute   |
-| Network Access| 2, 1                    | Ethernet, ARP, ip link, arp  |
 
-**Quick mapping:**  
-- “Can’t SSH/ping/curl?” → Which layer fails?  
-- “Is DNS broken?” → Application  
-- “Is port blocked?” → Transport  
-- “Wrong IP/gateway?” → Network/Internet  
-- “Cable unplugged?” → Physical/Data Link
+| Layer         | OSI Layer(s)             | Example Protocols/Tools      |
+|---------------|--------------------------|------------------------------|
+| Application   | 7, 6, 5                  | HTTP, SSH, DNS, TLS, curl    |
+| Transport     | 4                        | TCP, UDP, nc, ss             |
+| Internet      | 3                        | IP, ICMP, ping, traceroute   |
+| Network Access| 2, 1                     | Ethernet, ARP, ip link, ethtool|
 
 ---
 
@@ -55,13 +50,13 @@ Why this matters:
 #### OSI Model Overview
 ```mermaid
 flowchart TD
-    L7[Application :HTTP, SSH, DNS]
-    L6[Presentation :TLS, SSL, Encoding]
-    L5[Session :TLS session, NetBIOS]
-    L4[Transport :TCP, UDP]
-    L3[Network :IP, ICMP]
-    L2[Data Link :Ethernet, ARP]
-    L1[Physical :Cable, Wi-Fi]
+    L7[Application : HTTP, SSH, DNS]
+    L6[Presentation : TLS, SSL, Encoding]
+    L5[Session : TLS session, NetBIOS]
+    L4[Transport : TCP, UDP]
+    L3[Network : IP, ICMP]
+    L2[Data Link : Ethernet, ARP]
+    L1[Physical : Cable, Wi-Fi]
     L7 --> L6 --> L5 --> L4 --> L3 --> L2 --> L1
 ```
 
@@ -123,6 +118,7 @@ Document your answer in solution.md.
 - Not every protocol is at only one layer (e.g., DNS = Application, but depends on Transport/Network)
 - Some tools work at multiple layers (e.g., tcpdump sees almost everything!)
 - Real-world cloud infra may “hide” some layers (e.g., you don’t see cables, but you still check link status in VMs)
+- The PDU (data format) matters for troubleshooting (e.g., "packet loss" is different from "frame error")
 
 ---
 
