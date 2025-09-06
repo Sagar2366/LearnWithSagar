@@ -1,530 +1,215 @@
-# Day 17 — Routing & Switching Basics (Daily DevOps + SRE Challenge Series — Season 2)
+---
+
+# **Day 17: OSI Layer 3 – The Network Layer (IP, Subnets, Routing)**
+
+### **The Internetworking Layer: From Local to Global**
 
 ---
 
-## 🌟 Introduction
+## **🚀 Why This Matters More Than Ever**
 
-Welcome to **Day 17** of the Daily DevOps + SRE Challenge Series – Season 2!
+You've mastered the local talk (L2) and the physical signals (L1). But the real magic of the internet happens when a request from your phone in Delhi can find a server in São Paulo, passing through dozens of unknown networks in milliseconds.
 
-Today we dive into the **Routing & Switching basics** every DevOps/SRE must master: **Static Routing, Default Gateways, NAT/PAT, and VLANs.** These are the invisible highways of networking that ensure packets get from point A to point B securely, efficiently, and reliably.
+**Layer 3 makes this possible.** It's the post office of the digital world. As an SRE or DevOps engineer, you don't just use this layer—you **design, secure, and troubleshoot** it. Every VPC, every firewall rule, every Kubernetes network policy, and every connectivity ticket ultimately boils down to Layer 3 concepts.
 
-Instead of just reading theory, you'll solve **real-world, production-style challenges** with Linux commands, diagrams, and troubleshooting steps - all within a single virtual machine using network namespaces.
-
----
-
-## 🚀 Why Does This Matter?
-
-* **Connectivity**: Without routing, packets never leave your subnet.
-* **Security**: NAT/PAT and VLANs are used everywhere in enterprises to hide internal networks and isolate services.
-* **Reliability**: Correct default gateway configs prevent outages.
-* **Scale**: VLANs + static/dynamic routing make it possible to manage thousands of users and workloads.
-* **Interview Edge**: Common questions include *"What is a default gateway?"*, *"Explain NAT vs PAT"*, and *"How do VLANs improve security?"*
+> **"It's never DNS... until it is. It's never networking... until it is. And then it's everything."**
 
 ---
 
-## 🔥 Real-World Save
+## **1. Core Concepts Demystified**
 
-* A SaaS startup lost internet access for **6 hours** because the **wrong default gateway** was configured on a new subnet.
-* A fintech company reduced **public IP usage by 90%** using **PAT**.
-* A data center was compromised because **VLANs weren't properly isolated** — attackers jumped between networks.
-* A global team avoided a costly outage by documenting **static routes** during a WAN migration.
+### **1.1 The IP Address: Your Digital Passport**
+
+*   **What it is:** A logical, hierarchical address assigned to a network interface. Unlike a MAC address (permanent, factory-assigned), an IP address is logical and can change based on location (network).
+*   **The Hierarchy:** This is the key to scalability. An IP address isn't just a random number; it has a **network portion** (like a zip code) and a **host portion** (like a street address). This allows routers to make decisions based only on the network portion, ignoring the specific host.
+*   **IPv4 vs. IPv6: The Great Transition**
+    *   **IPv4 (e.g., `192.168.1.10`):** 32-bit, ~4.3 billion addresses. Exhausted. Kept alive by NAT (Network Address Translation).
+    *   **IPv6 (e.g., `2001:0db8:85a3:0000:0000:8a2e:0370:7334`):** 128-bit, essentially unlimited addresses. Built for the modern internet (security, auto-configuration, efficiency).
+
+### **1.2 Subnetting & CIDR: Drawing the Maps**
+
+*   **The Problem:** Throwing all devices into one giant network (e.g., 16 million hosts with `10.0.0.0/8`) is a broadcast storm nightmare and a security disaster.
+*   **The Solution: Subnetting.** Dividing a large network into smaller, manageable sub-networks.
+*   **CIDR (Classless Inter-Domain Routing):** The notation that defines the network/host split. `192.168.1.10/24`
+    *   The `/24` is the **prefix length**. It means the first 24 bits are the network ID.
+    *   **Subnet Mask:** The same concept, in dotted-decimal. `/24` = `255.255.255.0`.
+    *   **The Golden Rule:** Two devices can talk directly **only if they are on the same subnet.** If not, they need a router.
+
+**Quick Subnetting Reference:**
+| CIDR | Subnet Mask | Usable Hosts | Use Case |
+| :--- | :--- | :--- | :--- |
+| `/32` | `255.255.255.255` | 1 | Single host (loopback, AWS security groups) |
+| `/30` | `255.255.255.252` | 2 | Point-to-point links (e.g., WAN connections) |
+| `/24` | `255.255.255.0` | 254 | Common small LANs |
+| `/16` | `255.255.0.0` | 65,534 | Large private networks (e.g., corporate) |
+| `/8` | `255.0.0.0` | 16.7M | Huge legacy networks |
+
+### **1.3 The Default Gateway: The Door to the World**
+
+*   The IP address of the **router** that sits on your local subnet. Your device's routing table says: "If you don't have a specific route for the destination, send the packet to this guy. He'll know what to do."
+
+### **1.4 Routing: The Path-Finding Algorithm**
+
+*   **The Routing Table:** A list of rules on every networked device. Run `ip route show` to see yours. It answers the question: "To send a packet to IP X, which next hop or interface should I use?"
+*   **How Routes are Added:**
+    *   **Directly Connected:** Added automatically when you configure an IP address on an interface (`proto kernel`).
+    *   **Statically Configured:** Manually added by an admin (`ip route add ...`).
+    *   **Dynamically Learned:** Added by routing protocols (BGP, OSPF) that routers use to talk to each other and share network information.
 
 ---
 
-## 📘 Theory Section
+## **2. The IP Packet Deep Dive (The L3 Envelope)**
 
-### 🔹 Static Routing
+The segment from Layer 4 is encapsulated into an IP Packet. Its header is the critical information for delivery.
 
-Static routing involves manually configuring routes on network devices to specify the path network traffic should take to reach specific destinations. Unlike dynamic routing protocols that automatically exchange routing information, static routes are fixed and don't adapt to network changes unless manually modified.
+| Field | Purpose | Why it Matters to You |
+| :--- | :--- | :--- |
+| **Version** | 4 or 6 | Determines which IP protocol stack to use. |
+| **Source IP** | Origin Address | Used for reply routing. Can be spoofed (security risk!). |
+| **Destination IP** | Final Address | The ultimate target the packet must reach. |
+| **TTL (Time to Live)** | Hop Limit | Decremented by each router. Prevents infinite loops. A `traceroute` works by manipulating TTL. |
+| **Protocol** | TCP (6), UDP (17), etc. | Tells the receiving host's OS which L4 protocol to hand the payload to. |
+| **Flags / Fragment Offset** | Packet Fragmentation | If a packet is too large for a network link (MTU), it may be split into fragments. Often causes performance issues. |
 
 ```mermaid
-flowchart TD
-    subgraph NetworkA[Network A: 192.168.1.0/24]
-        A1[Host A1<br>192.168.1.10]
-        A2[Host A2<br>192.168.1.11]
-    end
-
-    subgraph NetworkB[Network B: 10.0.2.0/24]
-        B1[Host B1<br>10.0.2.10]
-        B2[Host B2<br>10.0.2.11]
-    end
-
-    R1[Router A<br>192.168.1.1/24<br>172.16.1.1/30]
-    R2[Router B<br>172.16.1.2/30<br>10.0.2.1/24]
-
-    NetworkA --> R1
-    R1 -->|Static Route: 10.0.2.0/24 via 172.16.1.2| R2
-    R2 --> NetworkB
-    
-    style R1 fill:#e1f5fe
-    style R2 fill:#e1f5fe
+graph LR
+A[Application Data] --> B[L4: TCP Header + Data]
+B --> C[L3: IP Header + Segment]
+C --> D[L2: Frame]
 ```
 
 ---
 
-### 🔹 Default Gateway
+## **3. Layer 3 in Action: Devices & Their Cloud Equivalents**
 
-The default gateway serves as the "gateway of last resort." When a device needs to send traffic to a destination network not explicitly listed in its routing table, it forwards the packet to the default gateway.
-
-```mermaid
-flowchart TD
-    subgraph LocalNetwork[Local Network: 192.168.1.0/24]
-        PC1[Workstation<br>192.168.1.10]
-        PC2[Server<br>192.168.1.20]
-        PC3[Laptop<br>192.168.1.30]
-    end
-
-    Router[Edge Router<br>192.168.1.1/24<br>203.0.113.5/30]
-
-    Internet[Internet]
-    
-    PC1 -->|Default Gateway: 192.168.1.1| Router
-    PC2 -->|Default Gateway: 192.168.1.1| Router
-    PC3 -->|Default Gateway: 192.168.1.1| Router
-    Router -->|Default Route: 0.0.0.0/0<br>via ISP Router| Internet
-    
-    style Router fill:#fff3e0
-```
+| Concept | Physical World | Virtual/Cloud World | Key Purpose |
+| :--- | :--- | :--- | :--- |
+| **Router** | Cisco, Juniper Box | **VPC Route Table**, **Virtual Network Gateway** | Connect different IP networks and make forwarding decisions. |
+| **L3 Switch** | Switch with routing features | (Same as Router) | High-speed, hardware-based routing within a data center. |
+| **Firewall** | Palo Alto, Fortinet Box | **Security Groups (Host-Based)**, **NACLs (Subnet-Based)**, **Cloud Firewall** | Filter traffic based on L3 (IPs) and L4 (Ports) rules. |
+| **Load Balancer** | F5 BIG-IP | **ALB/NLB (AWS), GLB (GCP), Load Balancer (Azure)** | Distribute traffic based on IP and port to backend targets. |
+| **Gateway** | Internet Router | **Internet Gateway (IGW), NAT Gateway** | Provide a controlled path between private networks and the internet. |
 
 ---
 
-### 🔹 NAT & PAT
+## **4. The SRE's Toolkit: Essential Linux Commands**
 
-Network Address Translation (NAT) and Port Address Translation (PAT) are methods to remap IP address space by modifying network address information in packet headers while in transit.
-
-```mermaid
-flowchart LR
-    subgraph PrivateNetwork[Private Network]
-        A[Web Server<br>10.0.0.10:80]
-        B[Workstation<br>10.0.0.11:3456]
-        C[Laptop<br>10.0.0.12:5000]
-    end
-
-    subgraph NATRouter[NAT Router]
-        NAT[Translation Table]
-    end
-
-    Internet[Internet]
-
-    A -->|Source: 10.0.0.10:80| NAT
-    B -->|Source: 10.0.0.11:3456| NAT
-    C -->|Source: 10.0.0.12:5000| NAT
-    
-    NAT -->|Translated: 203.0.113.5:8080| Internet
-    NAT -->|Translated: 203.0.113.5:3457| Internet
-    NAT -->|Translated: 203.0.113.5:5001| Internet
-    
-    style NATRouter fill:#f3e5f5
-```
+| Task | Command | Example & Output Snippet |
+| :--- | :--- | :--- |
+| **Show IP Config** | `ip addr show` or `ip a` | `inet 192.168.1.5/24 brd 192.168.1.255 scope global eth0` |
+| **Show Routing Table** | `ip route show` or `ip r` | `default via 192.168.1.1 dev eth0 proto static` <br> `192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.5` |
+| **Test Reachability** | `ping <target>` | `64 bytes from 8.8.8.8: icmp_seq=1 ttl=118 time=15.3 ms` |
+| **Trace the Path** | `traceroute <target>` <br> or `tracepath` | `1: _gateway (192.168.1.1) 1.102ms` <br> `2: 100.65.18.177 (100.65.18.177) 9.123ms` |
+| **Check Listening Ports** | `ss -tuln` | `tcp LISTEN 0 128 0.0.0.0:22 0.0.0.0:*` <br> `(SSH listening on all IPs)` |
+| **Manage Routes** | `sudo ip route add <route>` <br> `sudo ip route del <route>` | `sudo ip route add 10.10.0.0/24 via 192.168.1.254` |
+| **Clear ARP Cache** | `ip neigh flush all` | Useful after changing network config to clear old MAC/IP mappings. |
 
 ---
 
-### 🔹 VLANs
+## **5. Guided Hands-On Lab: Become Your Own Router**
 
-Virtual LANs (VLANs) create logically separate networks within a physical network infrastructure. VLANs operate at Layer 2 of the OSI model and provide segmentation, security, and broadcast containment.
+### **Lab Setup (VirtualBox/VMware)**
+1.  Create **three** VMs.
+2.  Set their network adapters to **Internal Network** (e.g., named `LAB_NET`).
+3.  Boot them up. They will have no IP addresses initially.
 
-```mermaid
-flowchart TD
-    Switch[Layer 3 Switch]
+### **Step 1: Configure the "Router"**
+*   On VM1 (`router`), configure two virtual interfaces.
+    ```bash
+    sudo ip addr add 192.168.10.1/24 dev eth0
+    sudo ip addr add 192.168.20.1/24 dev eth1
+    ```
+*   Enable IP forwarding on `router` (this turns a Linux host into a router).
+    ```bash
+    echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
+    ```
 
-    subgraph VLAN10[VLAN 10 - HR Department]
-        HR1[HR PC1<br>192.168.10.10]
-        HR2[HR PC2<br>192.168.10.11]
-        HR3[HR Server<br>192.168.10.100]
-    end
+### **Step 2: Configure the "Clients"**
+*   On VM2 (`client-a`), set its IP and default gateway.
+    ```bash
+    sudo ip addr add 192.168.10.10/24 dev eth0
+    sudo ip route add default via 192.168.10.1
+    ```
+*   On VM3 (`client-b`), set its IP and default gateway.
+    ```bash
+    sudo ip addr add 192.168.20.20/24 dev eth0
+    sudo ip route add default via 192.168.20.1
+    ```
 
-    subgraph VLAN20[VLAN 20 - Engineering]
-        Eng1[Dev Workstation<br>192.168.20.10]
-        Eng2[Test Server<br>192.168.20.50]
-        Eng3[Dev Laptop<br>192.168.20.20]
-    end
-
-    subgraph VLAN30[VLAN 30 - Guests]
-        Guest1[Guest WiFi<br>192.168.30.0/24]
-        Guest2[Visitor PC<br>192.168.30.10]
-    end
-
-    Router[Router]
-
-    HR1 -->|Access Port<br>VLAN 10| Switch
-    HR2 -->|Access Port<br>VLAN 10| Switch
-    HR3 -->|Access Port<br>VLAN 10| Switch
-    
-    Eng1 -->|Access Port<br>VLAN 20| Switch
-    Eng2 -->|Access Port<br>VLAN 20| Switch
-    Eng3 -->|Access Port<br>VLAN 20| Switch
-    
-    Guest1 -->|Access Port<br>VLAN 30| Switch
-    Guest2 -->|Access Port<br>VLAN 30| Switch
-    
-    Switch -->|Trunk Port<br>All VLANs| Router
-    
-    style Switch fill:#e8f5e9
-```
+### **Step 3: Test the Connectivity**
+*   From `client-a`, ping `client-b`'s IP.
+    ```bash
+    ping 192.168.20.20
+    ```
+*   **It should work!** You have successfully built a routed network. The `router` VM received the ping from `client-a` on its `192.168.10.1` interface, checked its routing table, and forwarded it out the `192.168.20.1` interface to `client-b`.
 
 ---
 
-## ⚡ Hands-On Challenges with Solutions (Single VM Edition)
+## **6. Real-World Scenarios & Debugging**
 
-### Prerequisites: Setup Network Namespaces
-First, let's create the network namespaces that will simulate different devices:
+### **Scenario 1: The Cloud VPC Mystery**
+**Problem:** A VM in `subnet-private` can't pull updates from the internet, but a VM in `subnet-public` can.
 
-```bash
-# Create network namespaces
-sudo ip netns add client1
-sudo ip netns add client2
-sudo ip netns add router
+**Your Investigation:**
+1.  **Check Route Tables:** `subnet-private`'s route table likely has a default route (`0.0.0.0/0`) pointing to a **NAT Gateway**, not an Internet Gateway. An IGW gives a public IP; a NAT Gateway allows private instances to initiate outbound connections without being directly exposed.
+2.  **Check NACLs:** Is there a rule in `subnet-private`'s NACL allowing outbound traffic on ports 80/443 and the return ephemeral ports (1024-65535)?
+3.  **Check Security Groups:** Does the SG attached to the private VM allow outbound traffic to `0.0.0.0/0`?
 
-# Create virtual Ethernet pairs
-sudo ip link add veth0 type veth peer name veth1
-sudo ip link add veth2 type veth peer name veth3
+### **Scenario 2: The Hybrid Cloud Tunnel**
+**Problem:** Your on-premise application (`10.10.10.5`) cannot connect to a cloud database (`10.20.30.5`) after a maintenance window.
 
-# Move interfaces to appropriate namespaces
-sudo ip link set veth0 netns client1
-sudo ip link set veth1 netns router
-sudo ip link set veth2 netns client2
-sudo ip link set veth3 netns router
-
-# Configure IP addresses
-sudo ip netns exec client1 ip addr add 192.168.1.10/24 dev veth0
-sudo ip netns exec router ip addr add 192.168.1.1/24 dev veth1
-sudo ip netns exec client2 ip addr add 10.0.2.10/24 dev veth2
-sudo ip netns exec router ip addr add 10.0.2.1/24 dev veth3
-
-# Bring interfaces up
-sudo ip netns exec client1 ip link set veth0 up
-sudo ip netns exec router ip link set veth1 up
-sudo ip netns exec client2 ip link set veth2 up
-sudo ip netns exec router ip link set veth3 up
-sudo ip netns exec client1 ip link set lo up
-sudo ip netns exec client2 ip link set lo up
-sudo ip netns exec router ip link set lo up
-```
+**Your Investigation:**
+1.  **Traceroute is your friend:** `traceroute 10.20.30.5` from on-prem. Where does it stop?
+2.  **Check the VPN/Direct Connect:** Is the BGP session up? Are the routes being advertised correctly from the cloud side to your on-premise router?
+3.  **Check Firewall Rules:** Have the ACLs on the cloud VPC or on-premise firewall been modified? Is traffic allowed bidirectionally on the database port?
 
 ---
 
-### 🔹 Static Routing (5 Challenges)
+## **7. Mini Incident Simulation**
 
-1️⃣ **Configure static routes between namespaces**
+**Alert:** `Web servers in availability zone 1a are failing health checks from the load balancer in 1b.`
 
+You jump into a web server and find:
 ```bash
-# On router namespace
-sudo ip netns exec router ip route add 192.168.1.0/24 dev veth1
-sudo ip netns exec router ip route add 10.0.2.0/24 dev veth3
+$ ip addr show eth0
+inet 10.0.1.25/20 brd 10.0.15.255 scope global eth0
 
-# On client1 namespace (add route to network 10.0.2.0/24 via router)
-sudo ip netns exec client1 ip route add 10.0.2.0/24 via 192.168.1.1
-
-# On client2 namespace (add route to network 192.168.1.0/24 via router)
-sudo ip netns exec client2 ip route add 192.168.1.0/24 via 10.0.2.1
-
-# Test connectivity
-sudo ip netns exec client1 ping 10.0.2.10 -c 3
-sudo ip netns exec client2 ping 192.168.1.10 -c 3
+$ ip route show
+10.0.0.0/20 dev eth0 proto kernel scope link src 10.0.1.25
+default via 10.0.0.1 dev eth0
 ```
 
-2️⃣ **Add multiple static routes and analyze preference**
+The load balancer's IP is `10.0.16.105`.
 
-```bash
-# Create an alternative path (simulated)
-sudo ip netns exec router ip route add 10.0.2.0/24 dev veth3 metric 100
-sudo ip netns exec router ip route add 10.0.2.0/24 dev veth3 metric 200
-
-# View routing table and analyze preference
-sudo ip netns exec router ip route show
-```
-
-3️⃣ **Break a static route intentionally and troubleshoot**
-
-```bash
-# Remove the route
-sudo ip netns exec client1 ip route del 10.0.2.0/24
-
-# Test connectivity (should fail)
-sudo ip netns exec client1 ping 10.0.2.10 -c 2
-
-# Troubleshoot with traceroute
-sudo ip netns exec client1 traceroute 10.0.2.10
-
-# Fix the route
-sudo ip netns exec client1 ip route add 10.0.2.0/24 via 192.168.1.1
-```
-
-4️⃣ **Compare static vs dynamic routing concepts**
-
-```bash
-# Examine current static routes
-sudo ip netns exec router ip route show
-
-# Compare with what dynamic routing would provide
-echo "Static routing: Manual configuration, no overhead"
-echo "Dynamic routing: Automatic updates, better for large networks"
-```
-
-5️⃣ **Document the namespace routing topology**
-
-```bash
-# Show all interfaces and their addresses
-sudo ip netns exec client1 ip addr show
-sudo ip netns exec client2 ip addr show
-sudo ip netns exec router ip addr show
-
-# Show routing tables
-sudo ip netns exec client1 ip route show
-sudo ip netns exec client2 ip route show
-sudo ip netns exec router ip route show
-```
+**Your Tasks:**
+1.  **Calculate the subnets.** The server is in `10.0.0.0/20`. What is the range of this subnet? *(Hint: The next subnet is `10.0.16.0/20`)*.
+2.  **Diagnose the issue:** Based on the subnet, is the load balancer's IP in the same subnet as the web server?
+3.  **Explain the consequence:** Where will the web server send packets destined for the load balancer? Can they reach it?
+4.  **Propose the fix:** This is a VPC design error. What should the netmask have been to allow all resources in the VPC to communicate directly?
 
 ---
 
-### 🔹 Default Gateway (5 Challenges)
+## **8. Advanced Gotchas for SREs**
 
-1️⃣ **Set up default gateway in namespace**
-
-```bash
-# Create a simulated internet namespace
-sudo ip netns add internet
-sudo ip link add veth4 type veth peer name veth5
-sudo ip link set veth4 netns router
-sudo ip link set veth5 netns internet
-sudo ip netns exec router ip addr add 203.0.113.1/24 dev veth4
-sudo ip netns exec internet ip addr add 203.0.113.2/24 dev veth5
-sudo ip netns exec router ip link set veth4 up
-sudo ip netns exec internet ip link set veth5 up
-
-# Set default gateway on router
-sudo ip netns exec router ip route add default via 203.0.113.2
-
-# Set default gateway on clients
-sudo ip netns exec client1 ip route add default via 192.168.1.1
-sudo ip netns exec client2 ip route add default via 10.0.2.1
-```
-
-2️⃣ **Remove/modify gateway and test**
-
-```bash
-# Remove default gateway
-sudo ip netns exec client1 ip route del default
-
-# Test connectivity (should fail)
-sudo ip netns exec client1 ping 203.0.113.2 -c 2
-
-# Restore gateway
-sudo ip netns exec client1 ip route add default via 192.168.1.1
-```
-
-3️⃣ **Multiple gateways with metrics**
-
-```bash
-# Add multiple default routes with different metrics
-sudo ip netns exec client1 ip route add default via 192.168.1.1 metric 100
-sudo ip netns exec client1 ip route add default via 192.168.1.1 metric 200
-
-# Show routing table to see preference
-sudo ip netns exec client1 ip route show
-```
-
-4️⃣ **Capture packets going through gateway**
-
-```bash
-# Start packet capture on router
-sudo ip netns exec router timeout 10 tcpdump -i veth1 icmp &
-
-# Generate traffic from client1
-sudo ip netns exec client1 ping 203.0.113.2 -c 3
-```
-
-5️⃣ **Troubleshoot wrong gateway configuration**
-
-```bash
-# Intentionally set wrong gateway
-sudo ip netns exec client1 ip route del default
-sudo ip netns exec client1 ip route add default via 192.168.1.99
-
-# Test connectivity (should fail)
-sudo ip netns exec client1 ping 203.0.113.2 -c 2
-
-# Diagnose the issue
-sudo ip netns exec client1 ip route show
-sudo ip netns exec client1 traceroute 203.0.113.2
-
-# Fix the gateway
-sudo ip netns exec client1 ip route del default
-sudo ip netns exec client1 ip route add default via 192.168.1.1
-```
+*   **MTU & Fragmentation:** If your VPN or overlay network (like Docker's) has a smaller MTU than your underlying network, packets will fragment, crushing performance. Solution: Enable **MTU Path Discovery** or set the MTU manually.
+*   **Asymmetric Routing:** The request goes through Firewall A, but the response comes back through Firewall B. Since Firewall B didn't see the connection initiation, it drops the packet. Common in multi-cloud and complex routing setups.
+*   **ECMP (Equal-Cost Multi-Path):** Multiple paths to the same destination. Great for bandwidth, terrible for stateful firewalls and packet ordering.
+*   **Network Namespaces:** Modern orchestration (Kubernetes, Docker) uses network namespaces to create isolated network stacks. A `ping` from the host might work, but not from inside a container because it's in a different namespace with its own routes and interfaces. Use `nsenter` or `kubectl exec` to debug.
 
 ---
 
-### 🔹 NAT & PAT (5 Challenges)
+## **9. Submission Guidelines: Prove Your Mastery**
 
-1️⃣ **Configure NAT on the router namespace**
+Push a file named `day17solution.md` to your GitHub repo.
 
-```bash
-# Enable IP forwarding on router
-sudo ip netns exec router sysctl -w net.ipv4.ip_forward=1
+**Include:**
 
-# Configure NAT using iptables
-sudo ip netns exec router iptables -t nat -A POSTROUTING -o veth4 -j MASQUERADE
-sudo ip netns exec router iptables -A FORWARD -i veth1 -o veth4 -j ACCEPT
-sudo ip netns exec router iptables -A FORWARD -i veth4 -o veth1 -m state --state ESTABLISHED,RELATED -j ACCEPT
+1.  **Screenshots:** Output of the `ip a` and `ip r` commands from your main machine.
+2.  **Hands-on Proof:** Output from the "Become Your Own Router" lab showing a successful ping between the two client VMs.
+3.  **Incident Response:** Your detailed answers to the four questions in the **Mini Incident Simulation** (Section 7).
+4.  **Reflection:** Write a paragraph explaining a networking issue you've faced or anticipate facing in your work and how a deep understanding of Layer 3 would help you resolve it.
 
-# Test NAT functionality
-sudo ip netns exec client1 ping 203.0.113.2 -c 3
-```
-
-2️⃣ **Test PAT with multiple hosts**
-
-```bash
-# Simulate multiple clients making connections
-sudo ip netns exec client1 ping 203.0.113.2 -c 2 &
-sudo ip netns exec client2 ping 203.0.113.2 -c 2 &
-
-# Check NAT translations
-sudo ip netns exec router iptables -t nat -L -n -v
-```
-
-3️⃣ **Test iptables NAT configuration**
-
-```bash
-# Check NAT table
-sudo ip netns exec router iptables -t nat -L
-
-# Verify NAT is working by checking connection tracking
-sudo ip netns exec router conntrack -L
-```
-
-4️⃣ **Capture NAT packets**
-
-```bash
-# Capture packets on the external interface
-sudo ip netns exec router timeout 10 tcpdump -i veth4 -n &
-
-# Generate traffic from clients
-sudo ip netns exec client1 ping 203.0.113.2 -c 3
-```
-
-5️⃣ **Troubleshoot NAT failure**
-
-```bash
-# Disable IP forwarding to simulate NAT failure
-sudo ip netns exec router sysctl -w net.ipv4.ip_forward=0
-
-# Test connectivity (should fail)
-sudo ip netns exec client1 ping 203.0.113.2 -c 2
-
-# Check sysctl settings
-sudo ip netns exec router sysctl net.ipv4.ip_forward
-
-# Re-enable and verify
-sudo ip netns exec router sysctl -w net.ipv4.ip_forward=1
-sudo ip netns exec client1 ping 203.0.113.2 -c 2
-```
+**Share your journey:**
+`#getfitwithsagar #100DaysOfSRE #OSIMastery #Layer3DeepDive #CloudNetworking`
 
 ---
-
-### 🔹 VLAN Basics (5 Challenges)
-
-1️⃣ **Create VLAN interfaces in namespaces**
-
-```bash
-# Create VLAN interfaces on router
-sudo ip netns exec router ip link add link veth1 name veth1.10 type vlan id 10
-sudo ip netns exec router ip link add link veth1 name veth1.20 type vlan id 20
-sudo ip netns exec router ip addr add 192.168.10.1/24 dev veth1.10
-sudo ip netns exec router ip addr add 192.168.20.1/24 dev veth1.20
-sudo ip netns exec router ip link set veth1.10 up
-sudo ip netns exec router ip link set veth1.20 up
-
-# Create VLAN interfaces on client1 (VLAN 10)
-sudo ip netns exec client1 ip link add link veth0 name veth0.10 type vlan id 10
-sudo ip netns exec client1 ip addr add 192.168.10.10/24 dev veth0.10
-sudo ip netns exec client1 ip link set veth0.10 up
-
-# Create VLAN interfaces on client2 (VLAN 20)
-sudo ip netns exec client2 ip link add link veth2 name veth2.20 type vlan id 20
-sudo ip netns exec client2 ip addr add 192.168.20.10/24 dev veth2.20
-sudo ip netns exec client2 ip link set veth2.20 up
-```
-
-2️⃣ **Configure inter-VLAN routing**
-
-```bash
-# Enable IP forwarding on router
-sudo ip netns exec router sysctl -w net.ipv4.ip_forward=1
-
-# Test inter-VLAN connectivity
-sudo ip netns exec client1 ping 192.168.20.10 -c 3
-sudo ip netns exec client2 ping 192.168.10.10 -c 3
-```
-
-3️⃣ **Misconfigure VLAN and troubleshoot**
-
-```bash
-# Put client2 in wrong VLAN
-sudo ip netns exec client2 ip link del veth2.20
-sudo ip netns exec client2 ip link add link veth2 name veth2.30 type vlan id 30
-sudo ip netns exec client2 ip addr add 192.168.30.10/24 dev veth2.30
-sudo ip netns exec client2 ip link set veth2.30 up
-
-# Test connectivity (should fail)
-sudo ip netns exec client1 ping 192.168.30.10 -c 2
-
-# Troubleshoot
-sudo ip netns exec client1 ip addr show
-sudo ip netns exec client2 ip addr show
-sudo ip netns exec router ip addr show
-
-# Fix the configuration
-sudo ip netns exec client2 ip link del veth2.30
-sudo ip netns exec client2 ip link add link veth2 name veth2.20 type vlan id 20
-sudo ip netns exec client2 ip addr add 192.168.20.10/24 dev veth2.20
-sudo ip netns exec client2 ip link set veth2.20 up
-```
-
-4️⃣ **Explore VLAN tagging**
-
-```bash
-# Capture VLAN tagged packets
-sudo ip netns exec router timeout 10 tcpdump -i veth1 -e vlan &
-
-# Generate VLAN traffic
-sudo ip netns exec client1 ping 192.168.20.10 -c 2
-```
-
-5️⃣ **Document multi-VLAN setup**
-
-```bash
-# Show VLAN configuration
-echo "VLAN 10: 192.168.10.0/24 (Client1)"
-echo "VLAN 20: 192.168.20.0/24 (Client2)"
-echo "Router interfaces:"
-sudo ip netns exec router ip addr show | grep -E "(veth1.10|veth1.20)"
-echo "Client interfaces:"
-sudo ip netns exec client1 ip addr show veth0.10
-sudo ip netns exec client2 ip addr show veth2.20
-```
-
----
-
-## ✅ Deliverables
-
-* Document your solutions in `solution.md` with:
-  * All commands executed
-  * Output observations and screenshots
-  * Network diagrams of your namespace setup
-* Push to your GitHub repository
-* Share your experience with hashtags:
-  **#getfitwithsagar #SRELife #DevOpsForAll**
-
----
-
-## 🌍 Community Links
-
-* **Discord**: [https://discord.gg/mNDm39qB8t](https://discord.gg/mNDm39qB8t)
-* **Google Group**: [https://groups.google.com/forum/#!forum/daily-devops-sre-challenge-series/join](https://groups.google.com/forum/#!forum/daily-devops-sre-challenge-series/join)
-* **YouTube**: [https://www.youtube.com/@Sagar.Utekar](https://www.youtube.com/@Sagar.Utekar)
-
----
-
-🔥 Keep routing, keep switching, and happy exploring!
-— *Sagar Utekar*
