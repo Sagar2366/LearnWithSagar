@@ -62,14 +62,6 @@ flowchart LR
 | Performance | Slightly faster for simple rules | Near parity with modern kernels |
 | Use Case | Edge routers, simple filtering | Hosts, cloud workloads |
 
-### 2.5 iptables vs nftables vs firewalld
-
-| Feature | iptables | nftables | firewalld |
-|---------|----------|----------|-----------|
-| Status | Legacy (still everywhere) | Modern replacement | Abstraction layer |
-| Performance | Per-table / chain evaluation | Unified flow engine | Depends on backend |
-| Rule Management | Append oriented | Atomic replace | Zones & services |
-| Recommended? | Legacy maintenance | YES (future-proof) | For ease if not scripting |
 
 ---
 
@@ -157,17 +149,6 @@ graph TD
 - RSA: Authentication
 - AES_256_GCM: Bulk cipher (AEAD)
 - SHA384: Hash for PRF/integrity
-
-### 4.6 TLS 1.2 vs 1.3
-
-| Aspect | TLS 1.2 | TLS 1.3 |
-|--------|---------|---------|
-| Handshake RTT | 2 | 1 (0 with resumption) |
-| Cipher Suites | Many (legacy risk) | Streamlined / only AEAD |
-| Key Exchange | RSA / (EC)DHE | Always (EC)DHE (PFS enforced) |
-| Algorithms Removed | RC4, SHA1, etc. | Already gone |
-| Session Resumption | Session IDs / Tickets | Tickets / PSK |
-| Security Level | Good if hardened | Better defaults |
 
 ---
 
