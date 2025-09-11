@@ -185,7 +185,7 @@ git push --force
 ```
 
 ### Screenshot:
-
+ Merge Conflict Scenario: ![alt text](image-6.png)
 ![Rebase Feature Screenshot](image-6.png)
 
 ### Diagram:
