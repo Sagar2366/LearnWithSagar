@@ -165,7 +165,7 @@ git stash pop
 
 ### Screenshot:
 
-![Stash and Cherry-Pick Screenshot](./screenshots/stash_cherry_pick.png)
+![alt text](image-5.png)
 
 ### Diagram:
 
