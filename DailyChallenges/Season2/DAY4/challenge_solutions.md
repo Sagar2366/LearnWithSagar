@@ -171,11 +171,12 @@ Uncommitted changes were safely stored using `git stash`, applied to another bra
 
 ### Commands used:
 ```bash
-git checkout feature
+git checkout feature/add-learning-notes
 git fetch origin
 git rebase origin/main
 
 main commits for example chcek
+feature new change
 
 # If conflicts occur:
 git add <file>
