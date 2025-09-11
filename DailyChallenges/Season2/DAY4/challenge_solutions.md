@@ -175,8 +175,7 @@ git checkout feature/add-learning-notes
 git fetch origin
 git rebase origin/main
 
-main commits for example chcek
-feature new change
+main commits for example test main
 
 # If conflicts occur:
 git add <file>
