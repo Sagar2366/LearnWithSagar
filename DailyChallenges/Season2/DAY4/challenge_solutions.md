@@ -156,7 +156,10 @@ git stash
 git checkout -b hotfix
 
 random lines for cherry pick
+<<<<<<< HEAD
 random lines for cherry pick 2
+=======
+>>>>>>> a0a90f1 (cherry picking)
 
 git cherry-pick <commit-hash>   # Replace <commit-hash> with the actual commit ID
 
