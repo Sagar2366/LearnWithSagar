@@ -1,1 +1,10 @@
+<<<<<<< HEAD
 Learning notes content
+=======
+
+Learning notes v1
+
+Main content v1
+
+Learning notes v1
+>>>>>>> 30b9134 (Add initial learning notes)
