@@ -155,6 +155,8 @@ git stash
 
 git checkout -b hotfix
 
+random lines for cherry pick
+
 git cherry-pick <commit-hash>   # Replace <commit-hash> with the actual commit ID
 
 git stash pop
