@@ -175,7 +175,7 @@ git checkout feature
 git fetch origin
 git rebase origin/main
 
-main commits for example1
+main commits for example chcek
 
 # If conflicts occur:
 git add <file>
