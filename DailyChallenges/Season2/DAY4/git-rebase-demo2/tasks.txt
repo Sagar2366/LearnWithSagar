@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-Task list version 1
-Main task update v2
-=======
+
 Resolved task content from main branch
->>>>>>> 79c2b66 (Initial commit on main)
+
