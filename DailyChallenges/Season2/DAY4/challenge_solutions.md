@@ -184,6 +184,167 @@ git rebase --continue
 git push --force
 ```
 
+### **1️⃣ Make sure you are on your feature branch**
+
+```bash
+git checkout feature/add-learning-notes
+```
+
+* Confirm with:
+
+```bash
+git branch
+```
+
+---
+
+### **2️⃣ Make a conflicting change in your branch**
+
+* Open a file that also exists in `main`, e.g.:
+
+```bash
+vim DailyChallenges/Season2/DAY4/notes.txt
+```
+
+* Add some text:
+
+```
+Feature branch change: Added a new section here
+```
+
+* Save and commit:
+
+```bash
+git add DailyChallenges/Season2/DAY4/notes.txt
+git commit -m "Feature branch: added new section"
+```
+
+---
+
+### **3️⃣ Make a conflicting change in `main`**
+
+* Switch to main branch:
+
+```bash
+git checkout main
+```
+
+* Edit the same line in the same file:
+
+```bash
+vim DailyChallenges/Season2/DAY4/notes.txt
+```
+
+* Add:
+
+```
+Main branch change: Updated section header
+```
+
+* Save and commit:
+
+```bash
+git add DailyChallenges/Season2/DAY4/notes.txt
+git commit -m "Main branch: updated section header"
+```
+
+* Push main if remote exists (optional):
+
+```bash
+git push origin main
+```
+
+---
+
+### **4️⃣ Go back to your feature branch**
+
+```bash
+git checkout feature/add-learning-notes
+```
+
+---
+
+### **5️⃣ Start the rebase onto main**
+
+```bash
+git rebase main
+```
+
+* Git will attempt to reapply your commits on top of `main`
+* You will see a **conflict** message like:
+
+```
+CONFLICT (content): Merge conflict in DailyChallenges/Season2/DAY4/notes.txt
+```
+
+---
+
+### **6️⃣ Resolve the conflict**
+
+* Open the conflicting file:
+
+```bash
+vim DailyChallenges/Season2/DAY4/notes.txt
+```
+
+* You will see:
+
+```
+<<<<<<< HEAD
+Feature branch change: Added a new section here
+=======
+Main branch change: Updated section header
+>>>>>>> main
+```
+
+* Edit it to keep both changes or choose one:
+
+```
+Feature branch change: Added a new section here
+Main branch change: Updated section header
+```
+
+* Save and exit
+
+---
+
+### **7️⃣ Mark conflict as resolved**
+
+```bash
+git add DailyChallenges/Season2/DAY4/notes.txt
+```
+
+---
+
+### **8️⃣ Continue the rebase**
+
+```bash
+git rebase --continue
+```
+
+* Git will apply remaining commits or finish rebase
+
+---
+
+### **9️⃣ Verify the rebase**
+
+```bash
+git log --oneline --graph --all
+```
+
+* Your feature branch commits are now **on top of main**
+* History is linear
+
+---
+
+### ✅ **Optional: Push your branch**
+
+Because rebase rewrites history, you may need to force push:
+
+```bash
+git push origin feature/add-learning-notes --force
+```
+
 ### Screenshot:
  Merge Conflict Scenario: ![alt text](image-6.png)
 ![Rebase Feature Screenshot](image-6.png)
