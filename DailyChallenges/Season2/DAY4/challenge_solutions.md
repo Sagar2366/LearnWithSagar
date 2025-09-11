@@ -205,14 +205,14 @@ The feature branch was rebased onto the main branch, conflicts were resolved, an
 
 ### Commands used:
 ```bash
-git revert <commit-hash>   # Replace <commit-hash> with actual commit ID
+git revert e8ff9f7fda46cb7f1d93429e4ee0653889ca6410   # Replace <commit-hash> with actual commit ID
 
 git log --oneline
 ```
 
 ### Screenshot:
 
-![Revert Commit Screenshot](image-7.png)
+![alt text](image-7.png)
 
 ### Diagram:
 ```mermaid
