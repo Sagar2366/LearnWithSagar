@@ -1,2 +1,1 @@
-Main content v1
-Main update v2
+Initial main content
