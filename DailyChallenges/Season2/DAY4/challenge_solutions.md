@@ -294,16 +294,6 @@ B --> A
 
 ---
 
-## ✅ Final Notes
-
-* All commands have been tested and executed successfully.
-* Diagrams and workflows have been included to explain Git operations visually.
-* Screenshots have been placed immediately after each set of commands for clarity.
-* The chosen strategies are aligned with team size and deployment frequency.
-* This completes the Day 4 Advanced Git Mastery challenge.
-
----
-
 ## ✅ Submission Checklist
 
 * ✅ Completed all tasks with commands and explanations
@@ -314,5 +304,3 @@ B --> A
 * ✅ Shared on LinkedIn with hashtags: `#getfitwithsagar #DevOpsForAll`
 
 ---
-
-This is your fully prepared solution from scratch. Once you take screenshots and insert them where indicated, it will be ready for submission. If you want, I can also guide you through creating the diagrams, screenshots, or reviewing your file before pushing it. Just say "proceed" or "help me review"!
