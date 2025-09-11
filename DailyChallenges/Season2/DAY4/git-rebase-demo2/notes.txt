@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+=======
+Learning Git rebase
+Advanced Git techniques
+>>>>>>> b823254 (Add advanced techniques)
