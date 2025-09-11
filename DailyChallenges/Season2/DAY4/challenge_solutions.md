@@ -176,7 +176,7 @@ git fetch origin
 git rebase origin/main
 
 main commits for example test main
-
+another changes
 # If conflicts occur:
 git add <file>
 git rebase --continue
