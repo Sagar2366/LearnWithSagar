@@ -172,8 +172,9 @@ git commit --amend -m "Updated notes with detailed Git commands"
 ```bash
 git push origin feature/add-learning-notes
 ```
-
-### 8. Created a Pull Request on GitHub with a proper title and description.
+![alt text](image-8.png)
+![alt text](image-7.png)
+### 8. Created a Pull Request on GitHub with a proper title and description. (Not doing for now)
 
 ---
 
