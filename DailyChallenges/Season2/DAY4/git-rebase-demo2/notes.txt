@@ -1,1 +1,2 @@
 Learning Git rebase
+Advanced Git techniques
