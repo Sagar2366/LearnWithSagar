@@ -157,9 +157,13 @@ git checkout -b hotfix
 
 random lines for cherry pick
 <<<<<<< HEAD
+<<<<<<< HEAD
 random lines for cherry pick 2
 =======
 >>>>>>> a0a90f1 (cherry picking)
+=======
+random lines for cherry pick 2
+>>>>>>> 462fc5d (cherry pic 2)
 
 git cherry-pick <commit-hash>   # Replace <commit-hash> with the actual commit ID
 
