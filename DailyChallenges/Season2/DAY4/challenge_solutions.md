@@ -187,7 +187,7 @@ git checkout feature
 git fetch origin
 git rebase origin/main
 
-main commits for example
+main commits for example1
 
 # If conflicts occur:
 git add <file>
