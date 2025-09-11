@@ -1,14 +1,14 @@
 
 ---
 
-### ✅ `challenge_solution.md` – Complete Answer (English, Windows-specific)
+# 📘 `challenge_solution.md` – Complete Answer (English, Windows-specific)
 
-````markdown
-# DevOps SRE Daily Challenge – Day 3  
-## Git Collaboration and Version Control
+## DevOps SRE Daily Challenge – Day 3
 
-**Name:** Swayam Bhuyan  
-**Date:** 11 September 2025  
+### Git Collaboration and Version Control
+
+**Name:** Swayam Bhuyan
+**Date:** 11 September 2025
 
 ---
 
@@ -18,12 +18,12 @@ Today’s challenge focused on learning Git collaboration and version control us
 
 Through this challenge, I practiced:
 
-- Setting up Git on Windows.
-- Cloning and configuring repositories.
-- Creating branches and making changes.
-- Handling merge conflicts.
-- Using pull requests and merge requests for code reviews.
-- Applying similar workflows on both GitHub and GitLab.
+* Setting up Git on Windows.
+* Cloning and configuring repositories.
+* Creating branches and making changes.
+* Handling merge conflicts.
+* Using pull requests and merge requests for code reviews.
+* Applying similar workflows on both GitHub and GitLab.
 
 This exercise gave me hands-on experience with distributed version control systems and collaboration strategies essential for modern software development.
 
@@ -37,26 +37,31 @@ This exercise gave me hands-on experience with distributed version control syste
 2. Installed it using the default options provided by the setup wizard.
 3. Enabled Git Bash and integration with the Windows shell.
 4. Verified the installation by running the following command in **Git Bash**:
+
    ```bash
    git --version
+   ```
 
-````
+   Example output:
 
-Example output:
+   ![alt text](image.png)
 
-```
- ![alt text](image.png)
-```
+---
 
 ### Configuring Git
 
 ```bash
 git config --global user.name "Swayam Bhuyan"
 git config --global user.email "swayam@example.com"
-![alt text](image-1.png)
 ```
 
+Example output:
+
+![alt text](image-1.png)
+
 This ensures that all commits include my correct identity.
+
+---
 
 ### Setting up SSH Keys (Recommended)
 
@@ -64,54 +69,90 @@ This ensures that all commits include my correct identity.
 
    ```bash
    ssh-keygen -t rsa -b 4096 -C "swayam@example.com"
-   ![alt text](image-2.png)
-   ![alt text](image-3.png)
    ```
+
+   Example output:
+
+   ![alt text](image-2.png)
+
+   ![alt text](image-3.png)
+
 2. Pressed Enter to accept default path.
+
 3. Optionally added a passphrase for security.
+
 4. Started the SSH agent:
 
    ```bash
    eval $(ssh-agent -s)
    ssh-add ~/.ssh/id_rsa_git
    ```
+
 5. Copied the public key using:
 
    ```bash
    cat ~/.ssh/id_rsa_git.pub
    ```
+
+   Example output:
+
    ![alt text](image-4.png)
+
 6. Added this key to GitHub and GitLab account settings.
+
    ![alt text](image-5.png)
 
-7. Added this key to GitHub and GitLab account settings.
+7. Edited SSH config for GitHub:
+
    ```bash
    vi ~/.ssh/config
-   add this content
+   ```
+
+   Added this content:
+
+   ```
    Host github.com
      HostName github.com
      User git
      IdentityFile ~/.ssh/id_rsa_git
+   ```
+
+8. Added the key to the SSH agent:
+
+   ```bash
    ssh-add ~/.ssh/id_rsa_git
+   ```
+
+9. Tested SSH connection:
+
+   ```bash
    ssh -T git@github.com
    ```
-    
 
 ---
 
 ## ✅ GitHub Setup
 
 1. Created a GitHub account.
+
 2. Created a second account to simulate code reviews.
+
 3. Configured SSH access for both accounts.
+
 4. Forked the challenge repository:
+
    `https://github.com/Sagar2366/LearnWithSagar`
+
 5. Cloned the forked repository:
 
    ```bash
    git clone git@github.com:Swayam-Prakash-Bhuyan/LearnWithSagar.git
-   ![alt text](image-6.png)
    ```
+
+   Example output:
+
+   ![alt text](image-6.png)
+
 6. Navigated to the challenge directory:
 
    ```bash
@@ -123,12 +164,14 @@ This ensures that all commits include my correct identity.
 ## ✅ GitLab Setup
 
 1. Created a GitLab account.
+
 2. Forked the challenge repository and cloned it using SSH:
 
    ```bash
    git clone git@gitlab.com:swayam-bhuyan/LearnWithSagar.git
    cd LearnWithSagar/DailyChallenges/Season2/Day3/
    ```
+
 3. Added SSH key to GitLab’s settings.
 
 ---
@@ -172,8 +215,13 @@ git commit --amend -m "Updated notes with detailed Git commands"
 ```bash
 git push origin feature/add-learning-notes
 ```
+
+Example output:
+
 ![alt text](image-8.png)
+
 ![alt text](image-7.png)
+
 ### 8. Created a Pull Request on GitHub with a proper title and description. (Not doing for now)
 
 ---
@@ -181,33 +229,35 @@ git push origin feature/add-learning-notes
 ## ✅ Simulating Merge Conflicts – GitHub (Not doing)
 
 1. Made conflicting changes using the second GitHub account.
+
 2. Pulled latest changes into the primary account:
 
-```bash
-git checkout main
-git pull origin main
-git checkout feature/add-learning-notes
-git merge main
-```
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout feature/add-learning-notes
+   git merge main
+   ```
 
 3. Resolved merge conflicts manually.
+
 4. Staged the resolved files:
 
-```bash
-git add challenge_solution.md
-```
+   ```bash
+   git add challenge_solution.md
+   ```
 
 5. Committed the merge resolution:
 
-```bash
-git commit -m "Resolved merge conflict in challenge_solution.md"
-```
+   ```bash
+   git commit -m "Resolved merge conflict in challenge_solution.md"
+   ```
 
 6. Pushed the changes:
 
-```bash
-git push origin feature/add-learning-notes
-```
+   ```bash
+   git push origin feature/add-learning-notes
+   ```
 
 7. Used the second account to review and approve the PR.
 
@@ -216,21 +266,25 @@ git push origin feature/add-learning-notes
 ## ✅ Git Workflow – GitLab
 
 1. Forked and cloned the repository using SSH.
+
 2. Created a feature branch:
 
-```bash
-git checkout -b feature/add-notes
-```
+   ```bash
+   git checkout -b feature/add-notes
+   ```
 
 3. Made changes, staged, and committed them.
+
 4. Pushed to GitLab:
 
-```bash
-git push origin feature/add-notes
-```
+   ```bash
+   git push origin feature/add-notes
+   ```
 
 5. Created a Merge Request in GitLab.
+
 6. Simulated merge conflicts and resolved them using similar commands.
+
 7. Approved and merged the changes.
 
 ---
@@ -259,11 +313,9 @@ git log --pretty=format:"%h - %an, %ar : %s"
 
 ---
 
----
+## ✅ Simulating and Avoiding Merge Conflicts – Git Branching Strategy
 
-## ✅ **Simulating and Avoiding Merge Conflicts – Git Branching Strategy**
-
-## 📌 **Goal**
+### 📌 **Goal**
 
 * Understand how merge conflicts happen.
 * Learn how to structure branches to avoid them.
@@ -271,7 +323,7 @@ git log --pretty=format:"%h - %an, %ar : %s"
 
 ---
 
-## ✅ **1. What is a Merge Conflict?**
+## ✅ 1. What is a Merge Conflict?
 
 A merge conflict occurs when:
 
@@ -286,7 +338,7 @@ You resolved it by:
 
 ---
 
-## ✅ **2. Why Conflicts Happen**
+## ✅ 2. Why Conflicts Happen
 
 * Multiple developers editing the same file on the same branch.
 * Working on outdated code without pulling updates.
@@ -294,7 +346,7 @@ You resolved it by:
 
 ---
 
-## ✅ **3. Branching Strategy to Avoid Conflicts**
+## ✅ 3. Branching Strategy to Avoid Conflicts
 
 ### Structure:
 
@@ -304,7 +356,7 @@ You resolved it by:
 
 ---
 
-### 📊 **Branch Diagram**
+### 📊 Branch Diagram
 
 ```mermaid
 graph TD
@@ -320,7 +372,7 @@ graph TD
 
 ---
 
-## ✅ **4. Workflow Explained**
+## ✅ 4. Workflow Explained
 
 ### Step 1 – Create a feature branch from `dev`
 
@@ -377,7 +429,7 @@ This ensures that only tested and reviewed code reaches the production branch.
 
 ---
 
-## ✅ **5. How This Strategy Avoids Conflicts**
+## ✅ 5. How This Strategy Avoids Conflicts
 
 ✔ Features are developed in isolation
 ✔ Developers pull updates before starting
@@ -387,24 +439,29 @@ This ensures that only tested and reviewed code reaches the production branch.
 
 ---
 
-## ✅ **6. Additional Best Practices**
+## ✅ 6. Additional Best Practices
 
 * Pull the latest `dev` before creating a feature branch.
+
 * Regularly merge `dev` into your feature branch to avoid large conflicts.
+
 * Write meaningful commit messages like:
 
-  ```
+  ```bash
   git commit -m "Fix typo in learning notes"
   ```
+
 * Use descriptive branch names:
 
-  ```
+  ```bash
   feature/add-login-page
   feature/fix-css-bug
   ```
+
 * Never commit directly to `main`.
 
 ---
+
 ## ✅ Key Concepts Learned
 
 ### What I Learned
@@ -415,6 +472,8 @@ This ensures that only tested and reviewed code reaches the production branch.
 * GitHub and GitLab both provide interfaces to manage collaboration.
 * Commands like `git commit --amend`, `git diff`, `git log`, `git push`, and `git pull` are essential for tracking progress.
 * Pull requests and merge requests formalize the review process.
+
+---
 
 ### Collaboration Insights
 
@@ -451,4 +510,6 @@ This challenge gave me hands-on experience with Git workflows on both GitHub and
 **Happy Learning!**
 – Swayam Bhuyan
 
-```
+---
+
+Let me know if you want this as a `.md` file or formatted in another way for direct upload. All images have been included as you originally structured them!
