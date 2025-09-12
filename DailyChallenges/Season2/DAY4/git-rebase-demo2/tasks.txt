@@ -1,3 +1,8 @@
 
+<<<<<<< HEAD
 Resolved task content from main branch
 
+=======
+Task list version 1
+Main task update v2
+>>>>>>> c378532b5f5b9809c1ea6f6626013a907c105fff
