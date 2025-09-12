@@ -108,7 +108,7 @@ kubectl certificate approve myuser
 # Retrieve the Signed Certificate
 After approval, the CSR object will have the signed certificate included in its status. You can extract the certificate from the CSR object:
 ```
-kubectl get csr username-csr -o jsonpath='{.status.certificate}' | base64 --decode > myuser.crt
+kubectl get csr myuser -o jsonpath='{.status.certificate}' | base64 --decode > myuser.crt
 ```
 
 # Create role and rolebinding
