@@ -213,26 +213,67 @@ Once the Helm client has generated the final YAML manifests, it sends them to th
 
 -----
 
-### CKA Exam Practice Scenarios**
+### CKA Exam Practice Scenarios
 
-  * **Scenario 1: Upgrade a Release**
+* **Scenario 1: Upgrade a Release**
 
-      * **Task**: A release `webapp-v1` is using image tag `1.9.1`. Upgrade it to use the chart at `/opt/charts/webapp` which defaults to a newer version, and set the image tag specifically to `1.10.3`.
-      * **Solution**: `helm upgrade webapp-v1 /opt/charts/webapp --set image.tag=1.10.3`
+    * **Task**: A release `webapp-v1` is using image tag `1.9.1`. Upgrade it to use the chart at `/opt/charts/webapp` which defaults to a newer version, and set the image tag specifically to `1.10.3`.
+    * **Solution**:  
+      ```bash
+      helm upgrade webapp-v1 /opt/charts/webapp --set image.tag=1.10.3
+      ```
 
-  * **Scenario 2: Find and Fix a Bad Value**
+* **Scenario 2: Find and Fix a Bad Value**
 
-      * **Task**: A deployment for the `api-prod` release is not working. Inspect its values and fix the `service.type` which is incorrectly set to `ClusterIP` when it should be `NodePort`.
-      * **Solution**:
-        1.  `helm get values api-prod` (To see the current values).
-        2.  `helm upgrade api-prod <chart-path> --set service.type=NodePort` (You'd get the chart path from `helm list -A`).
+    * **Task**: A deployment for the `api-prod` release is not working. Inspect its values and fix the `service.type` which is incorrectly set to `ClusterIP` when it should be `NodePort`.
+    * **Solution**:
+      1.  ```bash
+          helm get values api-prod
+          ```
+          (To see the current values).
+      2.  ```bash
+          helm upgrade api-prod <chart-path> --set service.type=NodePort
+          ```
+          (You'd get the chart path from `helm list -A`).
 
-  * **Scenario 3: Roll Back a Failed Upgrade**
+* **Scenario 3: Roll Back a Failed Upgrade**
 
-      * **Task**: You just upgraded the `database-main` release, creating revision \#4. The database pods are now in a `CrashLoopBackOff` state. Roll back the release to the previous working version.
-      * **Solution**:
-        1.  `helm history database-main` (To confirm the last good revision was \#3).
-        2.  `helm rollback database-main 3`
+    * **Task**: You just upgraded the `database-main` release, creating revision #4. The database pods are now in a `CrashLoopBackOff` state. Roll back the release to the previous working version.
+    * **Solution**:
+      1.  ```bash
+          helm history database-main
+          ```
+          (To confirm the last good revision was #3).
+      2.  ```bash
+          helm rollback database-main 3
+          ```
+
+* **Scenario 4: Install a Third-Party Chart**
+
+    * **Task**: Deploy external charts for common components like ingress and storage.  
+      - Install **Traefik** (Ingress Controller) in a new namespace.  
+      - Install the **MinIO Operator** in its own namespace.
+
+    * **Solution**:
+
+      **Traefik:**
+      ```bash
+      helm repo add traefik https://helm.traefik.io/traefik
+      helm repo update
+      kubectl create namespace traefik
+      helm install traefik traefik/traefik --namespace traefik --create-namespace
+      kubectl get all -n traefik
+      ```
+
+      **MinIO Operator:**
+      ```bash
+      helm repo add minio-operator https://operator.min.io
+      helm repo update
+      kubectl create namespace minio-operator
+      helm install operator minio-operator/operator --namespace minio-operator --create-namespace
+      kubectl get all -n minio-operator
+      ```
+
        
 ## Helm Commands Cheat Sheet
        
