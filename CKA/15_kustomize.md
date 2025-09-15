@@ -1,26 +1,88 @@
 
-### Kustomize: End-to-End Walkthrough
+### Kustomize: 
+#### Why do we need Kustomize
+**Environment-specific customizations**
+Dev vs Test vs Prod often need different replicas, resource limits/requests, secrets/configMaps, annotations, etc. Using separate full manifests for each environment leads to duplication and drift. Kustomize helps by overlaying only what's different. 
+
+**Avoid duplication**
+Base manifests avoid having the same repeated chunks across environments. If something changes in base (e.g. container image version, selector labels), you change in one place. Overlays only handle differences. 
+
+**Declarative management & versioning**
+All manifests are YAML (no custom templating syntax), easier to review / diff / track in Git. 
+
+**Native integration with kubectl**
+Kustomize is built into kubectl (for versions ≥ ~1.14) via kubectl apply -k or kubectl kustomize. 
+
+**Secret / ConfigMap generation**
+You can generate ConfigMaps and Secrets dynamically via configMapGenerator and secretGenerator. 
+
+**Transformers & Patches**
+You can apply naming prefixes/suffixes, labels, annotations, variable image tags, or patches (strategic merge or JSON patches) so only minimal YAML is changed.
 
 **Core Concept**: Kustomize is a **declarative, overlay-based** tool for customizing Kubernetes manifests. It doesn't use a templating language; it modifies existing YAML files.
 
 #### Key Components
+| Concept              | What it is / Does                                                                                                                                              | Why it matters / Example                                                                                                  |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Base**             | Directory containing the “common” Kubernetes manifests (resources) and a kustomization.yaml that refers to them.                                               | Serve as the single source of truth for common configuration across all environments.                                     |
+| **Overlay**          | Directory for an environment that refers to base plus overlay patches or overlay resources that change some parts.                                             | E.g. overlay for dev might set `replicas: 2`, overlay for prod might set `replicas: 4`, add rolling update strategy, etc. |
+| `kustomization.yaml` | The control file where you list resources, patches, transformers (namePrefix, nameSuffix, labels, etc.), generators, etc.                                      | It is the entry point of Kustomize: tells what to build and how to transform.                                             |
+| Transformers         | Built-in features in Kustomize that modify multiple YAML resources in a standard way: e.g. add a common label, add a prefix, change namespace, modify images.  | Good for consistent modifications across many resources without writing patches manually.                                 |
+| Patches              | Changes applied to base manifests to tailor them per overlay. Two main kinds: strategic-merge patches, JSON 6902 patches. Can be inline or via separate files. | Patches let you override specific fields without retyping or duplicating whole manifests.                                 |
+| Generators           | `configMapGenerator`, `secretGenerator` – to produce configMaps or secrets from key/value or file inputs. Can help avoid storing secrets in plaintext.         | Dynamically generate required configMaps or secrets for environments.                                                     |
 
-  * **`base`**: The directory containing the original, unmodified Kubernetes manifests. This is your single source of truth.
-  * **`overlays`**: Directories that contain a `kustomization.yaml` file and patches to modify the `base` for specific environments.
-  * **`kustomization.yaml`**: The central file that defines which resources to manage and what patches or modifications to apply.
+#### Installation & Usage Basics
 
-#### End-to-End Example
+- Kustomize can be used as a standalone binary or via kubectl.
 
-Let's say you have a basic Nginx deployment.
+1. Using kubectl: kubectl kustomize or kubectl apply -k <overlay>
+2. Using standalone: download/install from its GitHub repo or via package managers (brew, chocolatey, etc.).
 
-**1. Create a `base` directory with your original manifests.**
+
+---
+
+# Kustomize End-to-End Example
+
+This example demonstrates how to use **Kustomize** to manage a simple Nginx application across multiple environments: **dev**, **uat**, and **prod**.
+
+---
+
+## 1. Create the Project Structure
 
 ```bash
-mkdir -p app/base
-cd app/base
+mkdir -p kustomize-demo/base
+mkdir -p kustomize-demo/overlays/dev
+mkdir -p kustomize-demo/overlays/uat
+mkdir -p kustomize-demo/overlays/prod
+cd kustomize-demo
 ```
 
-`deployment.yaml`
+Your folder layout will look like this:
+
+```
+├── kustomize
+  ├── base
+    │   ├── deployment.yaml
+    │   ├── service.yaml
+    │   ├── kustomization.yaml
+    └ overlays
+        ├── dev
+        │   ├── deployment-dev.yaml
+        |   ├── service-dev.yaml
+        │   └── kustomization.yaml
+        └── prod
+            ├── deployment-prod.yaml
+            ├── service-prod.yaml
+            └── kustomization.yaml
+```
+
+---
+
+## 2. Define the Base Manifests
+
+Inside `base/`, create the common deployment and service used across all environments.
+
+### `base/deployment.yaml`
 
 ```yaml
 apiVersion: apps/v1
@@ -44,7 +106,7 @@ spec:
         - containerPort: 80
 ```
 
-`service.yaml`
+### `base/service.yaml`
 
 ```yaml
 apiVersion: v1
@@ -60,59 +122,204 @@ spec:
     app: nginx
 ```
 
-**2. Create a `kustomization.yaml` in the `base` directory.**
-This file simply lists the resources you want to manage.
-
-`kustomization.yaml`
+### `base/kustomization.yaml`
 
 ```yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 resources:
-- deployment.yaml
-- service.yaml
+  - deployment.yaml
+  - service.yaml
 ```
 
-**3. Create an `overlays` directory for a "production" environment.**
-In this environment, you want to increase replicas and add an environment-specific label.
+---
+
+## 3. Create Overlays for Each Environment
+
+Each overlay points to the base and applies environment-specific changes.
+
+---
+
+### **Dev Overlay**
 
 ```bash
-mkdir -p ../overlays/prod
-cd ../overlays/prod
+cd overlays/dev
 ```
 
-`kustomization.yaml`
+#### `overlays/dev/kustomization.yaml`
 
 ```yaml
-# kustomization.yaml in overlays/prod
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 resources:
-- ../../base # Reference the base directory
+  - ../../base
 
-# Add a common label to all resources
 commonLabels:
-  env: production
+  env: dev
 
-# Use a patch to modify the deployment
 patches:
 - patch: |-
     - op: replace
       path: /spec/replicas
-      value: 3
+      value: 1
   target:
     kind: Deployment
     name: nginx-deployment
 ```
 
-**4. Deploy the application for a specific environment.**
+---
 
-  * **Dry Run**: To see the final YAML without applying it.
-    ```bash
-    kubectl kustomize app/overlays/prod
-    # or the standalone command:
-    kustomize build app/overlays/prod
-    ```
-  * **Deploy**: To apply the production configuration.
-    ```bash
-    kubectl apply -k app/overlays/prod
-    ```
+### **UAT Overlay**
+
+```bash
+cd ../uat
+```
+
+#### `overlays/uat/kustomization.yaml`
+
+```yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+commonLabels:
+  env: uat
+
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 2
+  target:
+    kind: Deployment
+    name: nginx-deployment
+```
+
+---
+
+### **Prod Overlay**
+
+```bash
+cd ../prod
+```
+
+#### `overlays/prod/kustomization.yaml`
+
+```yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+commonLabels:
+  env: prod
+
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 5
+  target:
+    kind: Deployment
+    name: nginx-deployment
+
+- patch: |-
+    - op: add
+      path: /spec/strategy
+      value:
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 1
+          maxSurge: 1
+  target:
+    kind: Deployment
+    name: nginx-deployment
+```
+
+---
+
+## 4. Build and Preview the Manifests
+
+Navigate back to the root of your project:
+
+```bash
+cd ../../../kustomize-demo
+```
+
+Run Kustomize to preview manifests for each environment:
+
+* **Dev**
+
+  ```bash
+  kubectl kustomize overlays/dev
+  ```
+
+* **UAT**
+
+  ```bash
+  kubectl kustomize overlays/uat
+  ```
+
+* **Prod**
+
+  ```bash
+  kubectl kustomize overlays/prod
+  ```
+
+Or use the standalone Kustomize binary if installed:
+
+```bash
+kustomize build overlays/prod
+```
+
+---
+
+## 5. Deploy to Kubernetes
+
+Once you’re happy with the rendered YAML, deploy it to your cluster:
+
+* **Dev**
+
+  ```bash
+  kubectl apply -k overlays/dev
+  ```
+
+* **UAT**
+
+  ```bash
+  kubectl apply -k overlays/uat
+  ```
+
+* **Prod**
+
+  ```bash
+  kubectl apply -k overlays/prod
+  ```
+
+---
+
+## 6. Verify the Deployment
+
+Check pods:
+
+```bash
+kubectl get pods -l app=nginx
+```
+
+Check services:
+
+```bash
+kubectl get svc nginx-service
+```
+
+* Dev → 1 replica
+* UAT → 2 replicas
+* Prod → 5 replicas with rolling updates
 
 -----
 
@@ -203,16 +410,57 @@ spec:
     ```bash
     helm rollback my-nginx-release [REVISION_NUMBER]
     ```
+---
 
------
+## Best Practices for Using Kustomize
 
-### Final Comparison
+* **Keep base minimal and reusable** – only include common manifests (deployments, services, etc.)
+* **Overlays should only contain differences** – avoid copying entire manifests into overlays
+* **Use generators for ConfigMaps and Secrets** – instead of hardcoding values
+* **Leverage `commonLabels` and `commonAnnotations`** – for consistent metadata across resources
+* **Prefer JSON6902 patches for precision** – when modifying deeply nested fields
+* **Validate rendered manifests** before applying using tools like `kubeval` or `kubeconform`
+* **Integrate with GitOps tools** – e.g., ArgoCD or FluxCD, since they have first-class support for Kustomize
+* **Avoid disabling ConfigMap/Secret name suffix hashes** – ensures pods restart when config changes
+* **Use `namePrefix`/`nameSuffix` carefully** – to avoid breaking dependencies between resources
+* **Keep overlays simple** – one overlay per environment is enough in most cases
 
-| Feature | Helm | Kustomize |
-| :--- | :--- | :--- |
-| **Philosophy** | **Templating & Packaging**: "Chart your application." | **Overlay & Customization**: "Customize your manifest." |
-| **Best For** | Distributing reusable applications, managing complex dependency trees (e.g., WordPress with MariaDB). | Managing different environments (dev, prod) for your own applications. |
-| **Release Management** | **Built-in**. Tracks history, supports one-command rollback. | **Manual**. You manage history via Git commits. |
-| **Learning Curve** | **Higher**. Requires learning Go templating and Helm-specific conventions. | **Lower**. Uses standard YAML and feels like a natural extension of `kubectl`. |
-| **Integration** | A separate CLI tool (`helm`). | **Built-in** to `kubectl` since v1.14. |
-| **How It Works** | Combines **templates** and **values** to generate YAML. | Combines **base** manifests and **patches** to generate YAML. |
+---
+
+## Kustomize Transformers
+
+Transformers are plugins/features that let you modify multiple resources in a consistent way.
+
+Here’s the list of **built-in transformers**:
+
+| Transformer               | Description                                                                |
+| ------------------------- | -------------------------------------------------------------------------- |
+| **namePrefix**            | Adds a prefix to all resource names                                        |
+| **nameSuffix**            | Adds a suffix to all resource names                                        |
+| **namespace**             | Sets namespace for all resources                                           |
+| **commonLabels**          | Adds labels to all resources                                               |
+| **commonAnnotations**     | Adds annotations to all resources                                          |
+| **images**                | Overrides container images (name, tag, digest)                             |
+| **replicas**              | Overrides replica counts for Deployments, StatefulSets, etc.               |
+| **patchesStrategicMerge** | Applies patches using strategic merge semantics                            |
+| **patchesJson6902**       | Applies patches using JSON6902 (RFC 6902) standard                         |
+| **patches**               | Unified way to define both JSON6902 and strategic patches (newer versions) |
+| **configMapGenerator**    | Generates ConfigMaps from literals or files                                |
+| **secretGenerator**       | Generates Secrets from literals or files                                   |
+| **vars**                  | Substitute variables in resources                                          |
+
+---
+
+## Kustomize vs Helm
+
+| Feature                    | **Kustomize**                                   | **Helm**                                         |
+| -------------------------- | ----------------------------------------------- | ------------------------------------------------ |
+| **Approach**               | Base + overlays layering                        | Template rendering with values.yaml              |
+| **Learning Curve**         | Low (YAML only)                                 | Higher (Go templating, charts)                   |
+| **Reusability**            | Great for environment-specific differences      | Great for packaging and sharing apps             |
+| **Ecosystem**              | No central repo, DIY                            | Large public chart ecosystem                     |
+| **Native kubectl Support** | Yes (`kubectl apply -k`)                        | No (needs `helm` binary)                         |
+| **Dependencies**           | Not supported                                   | Supported (chart dependencies)                   |
+| **Secrets Handling**       | Basic (secretGenerator)                         | Advanced (sealed secrets, external plugins)      |
+| **Best Use Case**          | Environment customization in GitOps workflows   | App installation and dependency management       |
+| **Combine Together?**      | Yes (render Helm charts → patch with Kustomize) | Yes (use Helm for install, Kustomize for tweaks) |
