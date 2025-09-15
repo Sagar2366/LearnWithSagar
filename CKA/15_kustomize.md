@@ -183,6 +183,9 @@ kind: Kustomization
 resources:
   - ../../base
 
+namespace: dev
+nameSuffix: -dev
+
 commonLabels:
   env: dev
 
@@ -215,6 +218,8 @@ resources:
 
 commonLabels:
   env: uat
+namespace: uat
+nameSuffix: -uat
 
 patches:
 - patch: |-
@@ -245,6 +250,8 @@ resources:
 
 commonLabels:
   env: prod
+namespace: prod
+nameSuffix: -prod
 
 patches:
 - patch: |-
