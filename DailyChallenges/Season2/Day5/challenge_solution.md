@@ -56,15 +56,19 @@ graph TD
 1. Go to [GitHub](https://github.com).
 2. Click on your profile → Your organizations → New organization.
 3. Name it **DevOps-Challenge-Org**.
+![alt text](image.png)
 
 #### 2. Invite Users
 
 1. Go to the organization → People → Invite member.
-2. Add at least 5 GitHub users.
+2. Add at least 5 GitHub users. (i added one)
+![alt text](image-1.png)
 
 #### 3. Create Teams
 
 1. Go to Teams → New team.
+![alt text](image-2.png)
+
 2. Create:
 
    * **Developers** → Add users → Write access.
@@ -76,6 +80,7 @@ graph TD
 1. Go to the organization → New repository.
 2. Name: **sample-project**.
 3. Set visibility: Private or Public.
+![alt text](image-3.png)
 
 #### 5. Assign Permissions
 
@@ -87,11 +92,14 @@ graph TD
    DevOps → Admin access
    QA → Read access
    ```
+example:![alt text](image-4.png)
+
 
 #### 6. Enforce Two-Factor Authentication
 
 1. Organization → Settings → Security → Authentication.
 2. Require 2FA for all members.
+![alt text](image-5.png)
 
 ---
 
