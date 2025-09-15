@@ -21,6 +21,31 @@ You can apply naming prefixes/suffixes, labels, annotations, variable image tags
 
 **Core Concept**: Kustomize is a **declarative, overlay-based** tool for customizing Kubernetes manifests. It doesn't use a templating language; it modifies existing YAML files.
 
+```mermaid
+flowchart TD
+    A[Base Manifests- deployment.yaml- service.yaml- hpa.yaml- configmap.yaml- kustomization.yaml] 
+    B[Overlay: Dev kustomization.yaml]
+    C[Overlay: UAT kustomization.yaml]
+    D[Overlay: Prod kustomization.yaml]
+    E[Kustomize Build Generates final manifests]
+    F[Dev Cluster]
+    G[UAT Cluster]
+    H[Prod Cluster]
+
+    A --> B
+    A --> C
+    A --> D
+
+    B --> E
+    C --> E
+    D --> E
+
+    E --> F
+    E --> G
+    E --> H
+
+```
+
 #### Key Components
 | Concept              | What it is / Does                                                                                                                                              | Why it matters / Example                                                                                                  |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
