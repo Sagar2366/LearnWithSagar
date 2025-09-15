@@ -116,14 +116,16 @@ example:![alt text](image-4.png)
 1. **Enable Dependabot Alerts**
 
    * Repository → Settings → Security & analysis → Enable Dependabot alerts.
-
+   ![alt text](image-6.png)
 2. **Enable Secret Scanning**
 
    * Same section → Enable Secret scanning.
+   ![alt text](image-7.png)
 
 3. **Set Branch Protection Rules**
 
    * Settings → Branches → Add branch protection rule for `main`.
+   
    * Enable:
 
      * Require pull request before merging.
