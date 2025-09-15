@@ -1,25 +1,27 @@
 
-### Kustomize: 
+### Kustomize: Kustomize is a **declarative, overlay-based** tool for customizing Kubernetes manifests. It doesn't use a templating language; it modifies existing YAML files
+
 #### Why do we need Kustomize
 **Environment-specific customizations**
-Dev vs Test vs Prod often need different replicas, resource limits/requests, secrets/configMaps, annotations, etc. Using separate full manifests for each environment leads to duplication and drift. Kustomize helps by overlaying only what's different. 
+- Dev vs Test vs Prod often need different replicas, resource limits/requests, secrets/configMaps, annotations, etc.
+- Using separate full manifests for each environment leads to duplication and drift. Kustomize helps by overlaying only what's different. 
 
 **Avoid duplication**
-Base manifests avoid having the same repeated chunks across environments. If something changes in base (e.g. container image version, selector labels), you change in one place. Overlays only handle differences. 
+- Base manifests avoid having the same repeated chunks across environments.
+- If something changes in base (e.g. container image version, selector labels), you change in one place. Overlays only handle differences. 
 
 **Declarative management & versioning**
-All manifests are YAML (no custom templating syntax), easier to review / diff / track in Git. 
+- All manifests are YAML (no custom templating syntax), easier to review / diff / track in Git. 
 
 **Native integration with kubectl**
-Kustomize is built into kubectl (for versions ≥ ~1.14) via kubectl apply -k or kubectl kustomize. 
+- Kustomize is built into kubectl (for versions ≥ ~1.14) via kubectl apply -k or kubectl kustomize. 
 
 **Secret / ConfigMap generation**
-You can generate ConfigMaps and Secrets dynamically via configMapGenerator and secretGenerator. 
+- You can generate ConfigMaps and Secrets dynamically via configMapGenerator and secretGenerator. 
 
 **Transformers & Patches**
-You can apply naming prefixes/suffixes, labels, annotations, variable image tags, or patches (strategic merge or JSON patches) so only minimal YAML is changed.
+- You can apply naming prefixes/suffixes, labels, annotations, variable image tags, or patches (strategic merge or JSON patches) so only minimal YAML is changed.
 
-**Core Concept**: Kustomize is a **declarative, overlay-based** tool for customizing Kubernetes manifests. It doesn't use a templating language; it modifies existing YAML files.
 
 ```mermaid
 flowchart TD
@@ -79,7 +81,7 @@ mkdir -p kustomize-demo/base
 mkdir -p kustomize-demo/overlays/dev
 mkdir -p kustomize-demo/overlays/uat
 mkdir -p kustomize-demo/overlays/prod
-cd kustomize-demo
+cd kustomize
 ```
 
 Your folder layout will look like this:
@@ -273,7 +275,7 @@ patches:
 Navigate back to the root of your project:
 
 ```bash
-cd ../../../kustomize-demo
+cd ../../../kustomize
 ```
 
 Run Kustomize to preview manifests for each environment:
