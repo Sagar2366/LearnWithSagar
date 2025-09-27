@@ -10,7 +10,7 @@ Diagram/Example:
 
 
 In this diagram, initially, all requests are routed to the blue environment. When a new software version is ready, it is deployed to the green environment. After it passes all tests, the router starts routing the requests to the green environment. If the new version fails in production for some reason, the router goes back to routing requests to the blue environment.
-
+``` mermaid
 graph LR
 A[User] -- Request --> B{{Router}}
 B -- Route to --> C[Blue Environment]
