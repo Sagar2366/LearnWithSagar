@@ -1,4 +1,4 @@
-Question: What is blue-green Deployment? How is it useful?
+=Question: What is blue-green Deployment? How is it useful?
 
 Answer: Blue-green deployment is a methodology for releasing software in a controlled and low-risk manner. It involves creating two environments, referred to as blue and green. The blue environment is the live production environment, serving all client traffic, while the green environment is an identical clone used to test and validate the new version of the application.
 
@@ -9,7 +9,9 @@ This strategy is useful because it minimizes downtime during application deploym
 Diagram/Example:
 
 
-In this diagram, initially, all requests are routed to the blue environment. When a new software version is ready, it is deployed to the green environment. After it passes all tests, the router starts routing the requests to the green environment. If the new version fails in production for some reason, the router goes back to routing requests to the blue environment.  ```mermaid graph LR
+In this diagram, initially, all requests are routed to the blue environment. When a new software version is ready, it is deployed to the green environment. After it passes all tests, the router starts routing the requests to the green environment. If the new version fails in production for some reason, the router goes back to routing requests to the blue environment.
+
+graph LR
 A[User] -- Request --> B{{Router}}
 B -- Route to --> C[Blue Environment]
 B -- Route to --> D[Green Environment]
